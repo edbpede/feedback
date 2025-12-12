@@ -20,9 +20,9 @@ Student Feedback Bot - an Astro-based web application that provides AI-powered f
 ## Commands
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
+bun run dev      # Start development server
+bun run build    # Build for production
+bun run preview  # Preview production build
 ```
 
 ## Architecture
