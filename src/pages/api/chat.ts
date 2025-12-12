@@ -54,6 +54,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
 
     if (!nanoGptResponse.ok) {
+      const errorBody = await nanoGptResponse.text();
+      console.error("NanoGPT API error:", {
+        status: nanoGptResponse.status,
+        body: errorBody,
+      });
+
       const response: ApiResponse<never> = {
         success: false,
         error: `API error: ${nanoGptResponse.status}`,
