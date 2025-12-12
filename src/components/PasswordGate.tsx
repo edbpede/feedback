@@ -2,6 +2,7 @@ import { createSignal, Show, type Component } from "solid-js";
 import type { ApiResponse } from "@lib/types";
 import { t } from "@lib/i18n";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
 
 interface PasswordGateProps {
   onSuccess: () => void;
@@ -41,10 +42,13 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
 
   return (
     <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="card w-full max-w-md">
+      <div class="card w-full max-w-md transition-colors duration-200">
         <div class="flex justify-between items-start mb-2">
           <h1 class="text-2xl font-bold">{t("auth.title")}</h1>
-          <LanguageSwitcher />
+          <div class="flex items-center gap-1">
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+          </div>
         </div>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
           {t("auth.description")}

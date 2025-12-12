@@ -77,13 +77,13 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
       <Show
         when={!props.currentFile}
         fallback={
-          <div class="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <div class="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg transition-colors duration-200">
             <span class="i-carbon-document text-blue-600" />
             <span class="flex-1 text-sm truncate">{props.currentFile?.name}</span>
             <button
               type="button"
               onClick={() => props.onClear()}
-              class="text-gray-500 hover:text-red-500"
+              class="text-gray-500 hover:text-red-500 transition-colors duration-200"
             >
               <span class="i-carbon-close" />
             </button>
@@ -94,7 +94,7 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
-          class={`border-2 border-dashed rounded-lg p-3 text-center text-sm transition-colors ${
+          class={`border-2 border-dashed rounded-lg p-3 text-center text-sm transition-colors duration-200 ${
             isDragging()
               ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
               : "border-gray-300 dark:border-gray-600"

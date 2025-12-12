@@ -27,7 +27,7 @@ export const ChatInput: Component<ChatInputProps> = (props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      class="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800"
+      class="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 transition-colors duration-200"
     >
       <div class="flex gap-2">
         <textarea

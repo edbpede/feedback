@@ -55,7 +55,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
       {/* Loading indicator */}
       <Show when={props.isLoading && !props.streamingContent}>
         <div class="flex justify-start">
-          <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2">
+          <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2 transition-colors duration-200">
             <span class="i-carbon-loading animate-spin" />
           </div>
         </div>

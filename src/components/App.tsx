@@ -2,14 +2,16 @@ import { createSignal, onMount, Show, type Component } from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
 import { ChatWindow } from "@components/ChatWindow";
 import { initLocale } from "@lib/i18n";
+import { initTheme } from "@lib/theme";
 
 export const App: Component = () => {
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(true);
 
   onMount(async () => {
-    // Initialize locale from localStorage
+    // Initialize locale and theme from localStorage
     initLocale();
+    initTheme();
 
     // Check if session cookie exists by making a lightweight request
     try {
@@ -32,7 +34,7 @@ export const App: Component = () => {
   };
 
   return (
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
       <Show when={!isLoading()} fallback={<LoadingSpinner />}>
         <Show
           when={isAuthenticated()}

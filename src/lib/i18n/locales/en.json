@@ -34,5 +34,12 @@
     "label": "Language",
     "danish": "Dansk",
     "english": "English"
+  },
+  "theme": {
+    "label": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   }
 }

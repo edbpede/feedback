@@ -4,14 +4,31 @@ import "virtual:uno.css";
 ---
 
 <!doctype html>
-<html lang="da">
+<html lang="da" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
     <title>Feedback Bot til Studerende</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Inline script to prevent FOUC (Flash of Unstyled Content) -->
+    <script is:inline>
+      (function() {
+        const STORAGE_KEY = "theme-preference";
+        const DEFAULT_THEME = "dark";
+
+        const stored = localStorage.getItem(STORAGE_KEY);
+        const theme = stored === "light" || stored === "dark" ? stored : DEFAULT_THEME;
+
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
   </head>
-  <body>
+  <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     <App client:load />
   </body>
 </html>

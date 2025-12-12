@@ -9,6 +9,7 @@ import { MessageList } from "@components/MessageList";
 import { ChatInput } from "@components/ChatInput";
 import { FileUpload } from "@components/FileUpload";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { loadMessages, saveMessages, clearMessages } from "@lib/storage";
 import { sendMessage } from "@lib/api";
 import { t } from "@lib/i18n";
@@ -99,9 +100,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   return (
     <div class="flex flex-col h-screen">
       {/* Header */}
-      <header class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <header class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-200">
         <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
         <div class="flex items-center gap-2">
+          <ThemeSwitcher />
           <LanguageSwitcher />
           <button
             type="button"

@@ -34,5 +34,12 @@
     "label": "Sprog",
     "danish": "Dansk",
     "english": "English"
+  },
+  "theme": {
+    "label": "Tema",
+    "dark": "Mørk",
+    "light": "Lys",
+    "switchToDark": "Skift til mørk tilstand",
+    "switchToLight": "Skift til lys tilstand"
   }
 }
