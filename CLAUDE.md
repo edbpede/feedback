@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Codebase Search
+
+**Always use the `mcp__auggie-mcp__codebase-retrieval` tool as the primary method for:**
+- Exploring the codebase and understanding architecture
+- Finding existing patterns before implementing new features
+- Locating relevant code when the exact file location is unknown
+- Gathering context before making edits
+- Planning tasks in plan mode
+
+This semantic search tool provides better results than grep/find for understanding code relationships. Use grep only for finding exact string matches or all occurrences of a known identifier.
+
 ## Project Overview
 
 Student Feedback Bot - an Astro-based web application that provides AI-powered feedback on student assignments. Users authenticate with a password, upload DOCX/PDF files, and receive feedback via a streaming chat interface powered by NanoGPT.
