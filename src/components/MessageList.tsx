@@ -44,7 +44,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
           {(message, index) => (
             <MessageBubble
               message={message}
-              isCollapsible={index() === 1 && message.role === "assistant"}
+              isCollapsible={index() === 0 && message.role === "user"}
             />
           )}
         </For>

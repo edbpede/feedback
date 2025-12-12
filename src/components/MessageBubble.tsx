@@ -46,19 +46,19 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
         when={props.isCollapsible}
         fallback={messageContent}
       >
-        <Collapsible open={expanded()} onOpenChange={setExpanded} class="max-w-[80%]">
+        <Collapsible open={expanded()} onOpenChange={setExpanded} class="max-w-[80%] flex flex-col items-end">
           <CollapsibleTrigger
-            class="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted text-muted-foreground hover:bg-muted/80 transition-colors"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/80 text-primary-foreground hover:bg-primary transition-colors"
           >
             <span
               class="i-carbon-chevron-right transition-transform duration-200"
               classList={{ "rotate-90": expanded() }}
             />
             <span class="text-sm">
-              {expanded() ? t("chat.hideInitialFeedback") : t("chat.showInitialFeedback")}
+              {expanded() ? t("chat.hideInitialRequest") : t("chat.showInitialRequest")}
             </span>
           </CollapsibleTrigger>
-          <CollapsibleContent class="mt-2">
+          <CollapsibleContent class="mt-2 w-full flex justify-end">
             {messageContent}
           </CollapsibleContent>
         </Collapsible>

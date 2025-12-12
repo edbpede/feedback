@@ -22,9 +22,9 @@
     "errorPrefix": "Fejl:",
     "failedToGetResponse": "Kunne ikke få svar",
     "editContext": "Rediger info",
-    "initialFeedback": "Indledende feedback",
-    "showInitialFeedback": "Vis indledende feedback",
-    "hideInitialFeedback": "Skjul indledende feedback"
+    "initialRequest": "Afsendt information",
+    "showInitialRequest": "Vis afsendt information",
+    "hideInitialRequest": "Skjul afsendt information"
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",

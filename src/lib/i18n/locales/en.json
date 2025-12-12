@@ -22,9 +22,9 @@
     "errorPrefix": "Error:",
     "failedToGetResponse": "Failed to get response",
     "editContext": "Edit info",
-    "initialFeedback": "Initial feedback",
-    "showInitialFeedback": "Show initial feedback",
-    "hideInitialFeedback": "Hide initial feedback"
+    "initialRequest": "Submitted info",
+    "showInitialRequest": "Show submitted info",
+    "hideInitialRequest": "Hide submitted info"
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",
