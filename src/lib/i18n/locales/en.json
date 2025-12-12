@@ -65,16 +65,19 @@
         "description": "Select your subject and grade so I can tailor my feedback"
       },
       "assignment": {
-        "title": "What is your assignment?",
+        "title": "What is your assignment description?",
         "placeholder": "Copy the assignment description or describe it in your own words...",
         "hint": "E.g.: \"Write an analysis of H.C. Andersen's 'The Little Mermaid'\"",
         "skipButton": "Describe later"
       },
       "studentWork": {
-        "title": "What have you done so far?",
-        "placeholder": "Your draft, notes, or ideas...",
-        "hint": "Share what you've been working on – it can be anything from keywords to a full draft",
-        "skipButton": "I haven't started yet"
+        "title": "Show me your assignment",
+        "placeholder": "Any notes or additional information...",
+        "hint": "Share what you've been working on – upload a file or write your draft below",
+        "skipButton": "I don't have anything yet",
+        "uploadLabel": "Upload file (DOCX/PDF)",
+        "fileAttached": "File attached:",
+        "removeFile": "Remove file"
       },
       "gradePreference": {
         "title": "Do you want an indicative grade?",

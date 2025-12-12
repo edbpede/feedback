@@ -1,7 +1,6 @@
 import type { Component } from "solid-js";
 import { t } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
-import { PrivacyWarning } from "./PrivacyWarning";
 
 interface AssignmentStepProps {
   value: string;
@@ -21,13 +20,11 @@ export const AssignmentStep: Component<AssignmentStepProps> = (props) => {
       <h2 class="text-xl font-bold mb-2 text-center">
         {t("onboarding.steps.assignment.title")}
       </h2>
-      <p class="text-gray-500 dark:text-gray-400 mb-4 text-center text-sm">
+      <p class="text-gray-500 dark:text-gray-400 mb-6 text-center text-sm">
         {t("onboarding.steps.assignment.hint")}
       </p>
 
-      <PrivacyWarning />
-
-      <div class="mt-4 mb-6">
+      <div class="mb-6">
         <textarea
           class="input-base min-h-32 resize-y"
           placeholder={t("onboarding.steps.assignment.placeholder")}

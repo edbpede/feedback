@@ -20,6 +20,7 @@ export const App: Component = () => {
     context: null,
   });
   const [isEditing, setIsEditing] = createSignal(false);
+  const [pendingAutoSubmit, setPendingAutoSubmit] = createSignal(false);
 
   onMount(async () => {
     // Initialize locale and theme from localStorage
@@ -54,6 +55,12 @@ export const App: Component = () => {
     setOnboardingState(newState);
     saveOnboardingState(newState);
     setIsEditing(false);
+    // Trigger auto-submit for new onboarding completions (not edits)
+    setPendingAutoSubmit(true);
+  };
+
+  const handleAutoSubmitComplete = () => {
+    setPendingAutoSubmit(false);
   };
 
   const handleOnboardingSkip = () => {
@@ -98,6 +105,8 @@ export const App: Component = () => {
               onboardingContext={onboardingState().context}
               onClearOnboarding={handleClearOnboarding}
               onEditContext={handleEditContext}
+              autoSubmit={pendingAutoSubmit()}
+              onAutoSubmitComplete={handleAutoSubmitComplete}
             />
           </Show>
         </Show>

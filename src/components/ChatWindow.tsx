@@ -21,6 +21,8 @@ interface ChatWindowProps {
   onboardingContext: OnboardingContext | null;
   onClearOnboarding: () => void;
   onEditContext: () => void;
+  autoSubmit?: boolean;
+  onAutoSubmitComplete?: () => void;
 }
 
 interface AttachedFile {
@@ -42,6 +44,15 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     }
   });
 
+  // Auto-submit when onboarding completes
+  createEffect(() => {
+    if (props.autoSubmit && messages().length === 0 && props.onboardingContext && !isLoading()) {
+      // Send the greeting message with context
+      handleSend("Hej! Giv mig venligst feedback på min opgave");
+      props.onAutoSubmitComplete?.();
+    }
+  });
+
   // Save messages to localStorage when they change
   createEffect(() => {
     const currentMessages = messages();
@@ -57,6 +68,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     }
     if (ctx.assignmentDescription) {
       parts.push(`**Opgave:** ${ctx.assignmentDescription}`);
+    }
+    // Include file content if present
+    if (ctx.studentWorkFile) {
+      parts.push(`[Vedhæftet fil: ${ctx.studentWorkFile.name}]\n\n${ctx.studentWorkFile.content}`);
     }
     if (ctx.studentWork) {
       parts.push(`**Mit arbejde indtil nu:**\n${ctx.studentWork}`);

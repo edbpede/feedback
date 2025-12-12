@@ -1,5 +1,5 @@
 import { createSignal, Switch, Match, type Component } from "solid-js";
-import type { OnboardingContext } from "@lib/types";
+import type { OnboardingContext, AttachedFile } from "@lib/types";
 import { WelcomeStep } from "./WelcomeStep";
 import { SubjectGradeStep } from "./SubjectGradeStep";
 import { AssignmentStep } from "./AssignmentStep";
@@ -26,6 +26,9 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   const [studentWork, setStudentWork] = createSignal(
     props.initialContext?.studentWork ?? ""
   );
+  const [studentWorkFile, setStudentWorkFile] = createSignal<AttachedFile | null>(
+    props.initialContext?.studentWorkFile ?? null
+  );
   const [wantsGrade, setWantsGrade] = createSignal(
     props.initialContext?.wantsGrade ?? true
   );
@@ -48,6 +51,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
       grade: grade(),
       assignmentDescription: assignmentDescription(),
       studentWork: studentWork(),
+      studentWorkFile: studentWorkFile(),
       wantsGrade: wantsGrade(),
     };
     props.onComplete(context);
@@ -61,7 +65,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     <div class="flex items-center justify-center min-h-screen p-4">
       <Switch>
         <Match when={currentStep() === 0}>
-          <WelcomeStep onStart={handleStart} onSkip={() => props.onSkip()} />
+          <WelcomeStep onStart={handleStart} />
         </Match>
 
         <Match when={currentStep() === 1}>
@@ -93,6 +97,8 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
           <StudentWorkStep
             value={studentWork()}
             onChange={setStudentWork}
+            file={studentWorkFile()}
+            onFileChange={setStudentWorkFile}
             onNext={handleNext}
             onBack={handleBack}
             onSkip={handleSkipStep}

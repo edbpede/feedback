@@ -65,16 +65,19 @@
         "description": "Vælg dit fag og klassetrin, så jeg kan tilpasse min feedback"
       },
       "assignment": {
-        "title": "Hvad er din opgave?",
+        "title": "Hvad er din opgavebeskrivelse?",
         "placeholder": "Kopier gerne opgaveformuleringen eller beskriv opgaven med dine egne ord...",
         "hint": "Fx: \"Skriv en analyse af H.C. Andersens 'Den lille havfrue'\"",
         "skipButton": "Beskriv senere"
       },
       "studentWork": {
-        "title": "Hvad har du lavet indtil nu?",
-        "placeholder": "Dit udkast, dine noter eller idéer...",
-        "hint": "Del det du har arbejdet på – det kan være alt fra stikord til et helt udkast",
-        "skipButton": "Jeg har intet endnu"
+        "title": "Vis mig din opgave",
+        "placeholder": "Eventuelle noter eller ekstra information...",
+        "hint": "Del det du har arbejdet på – upload en fil eller skriv dit udkast herunder",
+        "skipButton": "Jeg har intet endnu",
+        "uploadLabel": "Upload fil (DOCX/PDF)",
+        "fileAttached": "Fil vedhæftet:",
+        "removeFile": "Fjern fil"
       },
       "gradePreference": {
         "title": "Vil du have en vejledende karakter?",

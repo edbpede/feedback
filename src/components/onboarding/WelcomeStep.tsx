@@ -5,7 +5,6 @@ import { LanguageSwitcher } from "@components/LanguageSwitcher";
 
 interface WelcomeStepProps {
   onStart: () => void;
-  onSkip: () => void;
 }
 
 export const WelcomeStep: Component<WelcomeStepProps> = (props) => {
@@ -31,16 +30,6 @@ export const WelcomeStep: Component<WelcomeStepProps> = (props) => {
         <span class="mr-2">🚀</span>
         {t("onboarding.welcome.startButton")}
       </button>
-
-      <div class="mt-6">
-        <button
-          type="button"
-          onClick={() => props.onSkip()}
-          class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 underline transition-colors"
-        >
-          {t("onboarding.welcome.skipLink")}
-        </button>
-      </div>
     </div>
   );
 };

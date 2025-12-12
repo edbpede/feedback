@@ -23,12 +23,19 @@ export interface StreamChunk {
   }>;
 }
 
+/** File attached during onboarding */
+export interface AttachedFile {
+  name: string;
+  content: string;
+}
+
 /** Context collected from the onboarding flow */
 export interface OnboardingContext {
   subject: string;
   grade: string;
   assignmentDescription: string;
   studentWork: string;
+  studentWorkFile: AttachedFile | null;
   wantsGrade: boolean;
 }
 
