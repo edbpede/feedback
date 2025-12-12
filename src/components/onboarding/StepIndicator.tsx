@@ -14,10 +14,10 @@ export const StepIndicator: Component<StepIndicatorProps> = (props) => {
           <div
             class={`h-2 rounded-full transition-all duration-300 ${
               index() < props.currentStep
-                ? "w-2 bg-blue-600"
+                ? "w-2 bg-primary"
                 : index() === props.currentStep
-                  ? "w-6 bg-blue-600"
-                  : "w-2 bg-gray-300 dark:bg-gray-600"
+                  ? "w-6 bg-primary"
+                  : "w-2 bg-muted"
             }`}
           />
         )}

@@ -84,7 +84,7 @@ export const App: Component = () => {
   };
 
   return (
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div class="min-h-screen bg-background text-foreground transition-colors duration-200">
       <Show when={!isLoading()} fallback={<LoadingSpinner />}>
         <Show
           when={isAuthenticated()}
@@ -117,6 +117,6 @@ export const App: Component = () => {
 
 const LoadingSpinner: Component = () => (
   <div class="flex items-center justify-center min-h-screen">
-    <div class="i-carbon-loading animate-spin text-4xl text-blue-600" />
+    <div class="i-carbon-loading animate-spin text-4xl text-primary" />
   </div>
 );

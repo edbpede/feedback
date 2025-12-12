@@ -30,8 +30,8 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
       <div
         class={`max-w-[80%] rounded-lg px-4 py-2 break-words transition-colors duration-200 prose prose-sm ${
           isUser()
-            ? "bg-blue-600 text-white prose-invert"
-            : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            ? "bg-primary text-primary-foreground prose-invert"
+            : "bg-muted text-foreground"
         }`}
         innerHTML={htmlContent()}
       />

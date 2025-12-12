@@ -31,7 +31,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
       <Show
         when={props.messages.length > 0}
         fallback={
-          <div class="text-center text-gray-500 dark:text-gray-400 mt-8">
+          <div class="text-center text-muted-foreground mt-8">
             <p class="text-lg mb-2">{t("chat.welcomeTitle")}</p>
             <p class="text-sm">
               {t("chat.welcomeMessage")}
@@ -55,7 +55,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
       {/* Loading indicator */}
       <Show when={props.isLoading && !props.streamingContent}>
         <div class="flex justify-start">
-          <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2 transition-colors duration-200">
+          <div class="bg-muted rounded-lg px-4 py-2 transition-colors duration-200">
             <span class="i-carbon-loading animate-spin" />
           </div>
         </div>

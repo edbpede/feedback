@@ -1,6 +1,7 @@
 import { createSignal, Show, type Component } from "solid-js";
 import { extractTextFromFile } from "@lib/fileParser";
 import { t } from "@lib/i18n";
+import { Button } from "@components/ui/button";
 
 interface AttachedFile {
   name: string;
@@ -77,16 +78,17 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
       <Show
         when={!props.currentFile}
         fallback={
-          <div class="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg transition-colors duration-200">
-            <span class="i-carbon-document text-blue-600" />
+          <div class="flex items-center gap-2 p-2 bg-accent/20 rounded-lg transition-colors duration-200">
+            <span class="i-carbon-document text-primary" />
             <span class="flex-1 text-sm truncate">{props.currentFile?.name}</span>
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => props.onClear()}
-              class="text-gray-500 hover:text-red-500 transition-colors duration-200"
+              class="h-6 w-6 text-muted-foreground hover:text-destructive"
             >
               <span class="i-carbon-close" />
-            </button>
+            </Button>
           </div>
         }
       >
@@ -96,23 +98,23 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
           onDragLeave={handleDragLeave}
           class={`border-2 border-dashed rounded-lg p-3 text-center text-sm transition-colors duration-200 ${
             isDragging()
-              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-300 dark:border-gray-600"
+              ? "border-primary bg-accent/20"
+              : "border-border"
           }`}
         >
           <Show
             when={!isProcessing()}
             fallback={
-              <span class="text-gray-500">
+              <span class="text-muted-foreground">
                 <span class="i-carbon-loading animate-spin inline-block mr-2" />
                 {t("fileUpload.processing")}
               </span>
             }
           >
-            <label class="cursor-pointer text-gray-500 dark:text-gray-400">
+            <label class="cursor-pointer text-muted-foreground">
               <span class="i-carbon-upload inline-block mr-1" />
               {t("fileUpload.dropzone")}{" "}
-              <span class="text-blue-600 hover:underline">{t("fileUpload.browse")}</span>
+              <span class="text-primary hover:underline">{t("fileUpload.browse")}</span>
               <input
                 type="file"
                 accept=".docx,.pdf"
@@ -125,7 +127,7 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
       </Show>
 
       <Show when={error()}>
-        <p class="text-red-600 dark:text-red-400 text-xs mt-1">{error()}</p>
+        <p class="text-destructive text-xs mt-1">{error()}</p>
       </Show>
     </div>
   );

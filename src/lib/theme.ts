@@ -32,17 +32,12 @@ const [currentTheme, setCurrentThemeInternal] = createSignal<Theme>(DEFAULT_THEM
 let isInitialized = false;
 
 /**
- * Apply theme class to document element
+ * Apply theme attribute to document element
+ * Uses data-kb-theme attribute for shadcn-solid/Kobalte compatibility
  */
-function applyThemeClass(theme: Theme): void {
+function applyThemeAttribute(theme: Theme): void {
   if (typeof document === "undefined") return;
-
-  const root = document.documentElement;
-  if (theme === "dark") {
-    root.classList.add("dark");
-  } else {
-    root.classList.remove("dark");
-  }
+  document.documentElement.setAttribute("data-kb-theme", theme);
 }
 
 /**
@@ -55,7 +50,7 @@ export function initTheme(): void {
 
   const initial = getInitialTheme();
   setCurrentThemeInternal(initial);
-  // Theme class is already applied by inline script to prevent FOUC
+  // Theme attribute is already applied by inline script to prevent FOUC
 }
 
 /**
@@ -63,7 +58,7 @@ export function initTheme(): void {
  */
 export function setTheme(theme: Theme): void {
   setCurrentThemeInternal(theme);
-  applyThemeClass(theme);
+  applyThemeAttribute(theme);
 
   if (typeof localStorage !== "undefined") {
     localStorage.setItem(STORAGE_KEY, theme);

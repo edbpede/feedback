@@ -1,10 +1,11 @@
 ---
 import { App } from "@components/App";
 import "highlight.js/styles/github-dark.css";
+import "@/styles/globals.css";
 ---
 
 <!doctype html>
-<html lang="da" class="dark">
+<html lang="da" data-kb-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,15 +21,11 @@ import "highlight.js/styles/github-dark.css";
         const stored = localStorage.getItem(STORAGE_KEY);
         const theme = stored === "light" || stored === "dark" ? stored : DEFAULT_THEME;
 
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
+        document.documentElement.setAttribute("data-kb-theme", theme);
       })();
     </script>
   </head>
-  <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+  <body class="bg-background text-foreground transition-colors duration-200">
     <App client:load />
   </body>
 </html>
@@ -111,15 +108,11 @@ import "highlight.js/styles/github-dark.css";
 
   /* Inline code */
   .prose code {
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
     font-size: 0.875em;
     padding: 0.2em 0.4em;
     border-radius: 0.25em;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  .dark .prose code {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: oklch(var(--muted));
   }
 
   /* Blockquotes */
@@ -127,7 +120,7 @@ import "highlight.js/styles/github-dark.css";
     margin-top: 0.75em;
     margin-bottom: 0.75em;
     padding-left: 1em;
-    border-left: 3px solid #3b82f6;
+    border-left: 3px solid oklch(var(--primary));
     font-style: italic;
     color: inherit;
     opacity: 0.9;
@@ -135,13 +128,13 @@ import "highlight.js/styles/github-dark.css";
 
   /* Links */
   .prose a {
-    color: #3b82f6;
+    color: oklch(var(--primary));
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
   .prose a:hover {
-    color: #2563eb;
+    color: oklch(var(--primary) / 0.8);
   }
 
   /* Bold and italic */
@@ -158,8 +151,7 @@ import "highlight.js/styles/github-dark.css";
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     border: none;
-    border-top: 1px solid currentColor;
-    opacity: 0.2;
+    border-top: 1px solid oklch(var(--border));
   }
 
   /* Tables */
@@ -173,17 +165,13 @@ import "highlight.js/styles/github-dark.css";
 
   .prose th, .prose td {
     padding: 0.5em 0.75em;
-    border: 1px solid rgba(128, 128, 128, 0.3);
+    border: 1px solid oklch(var(--border));
   }
 
   .prose th {
     font-weight: 600;
     text-align: left;
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-
-  .dark .prose th {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: oklch(var(--muted));
   }
 
   /* Small prose variant */
@@ -193,11 +181,11 @@ import "highlight.js/styles/github-dark.css";
 
   /* Inverted prose for user messages (light text on dark background) */
   .prose-invert a {
-    color: #93c5fd;
+    color: oklch(var(--primary-foreground));
   }
 
   .prose-invert a:hover {
-    color: #bfdbfe;
+    color: oklch(var(--primary-foreground) / 0.8);
   }
 
   .prose-invert code {

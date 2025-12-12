@@ -3,6 +3,9 @@ import type { ApiResponse } from "@lib/types";
 import { t } from "@lib/i18n";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@components/ui/card";
+import { Input } from "@components/ui/input";
+import { Button } from "@components/ui/button";
 
 interface PasswordGateProps {
   onSuccess: () => void;
@@ -42,45 +45,41 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
 
   return (
     <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="card w-full max-w-md transition-colors duration-200">
-        <div class="flex justify-between items-start mb-2">
-          <h1 class="text-2xl font-bold">{t("auth.title")}</h1>
-          <div class="flex items-center gap-1">
-            <ThemeSwitcher />
-            <LanguageSwitcher />
+      <Card class="w-full max-w-md">
+        <CardHeader>
+          <div class="flex justify-between items-start">
+            <CardTitle>{t("auth.title")}</CardTitle>
+            <div class="flex items-center gap-1">
+              <ThemeSwitcher />
+              <LanguageSwitcher />
+            </div>
           </div>
-        </div>
-        <p class="text-gray-600 dark:text-gray-400 mb-6">
-          {t("auth.description")}
-        </p>
+          <CardDescription>{t("auth.description")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} class="space-y-4">
+            <Input
+              type="password"
+              value={password()}
+              onInput={(e) => setPassword(e.currentTarget.value)}
+              placeholder={t("auth.passwordPlaceholder")}
+              disabled={isLoading()}
+              autofocus
+            />
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="password"
-            value={password()}
-            onInput={(e) => setPassword(e.currentTarget.value)}
-            placeholder={t("auth.passwordPlaceholder")}
-            class="input-base mb-4"
-            disabled={isLoading()}
-            autofocus
-          />
-
-          <Show when={error()}>
-            <p class="text-red-600 dark:text-red-400 text-sm mb-4">{error()}</p>
-          </Show>
-
-          <button
-            type="submit"
-            class="btn-primary w-full"
-            disabled={isLoading() || !password()}
-          >
-            <Show when={isLoading()}>
-              <span class="i-carbon-loading animate-spin inline-block mr-2" />
+            <Show when={error()}>
+              <p class="text-destructive text-sm">{error()}</p>
             </Show>
-            {isLoading() ? t("auth.authenticating") : t("auth.submitButton")}
-          </button>
-        </form>
-      </div>
+
+            <Button type="submit" class="w-full" disabled={isLoading() || !password()}>
+              <Show when={isLoading()}>
+                <span class="i-carbon-loading animate-spin inline-block mr-2" />
+              </Show>
+              {isLoading() ? t("auth.authenticating") : t("auth.submitButton")}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

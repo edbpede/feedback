@@ -11,6 +11,7 @@ import { ChatInput } from "@components/ChatInput";
 import { FileUpload } from "@components/FileUpload";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { Button } from "@components/ui/button";
 import { loadMessages, saveMessages, clearMessages } from "@lib/storage";
 import { sendMessage } from "@lib/api";
 import { t } from "@lib/i18n";
@@ -139,38 +140,38 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   return (
     <div class="flex flex-col h-screen">
       {/* Header */}
-      <header class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-200">
+      <header class="flex items-center justify-between px-4 py-3 border-b border-border bg-card transition-colors duration-200">
         <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
         <div class="flex items-center gap-2">
           <ThemeSwitcher />
           <LanguageSwitcher />
           <Show when={props.onboardingContext}>
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => props.onEditContext()}
-              class="btn-secondary text-sm"
               title={t("chat.editContext")}
             >
               <span class="i-carbon-edit mr-1" />
               {t("chat.editContext")}
-            </button>
+            </Button>
           </Show>
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleClearConversation}
-            class="btn-secondary text-sm"
           >
             <span class="i-carbon-trash-can mr-1" />
             {t("chat.clearButton")}
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => props.onLogout()}
-            class="btn-secondary text-sm"
           >
             <span class="i-carbon-logout mr-1" />
             {t("chat.logoutButton")}
-          </button>
+          </Button>
         </div>
       </header>
 
