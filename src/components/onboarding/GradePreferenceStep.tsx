@@ -7,7 +7,7 @@ import { Button } from "@components/ui/button";
 interface GradePreferenceStepProps {
   value: boolean;
   onChange: (value: boolean) => void;
-  onSubmit: () => void;
+  onNext: () => void;
   onBack: () => void;
   currentStep: number;
   totalSteps: number;
@@ -61,9 +61,9 @@ export const GradePreferenceStep: Component<GradePreferenceStepProps> = (props) 
             <span class="i-carbon-arrow-left mr-1" />
             {t("onboarding.navigation.back")}
           </Button>
-          <Button onClick={() => props.onSubmit()}>
-            <span class="i-carbon-send mr-1" />
-            {t("onboarding.navigation.submit")}
+          <Button onClick={() => props.onNext()}>
+            {t("onboarding.navigation.next")}
+            <span class="i-carbon-arrow-right ml-1" />
           </Button>
         </div>
       </CardContent>

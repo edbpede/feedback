@@ -90,6 +90,30 @@
         "hint": "An indicative grade is just an estimate – your teacher gives the final grade",
         "yes": "Yes, give me an indicative grade",
         "no": "No, just feedback"
+      },
+      "modelSelection": {
+        "title": "Choose your AI model",
+        "description": "Select which AI model will provide your feedback",
+        "default": "Default",
+        "pricingTiers": {
+          "budget": "Budget",
+          "standard": "Standard",
+          "premium": "Premium"
+        }
+      }
+    },
+    "models": {
+      "deepseek": {
+        "name": "DeepSeek V3.2",
+        "description": "Advanced reasoning with tool use capabilities"
+      },
+      "gptoss": {
+        "name": "GPT-OSS 120B",
+        "description": "OpenAI open-weight model, strong reasoning"
+      },
+      "glm": {
+        "name": "GLM-4.6",
+        "description": "128K context, native tool calling"
       }
     },
     "subjects": {

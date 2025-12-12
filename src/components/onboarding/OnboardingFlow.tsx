@@ -5,6 +5,8 @@ import { SubjectGradeStep } from "./SubjectGradeStep";
 import { AssignmentStep } from "./AssignmentStep";
 import { StudentWorkStep } from "./StudentWorkStep";
 import { GradePreferenceStep } from "./GradePreferenceStep";
+import { ModelSelectionStep } from "./ModelSelectionStep";
+import { DEFAULT_MODEL_ID } from "@config/models";
 
 interface OnboardingFlowProps {
   onComplete: (context: OnboardingContext) => void;
@@ -12,7 +14,7 @@ interface OnboardingFlowProps {
   initialContext?: OnboardingContext | null;
 }
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   const [currentStep, setCurrentStep] = createSignal(0);
@@ -31,6 +33,9 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   );
   const [wantsGrade, setWantsGrade] = createSignal(
     props.initialContext?.wantsGrade ?? true
+  );
+  const [model, setModel] = createSignal(
+    props.initialContext?.model ?? DEFAULT_MODEL_ID
   );
 
   const handleStart = () => {
@@ -53,6 +58,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
       studentWork: studentWork(),
       studentWorkFile: studentWorkFile(),
       wantsGrade: wantsGrade(),
+      model: model(),
     };
     props.onComplete(context);
   };
@@ -111,9 +117,20 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
           <GradePreferenceStep
             value={wantsGrade()}
             onChange={setWantsGrade}
-            onSubmit={handleSubmit}
+            onNext={handleNext}
             onBack={handleBack}
             currentStep={3}
+            totalSteps={TOTAL_STEPS}
+          />
+        </Match>
+
+        <Match when={currentStep() === 5}>
+          <ModelSelectionStep
+            value={model()}
+            onChange={setModel}
+            onSubmit={handleSubmit}
+            onBack={handleBack}
+            currentStep={4}
             totalSteps={TOTAL_STEPS}
           />
         </Match>

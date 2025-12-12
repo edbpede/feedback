@@ -7,6 +7,7 @@ import {
   API_BASE_URL,
 } from "astro:env/server";
 import { SYSTEM_PROMPT } from "@config/systemPrompt";
+import { isValidModel } from "@config/models";
 import type { ApiResponse, ChatRequest, ErrorDetails } from "@lib/types";
 
 /** Status codes that are considered retryable (temporary failures) */
@@ -44,6 +45,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = (await request.json()) as ChatRequest;
 
+    // Validate and select model: use client-provided model if valid, else fall back to env default
+    let selectedModel = NANO_GPT_MODEL;
+    if (body.model) {
+      if (isValidModel(body.model)) {
+        selectedModel = body.model;
+      } else {
+        console.warn(`Invalid model requested: ${body.model}, falling back to ${NANO_GPT_MODEL}`);
+      }
+    }
+
     const messages: Array<{ role: string; content: string }> = [
       { role: "system", content: SYSTEM_PROMPT },
       ...body.messages,
@@ -56,7 +67,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: NANO_GPT_MODEL,
+        model: selectedModel,
         messages,
         stream: true,
         temperature: 0.7,

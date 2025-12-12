@@ -22,6 +22,8 @@ export interface AuthRequest {
 
 export interface ChatRequest {
   messages: Message[];
+  /** Optional model ID to use for this request */
+  model?: string;
 }
 
 export interface StreamChunk {
@@ -46,6 +48,8 @@ export interface OnboardingContext {
   studentWork: string;
   studentWorkFile: AttachedFile | null;
   wantsGrade: boolean;
+  /** Selected AI model ID */
+  model: string;
 }
 
 /** Persisted onboarding state */

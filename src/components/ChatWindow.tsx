@@ -113,16 +113,17 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     try {
       let assistantContent = "";
 
-      await sendMessage(
-        [...messages(), userMessage],
-        (chunk) => {
+      await sendMessage({
+        messages: [...messages(), userMessage],
+        model: props.onboardingContext?.model,
+        onChunk: (chunk) => {
           assistantContent += chunk;
           setStreamingContent(assistantContent);
         },
-        (attempt, max) => {
+        onRetry: (attempt, max) => {
           setRetryState({ attempt, max });
-        }
-      );
+        },
+      });
 
       // Success - clear any failed message state
       setFailedMessage(null);

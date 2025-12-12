@@ -90,6 +90,30 @@
         "hint": "En vejledende karakter er kun et estimat – din lærer giver den endelige karakter",
         "yes": "Ja, giv mig en vejledende karakter",
         "no": "Nej, kun feedback"
+      },
+      "modelSelection": {
+        "title": "Vælg din AI-model",
+        "description": "Vælg hvilken AI-model der skal give dig feedback",
+        "default": "Standard",
+        "pricingTiers": {
+          "budget": "Budget",
+          "standard": "Standard",
+          "premium": "Premium"
+        }
+      }
+    },
+    "models": {
+      "deepseek": {
+        "name": "DeepSeek V3.2",
+        "description": "Avanceret ræsonnement med værktøjsbrug"
+      },
+      "gptoss": {
+        "name": "GPT-OSS 120B",
+        "description": "OpenAI åben model, stærk ræsonnement"
+      },
+      "glm": {
+        "name": "GLM-4.6",
+        "description": "128K kontekst, native værktøjskald"
       }
     },
     "subjects": {

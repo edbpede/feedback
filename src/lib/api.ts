@@ -20,11 +20,15 @@ export async function authenticate(
   return response.json() as Promise<ApiResponse<unknown>>;
 }
 
-export async function sendMessage(
-  messages: Message[],
-  onChunk: (chunk: string) => void,
-  onRetry?: (attempt: number, maxAttempts: number) => void
-): Promise<void> {
+export interface SendMessageOptions {
+  messages: Message[];
+  model?: string;
+  onChunk: (chunk: string) => void;
+  onRetry?: (attempt: number, maxAttempts: number) => void;
+}
+
+export async function sendMessage(options: SendMessageOptions): Promise<void> {
+  const { messages, model, onChunk, onRetry } = options;
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -32,7 +36,7 @@ export async function sendMessage(
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages, model }),
       });
 
       if (!response.ok) {
