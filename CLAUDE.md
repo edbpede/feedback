@@ -15,58 +15,57 @@ This semantic search tool provides better results than grep/find for understandi
 
 ## Project Overview
 
-Student Feedback Bot - an Astro-based web application that provides AI-powered feedback on student assignments. Users authenticate with a password, upload DOCX/PDF files, and receive feedback via a streaming chat interface powered by NanoGPT.
+A Danish student feedback chatbot ("Feedback Bot til Studerende") built with Astro, SolidJS, and UnoCSS. The bot provides formative feedback for grades 7-9, guiding students through their schoolwork without giving direct answers. It supports optional grade suggestions using the Danish 7-point grading scale.
 
 ## Commands
 
 ```bash
-bun run dev      # Start development server
-bun run build    # Build for production
-bun run preview  # Preview production build
+bun dev      # Start development server
+bun build    # Production build
+bun preview  # Preview production build
 ```
+
+## Tech Stack
+
+- **Astro 5.x** - Server-side rendering with Vercel adapter
+- **SolidJS 1.9+** - UI components (JSX with `jsxImportSource: solid-js`)
+- **UnoCSS** - Styling with Wind3 preset, animations, and shadcn-solid components
+- **Kobalte** - Accessible component primitives (@kobalte/core)
+- **TypeScript** - Strict mode extending `astro/tsconfigs/strict`
 
 ## Architecture
 
-### Tech Stack
-- **Framework**: Astro 5 with SSR (server-side rendering)
-- **UI Framework**: SolidJS for reactive components
-- **Styling**: UnoCSS (Wind preset + Icons)
-- **Deployment**: Vercel adapter
-- **AI Backend**: NanoGPT API (OpenAI-compatible streaming)
-
-### Project Structure
-
-```
-src/
-├── components/     # SolidJS components (.tsx)
-├── config/         # Configuration (systemPrompt.ts)
-├── lib/            # Shared utilities (api, storage, types, fileParser)
-├── pages/
-│   ├── api/        # Astro API routes (auth, chat, logout)
-│   └── index.astro # Main page entry
-```
-
 ### Path Aliases
-- `@components/*` → `src/components/*`
-- `@lib/*` → `src/lib/*`
-- `@config/*` → `src/config/*`
+```
+@/*           → src/*
+@components/* → src/components/*
+@lib/*        → src/lib/*
+@config/*     → src/config/*
+```
 
-### Key Patterns
+### Key Directories
+- `src/pages/api/` - API routes: auth, chat (streaming), logout
+- `src/components/ui/` - shadcn-solid components (Button, Card, Input, etc.)
+- `src/components/onboarding/` - Multi-step onboarding flow
+- `src/lib/` - Utilities (api, storage, theme, i18n, types, fileParser)
+- `src/config/systemPrompt.ts` - Danish-language system prompt for the AI
 
-**Authentication Flow**: Password-based auth using HMAC-signed session tokens stored in HTTP-only cookies. Auth state checked via `/api/chat` endpoint response.
+### Application Flow
+1. `PasswordGate` - Session authentication
+2. `OnboardingFlow` - Collects subject, grade level, assignment, student work
+3. `ChatWindow` - Streaming chat interface with NanoGPT backend
 
-**Chat Streaming**: The `/api/chat` endpoint proxies streaming responses from NanoGPT API directly to the client. Client parses SSE `data:` lines and extracts delta content.
+### Environment Variables (astro:env/server)
+- `PASSWORD_HASH`, `SESSION_SECRET` - Authentication
+- `NANO_GPT_API_KEY`, `NANO_GPT_MODEL`, `API_BASE_URL` - AI backend
 
-**File Processing**: Client-side extraction of text from DOCX (mammoth) and PDF (pdfjs-dist) files. Extracted text is prepended to chat messages, not sent to a separate endpoint.
+## SolidJS Guidelines
 
-**State Management**: SolidJS signals for component state, localStorage for message persistence across sessions.
+- Never destructure props directly (breaks reactivity)
+- Use `splitProps()` for prop separation
+- Type components with `Component<Props>` or `ParentComponent<Props>`
+- Use `onCleanup()` in effects for subscriptions/timers
 
-### Environment Variables (server-only)
-- `PASSWORD_HASH` - SHA-256 hash of access password
-- `SESSION_SECRET` - Secret for signing session tokens
-- `NANO_GPT_API_KEY` - API key for NanoGPT
-- `NANO_GPT_MODEL` - Model to use (default: `TEE/deepseek-v3.2`)
-- `API_BASE_URL` - NanoGPT API base URL (default: `https://nano-gpt.com/api/v1`)
+## Styling
 
-### System Prompt
-Edit `src/config/systemPrompt.ts` to customize the AI's behavior and feedback style.
+Uses UnoCSS with shadcn-solid theming. Theme toggle via `data-kb-theme` attribute. Custom colors defined in `src/styles/globals.css` with CSS variables.
