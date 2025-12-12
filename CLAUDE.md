@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Coding Guidelines
+
+When writing or modifying TypeScript, Astro, SolidJS, or UnoCSS code, consult the detailed coding standards in `.augment/rules/astro-typescript-solidjs-unocss.md`. This file contains authoritative patterns and conventions for this project.
+
 ## Codebase Search
 
 **Always use the `mcp__auggie-mcp__codebase-retrieval` tool as the primary method for:**
