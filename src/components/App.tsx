@@ -1,12 +1,16 @@
 import { createSignal, onMount, Show, type Component } from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
 import { ChatWindow } from "@components/ChatWindow";
+import { initLocale } from "@lib/i18n";
 
 export const App: Component = () => {
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(true);
 
   onMount(async () => {
+    // Initialize locale from localStorage
+    initLocale();
+
     // Check if session cookie exists by making a lightweight request
     try {
       const response = await fetch("/api/chat", {

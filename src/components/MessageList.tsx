@@ -1,5 +1,6 @@
 import { For, Show, createEffect, type Component } from "solid-js";
 import { MessageBubble } from "@components/MessageBubble";
+import { t } from "@lib/i18n";
 import type { Message } from "@lib/types";
 
 interface MessageListProps {
@@ -31,9 +32,9 @@ export const MessageList: Component<MessageListProps> = (props) => {
         when={props.messages.length > 0}
         fallback={
           <div class="text-center text-gray-500 dark:text-gray-400 mt-8">
-            <p class="text-lg mb-2">Welcome!</p>
+            <p class="text-lg mb-2">{t("chat.welcomeTitle")}</p>
             <p class="text-sm">
-              Upload your assignment and ask for feedback.
+              {t("chat.welcomeMessage")}
             </p>
           </div>
         }

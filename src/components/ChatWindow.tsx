@@ -8,8 +8,10 @@ import {
 import { MessageList } from "@components/MessageList";
 import { ChatInput } from "@components/ChatInput";
 import { FileUpload } from "@components/FileUpload";
+import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { loadMessages, saveMessages, clearMessages } from "@lib/storage";
 import { sendMessage } from "@lib/api";
+import { t } from "@lib/i18n";
 import type { Message } from "@lib/types";
 
 interface ChatWindowProps {
@@ -78,7 +80,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         ...prev,
         {
           role: "assistant",
-          content: `Error: ${error instanceof Error ? error.message : "Failed to get response"}`,
+          content: `${t("chat.errorPrefix")} ${error instanceof Error ? error.message : t("chat.failedToGetResponse")}`,
         },
       ]);
     } finally {
@@ -98,15 +100,16 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     <div class="flex flex-col h-screen">
       {/* Header */}
       <header class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-        <h1 class="text-lg font-semibold">Student Feedback Bot</h1>
-        <div class="flex gap-2">
+        <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
+        <div class="flex items-center gap-2">
+          <LanguageSwitcher />
           <button
             type="button"
             onClick={handleClearConversation}
             class="btn-secondary text-sm"
           >
             <span class="i-carbon-trash-can mr-1" />
-            Clear
+            {t("chat.clearButton")}
           </button>
           <button
             type="button"
@@ -114,7 +117,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
             class="btn-secondary text-sm"
           >
             <span class="i-carbon-logout mr-1" />
-            Logout
+            {t("chat.logoutButton")}
           </button>
         </div>
       </header>

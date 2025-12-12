@@ -1,5 +1,7 @@
 import { createSignal, Show, type Component } from "solid-js";
 import type { ApiResponse } from "@lib/types";
+import { t } from "@lib/i18n";
+import { LanguageSwitcher } from "@components/LanguageSwitcher";
 
 interface PasswordGateProps {
   onSuccess: () => void;
@@ -31,7 +33,7 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
         setError(result.error);
       }
     } catch {
-      setError("Connection error. Please try again.");
+      setError(t("auth.connectionError"));
     } finally {
       setIsLoading(false);
     }
@@ -40,9 +42,12 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
   return (
     <div class="flex items-center justify-center min-h-screen p-4">
       <div class="card w-full max-w-md">
-        <h1 class="text-2xl font-bold mb-2">Student Feedback Bot</h1>
+        <div class="flex justify-between items-start mb-2">
+          <h1 class="text-2xl font-bold">{t("auth.title")}</h1>
+          <LanguageSwitcher />
+        </div>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-          Enter the password to access the feedback system.
+          {t("auth.description")}
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -50,7 +55,7 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
             type="password"
             value={password()}
             onInput={(e) => setPassword(e.currentTarget.value)}
-            placeholder="Password"
+            placeholder={t("auth.passwordPlaceholder")}
             class="input-base mb-4"
             disabled={isLoading()}
             autofocus
@@ -68,7 +73,7 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
             <Show when={isLoading()}>
               <span class="i-carbon-loading animate-spin inline-block mr-2" />
             </Show>
-            {isLoading() ? "Authenticating..." : "Enter"}
+            {isLoading() ? t("auth.authenticating") : t("auth.submitButton")}
           </button>
         </form>
       </div>

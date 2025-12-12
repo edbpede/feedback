@@ -1,0 +1,38 @@
+{
+  "common": {
+    "appName": "Student Feedback Bot",
+    "loading": "Loading...",
+    "error": "Error"
+  },
+  "auth": {
+    "title": "Student Feedback Bot",
+    "description": "Enter the password to access the feedback system.",
+    "passwordPlaceholder": "Password",
+    "submitButton": "Enter",
+    "authenticating": "Authenticating...",
+    "connectionError": "Connection error. Please try again."
+  },
+  "chat": {
+    "header": "Student Feedback Bot",
+    "clearButton": "Clear",
+    "logoutButton": "Logout",
+    "inputPlaceholder": "Type your message... (Ctrl+Enter to send)",
+    "welcomeTitle": "Welcome!",
+    "welcomeMessage": "Upload your assignment and ask for feedback.",
+    "errorPrefix": "Error:",
+    "failedToGetResponse": "Failed to get response"
+  },
+  "fileUpload": {
+    "dropzone": "Drop DOCX/PDF here or",
+    "browse": "browse",
+    "processing": "Processing...",
+    "errorUnsupportedType": "Only DOCX and PDF files are supported.",
+    "errorFileTooLarge": "File size must be less than 10MB.",
+    "errorExtractionFailed": "Failed to extract text:"
+  },
+  "language": {
+    "label": "Language",
+    "danish": "Dansk",
+    "english": "English"
+  }
+}

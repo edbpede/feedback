@@ -1,5 +1,6 @@
 import { createSignal, Show, type Component } from "solid-js";
 import { extractTextFromFile } from "@lib/fileParser";
+import { t } from "@lib/i18n";
 
 interface AttachedFile {
   name: string;
@@ -27,12 +28,12 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
     setError("");
 
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      setError("Only DOCX and PDF files are supported.");
+      setError(t("fileUpload.errorUnsupportedType"));
       return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setError("File size must be less than 10MB.");
+      setError(t("fileUpload.errorFileTooLarge"));
       return;
     }
 
@@ -43,7 +44,7 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
       props.onFileProcessed({ name: file.name, content });
     } catch (err) {
       setError(
-        `Failed to extract text: ${err instanceof Error ? err.message : "Unknown error"}`
+        `${t("fileUpload.errorExtractionFailed")} ${err instanceof Error ? err.message : "Unknown error"}`
       );
     } finally {
       setIsProcessing(false);
@@ -104,14 +105,14 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
             fallback={
               <span class="text-gray-500">
                 <span class="i-carbon-loading animate-spin inline-block mr-2" />
-                Processing...
+                {t("fileUpload.processing")}
               </span>
             }
           >
             <label class="cursor-pointer text-gray-500 dark:text-gray-400">
               <span class="i-carbon-upload inline-block mr-1" />
-              Drop DOCX/PDF here or{" "}
-              <span class="text-blue-600 hover:underline">browse</span>
+              {t("fileUpload.dropzone")}{" "}
+              <span class="text-blue-600 hover:underline">{t("fileUpload.browse")}</span>
               <input
                 type="file"
                 accept=".docx,.pdf"

@@ -1,4 +1,5 @@
 import { createSignal, type Component } from "solid-js";
+import { t } from "@lib/i18n";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -33,7 +34,7 @@ export const ChatInput: Component<ChatInputProps> = (props) => {
           value={message()}
           onInput={(e) => setMessage(e.currentTarget.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type your message... (Ctrl+Enter to send)"
+          placeholder={t("chat.inputPlaceholder")}
           class="input-base flex-1 resize-none min-h-[44px] max-h-32"
           rows="1"
           disabled={props.disabled}

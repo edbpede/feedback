@@ -1,0 +1,38 @@
+{
+  "common": {
+    "appName": "Feedback Bot til Studerende",
+    "loading": "Indlæser...",
+    "error": "Fejl"
+  },
+  "auth": {
+    "title": "Feedback Bot til Studerende",
+    "description": "Indtast adgangskoden for at få adgang til feedbacksystemet.",
+    "passwordPlaceholder": "Adgangskode",
+    "submitButton": "Log ind",
+    "authenticating": "Logger ind...",
+    "connectionError": "Forbindelsesfejl. Prøv venligst igen."
+  },
+  "chat": {
+    "header": "Feedback Bot til Studerende",
+    "clearButton": "Ryd",
+    "logoutButton": "Log ud",
+    "inputPlaceholder": "Skriv din besked... (Ctrl+Enter for at sende)",
+    "welcomeTitle": "Velkommen!",
+    "welcomeMessage": "Upload din opgave og bed om feedback.",
+    "errorPrefix": "Fejl:",
+    "failedToGetResponse": "Kunne ikke få svar"
+  },
+  "fileUpload": {
+    "dropzone": "Træk DOCX/PDF hertil eller",
+    "browse": "gennemse",
+    "processing": "Behandler...",
+    "errorUnsupportedType": "Kun DOCX- og PDF-filer understøttes.",
+    "errorFileTooLarge": "Filstørrelsen skal være mindre end 10 MB.",
+    "errorExtractionFailed": "Kunne ikke udtrække tekst:"
+  },
+  "language": {
+    "label": "Sprog",
+    "danish": "Dansk",
+    "english": "English"
+  }
+}
