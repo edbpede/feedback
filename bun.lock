@@ -10,6 +10,7 @@
         "solid-js": "^1.9.10",
       },
       "devDependencies": {
+        "@unocss/reset": "^66.5.10",
         "unocss": "^66.5.10",
       },
     },
