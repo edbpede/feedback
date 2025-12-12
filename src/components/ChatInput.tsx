@@ -41,10 +41,10 @@ export const ChatInput: Component<ChatInputProps> = (props) => {
         />
         <button
           type="submit"
-          class="btn-primary self-end"
+          class="btn-primary self-end h-11 w-11 flex items-center justify-center shrink-0"
           disabled={props.disabled || !message().trim()}
         >
-          <span class="i-carbon-send" />
+          <span class="i-carbon-send text-lg" />
         </button>
       </div>
     </form>
