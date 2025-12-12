@@ -41,7 +41,12 @@ export const MessageList: Component<MessageListProps> = (props) => {
       >
         {/* Use <For> for keyed lists - gives stable references and fine-grained DOM updates */}
         <For each={props.messages}>
-          {(message) => <MessageBubble message={message} />}
+          {(message, index) => (
+            <MessageBubble
+              message={message}
+              isCollapsible={index() === 1 && message.role === "assistant"}
+            />
+          )}
         </For>
       </Show>
 

@@ -21,7 +21,10 @@
     "welcomeMessage": "Upload your assignment and ask for feedback.",
     "errorPrefix": "Error:",
     "failedToGetResponse": "Failed to get response",
-    "editContext": "Edit info"
+    "editContext": "Edit info",
+    "initialFeedback": "Initial feedback",
+    "showInitialFeedback": "Show initial feedback",
+    "hideInitialFeedback": "Hide initial feedback"
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",

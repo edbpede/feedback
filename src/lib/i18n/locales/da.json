@@ -21,7 +21,10 @@
     "welcomeMessage": "Upload din opgave og bed om feedback.",
     "errorPrefix": "Fejl:",
     "failedToGetResponse": "Kunne ikke få svar",
-    "editContext": "Rediger info"
+    "editContext": "Rediger info",
+    "initialFeedback": "Indledende feedback",
+    "showInitialFeedback": "Vis indledende feedback",
+    "hideInitialFeedback": "Skjul indledende feedback"
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",
