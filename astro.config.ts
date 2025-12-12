@@ -34,4 +34,18 @@ export default defineConfig({
     },
     validateSecrets: true,
   },
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 600,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("pdfjs-dist")) return "pdf";
+            if (id.includes("mammoth")) return "docx";
+            if (id.includes("solid-js")) return "solid";
+          },
+        },
+      },
+    },
+  },
 });
