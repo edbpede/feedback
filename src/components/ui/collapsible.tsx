@@ -3,7 +3,7 @@ import { splitProps } from "solid-js";
 import { Collapsible as CollapsiblePrimitive } from "@kobalte/core/collapsible";
 import { cn } from "@lib/utils";
 
-const Collapsible = CollapsiblePrimitive.Root;
+const Collapsible = CollapsiblePrimitive;
 
 interface CollapsibleTriggerProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   class?: string;
