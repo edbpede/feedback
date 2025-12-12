@@ -20,7 +20,8 @@
     "welcomeTitle": "Velkommen!",
     "welcomeMessage": "Upload din opgave og bed om feedback.",
     "errorPrefix": "Fejl:",
-    "failedToGetResponse": "Kunne ikke få svar"
+    "failedToGetResponse": "Kunne ikke få svar",
+    "editContext": "Rediger info"
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",
@@ -41,5 +42,67 @@
     "light": "Lys",
     "switchToDark": "Skift til mørk tilstand",
     "switchToLight": "Skift til lys tilstand"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Velkommen til Feedback Bot!",
+      "description": "Jeg hjælper dig med at få feedback på dit skolearbejde. Lad os starte med at samle lidt information.",
+      "startButton": "Start feedback",
+      "skipLink": "Spring over og chat direkte"
+    },
+    "progress": {
+      "step": "Trin",
+      "of": "af"
+    },
+    "privacy": {
+      "title": "Vigtigt inden du deler din tekst",
+      "line1": "Brug ikke dit rigtige navn – skriv fx bare \"Emma\" eller \"Ali\"",
+      "line2": "Undgå private oplysninger om helbred eller sygdom"
+    },
+    "steps": {
+      "subjectGrade": {
+        "title": "Hvilket fag og klassetrin?",
+        "description": "Vælg dit fag og klassetrin, så jeg kan tilpasse min feedback"
+      },
+      "assignment": {
+        "title": "Hvad er din opgave?",
+        "placeholder": "Kopier gerne opgaveformuleringen eller beskriv opgaven med dine egne ord...",
+        "hint": "Fx: \"Skriv en analyse af H.C. Andersens 'Den lille havfrue'\"",
+        "skipButton": "Beskriv senere"
+      },
+      "studentWork": {
+        "title": "Hvad har du lavet indtil nu?",
+        "placeholder": "Dit udkast, dine noter eller idéer...",
+        "hint": "Del det du har arbejdet på – det kan være alt fra stikord til et helt udkast",
+        "skipButton": "Jeg har intet endnu"
+      },
+      "gradePreference": {
+        "title": "Vil du have en vejledende karakter?",
+        "hint": "En vejledende karakter er kun et estimat – din lærer giver den endelige karakter",
+        "yes": "Ja, giv mig en vejledende karakter",
+        "no": "Nej, kun feedback"
+      }
+    },
+    "subjects": {
+      "dansk": "Dansk",
+      "matematik": "Matematik",
+      "engelsk": "Engelsk",
+      "tysk": "Tysk",
+      "historie": "Historie",
+      "samfundsfag": "Samfundsfag",
+      "naturfag": "Naturfag",
+      "kristendomskundskab": "Kristendom"
+    },
+    "grades": {
+      "grade7": "7. klasse",
+      "grade8": "8. klasse",
+      "grade9": "9. klasse"
+    },
+    "navigation": {
+      "back": "Tilbage",
+      "next": "Næste",
+      "submit": "Start chat",
+      "cancel": "Annuller"
+    }
   }
 }

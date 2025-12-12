@@ -20,7 +20,8 @@
     "welcomeTitle": "Welcome!",
     "welcomeMessage": "Upload your assignment and ask for feedback.",
     "errorPrefix": "Error:",
-    "failedToGetResponse": "Failed to get response"
+    "failedToGetResponse": "Failed to get response",
+    "editContext": "Edit info"
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",
@@ -41,5 +42,67 @@
     "light": "Light",
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome to Feedback Bot!",
+      "description": "I'll help you get feedback on your schoolwork. Let's start by gathering some information.",
+      "startButton": "Start feedback",
+      "skipLink": "Skip and chat directly"
+    },
+    "progress": {
+      "step": "Step",
+      "of": "of"
+    },
+    "privacy": {
+      "title": "Important before you share your text",
+      "line1": "Don't use your real name – write e.g. \"Emma\" or \"Ali\" instead",
+      "line2": "Avoid private information about health or illness"
+    },
+    "steps": {
+      "subjectGrade": {
+        "title": "Which subject and grade?",
+        "description": "Select your subject and grade so I can tailor my feedback"
+      },
+      "assignment": {
+        "title": "What is your assignment?",
+        "placeholder": "Copy the assignment description or describe it in your own words...",
+        "hint": "E.g.: \"Write an analysis of H.C. Andersen's 'The Little Mermaid'\"",
+        "skipButton": "Describe later"
+      },
+      "studentWork": {
+        "title": "What have you done so far?",
+        "placeholder": "Your draft, notes, or ideas...",
+        "hint": "Share what you've been working on – it can be anything from keywords to a full draft",
+        "skipButton": "I haven't started yet"
+      },
+      "gradePreference": {
+        "title": "Do you want an indicative grade?",
+        "hint": "An indicative grade is just an estimate – your teacher gives the final grade",
+        "yes": "Yes, give me an indicative grade",
+        "no": "No, just feedback"
+      }
+    },
+    "subjects": {
+      "dansk": "Danish",
+      "matematik": "Math",
+      "engelsk": "English",
+      "tysk": "German",
+      "historie": "History",
+      "samfundsfag": "Social Studies",
+      "naturfag": "Science",
+      "kristendomskundskab": "Religion"
+    },
+    "grades": {
+      "grade7": "7th grade",
+      "grade8": "8th grade",
+      "grade9": "9th grade"
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Next",
+      "submit": "Start chat",
+      "cancel": "Cancel"
+    }
   }
 }

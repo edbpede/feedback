@@ -22,3 +22,18 @@ export interface StreamChunk {
     };
   }>;
 }
+
+/** Context collected from the onboarding flow */
+export interface OnboardingContext {
+  subject: string;
+  grade: string;
+  assignmentDescription: string;
+  studentWork: string;
+  wantsGrade: boolean;
+}
+
+/** Persisted onboarding state */
+export interface OnboardingState {
+  completed: boolean;
+  context: OnboardingContext | null;
+}

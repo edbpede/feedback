@@ -3,6 +3,7 @@ import {
   createEffect,
   onMount,
   batch,
+  Show,
   type Component,
 } from "solid-js";
 import { MessageList } from "@components/MessageList";
@@ -13,10 +14,13 @@ import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { loadMessages, saveMessages, clearMessages } from "@lib/storage";
 import { sendMessage } from "@lib/api";
 import { t } from "@lib/i18n";
-import type { Message } from "@lib/types";
+import type { Message, OnboardingContext } from "@lib/types";
 
 interface ChatWindowProps {
   onLogout: () => void;
+  onboardingContext: OnboardingContext | null;
+  onClearOnboarding: () => void;
+  onEditContext: () => void;
 }
 
 interface AttachedFile {
@@ -46,12 +50,33 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     }
   });
 
+  const formatOnboardingContext = (ctx: OnboardingContext): string => {
+    const parts = [];
+    if (ctx.subject || ctx.grade) {
+      parts.push(`**Fag:** ${ctx.subject}${ctx.grade ? `, ${ctx.grade}` : ""}`);
+    }
+    if (ctx.assignmentDescription) {
+      parts.push(`**Opgave:** ${ctx.assignmentDescription}`);
+    }
+    if (ctx.studentWork) {
+      parts.push(`**Mit arbejde indtil nu:**\n${ctx.studentWork}`);
+    }
+    parts.push(`**Vejledende karakter:** ${ctx.wantsGrade ? "Ja" : "Nej"}`);
+    return parts.join("\n\n");
+  };
+
   const handleSend = async (content: string) => {
     const file = attachedFile();
     let fullContent = content;
 
+    // Prepend onboarding context to first message
+    if (messages().length === 0 && props.onboardingContext) {
+      const contextText = formatOnboardingContext(props.onboardingContext);
+      fullContent = contextText + "\n\n---\n\n" + content;
+    }
+
     if (file) {
-      fullContent = `[Attached file: ${file.name}]\n\n${file.content}\n\n---\n\n${content}`;
+      fullContent = `[Attached file: ${file.name}]\n\n${file.content}\n\n---\n\n${fullContent}`;
       setAttachedFile(null);
     }
 
@@ -93,8 +118,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   };
 
   const handleClearConversation = () => {
-    clearMessages();
-    setMessages([]);
+    props.onClearOnboarding();
   };
 
   return (
@@ -105,6 +129,17 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         <div class="flex items-center gap-2">
           <ThemeSwitcher />
           <LanguageSwitcher />
+          <Show when={props.onboardingContext}>
+            <button
+              type="button"
+              onClick={() => props.onEditContext()}
+              class="btn-secondary text-sm"
+              title={t("chat.editContext")}
+            >
+              <span class="i-carbon-edit mr-1" />
+              {t("chat.editContext")}
+            </button>
+          </Show>
           <button
             type="button"
             onClick={handleClearConversation}
