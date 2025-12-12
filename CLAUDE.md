@@ -65,7 +65,7 @@ src/
 - `PASSWORD_HASH` - SHA-256 hash of access password
 - `SESSION_SECRET` - Secret for signing session tokens
 - `NANO_GPT_API_KEY` - API key for NanoGPT
-- `NANO_GPT_MODEL` - Model to use (default: `TEE/deepseek-r1`)
+- `NANO_GPT_MODEL` - Model to use (default: `TEE/deepseek-v3.2`)
 - `API_BASE_URL` - NanoGPT API base URL (default: `https://nano-gpt.com/api/v1`)
 
 ### System Prompt
