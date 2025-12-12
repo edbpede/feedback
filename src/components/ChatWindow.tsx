@@ -37,6 +37,11 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   const [attachedFile, setAttachedFile] = createSignal<AttachedFile | null>(null);
   const [streamingContent, setStreamingContent] = createSignal("");
 
+  // Retry state
+  const [retryState, setRetryState] = createSignal<{ attempt: number; max: number } | null>(null);
+  const [failedMessage, setFailedMessage] = createSignal<Message | null>(null);
+  const [retryDisabledUntil, setRetryDisabledUntil] = createSignal<number>(0);
+
   // Load messages from localStorage on mount
   onMount(() => {
     const saved = loadMessages();
@@ -108,16 +113,26 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     try {
       let assistantContent = "";
 
-      await sendMessage([...messages(), userMessage], (chunk) => {
-        assistantContent += chunk;
-        setStreamingContent(assistantContent);
-      });
+      await sendMessage(
+        [...messages(), userMessage],
+        (chunk) => {
+          assistantContent += chunk;
+          setStreamingContent(assistantContent);
+        },
+        (attempt, max) => {
+          setRetryState({ attempt, max });
+        }
+      );
 
+      // Success - clear any failed message state
+      setFailedMessage(null);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: assistantContent },
       ]);
     } catch (error) {
+      // Store failed message for manual retry
+      setFailedMessage(userMessage);
       setMessages((prev) => [
         ...prev,
         {
@@ -129,7 +144,23 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       batch(() => {
         setIsLoading(false);
         setStreamingContent("");
+        setRetryState(null);
       });
+    }
+  };
+
+  const handleRetry = () => {
+    const now = Date.now();
+    if (now < retryDisabledUntil()) return; // Rate limited
+
+    setRetryDisabledUntil(now + 5000); // 5 second cooldown
+    const msg = failedMessage();
+    if (msg) {
+      setFailedMessage(null);
+      // Remove last error message and retry
+      setMessages((prev) => prev.slice(0, -1));
+      // Re-send the original message content
+      handleSend(msg.content);
     }
   };
 
@@ -175,11 +206,22 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         </div>
       </header>
 
+      {/* Retry indicator banner */}
+      <Show when={retryState()}>
+        <div class="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground bg-muted/50 border-b border-border animate-pulse">
+          <span class="i-carbon-connection-signal" />
+          {t("chat.reconnecting")} ({retryState()!.attempt}/{retryState()!.max})
+        </div>
+      </Show>
+
       {/* Messages */}
       <MessageList
         messages={messages()}
         streamingContent={streamingContent()}
         isLoading={isLoading()}
+        canRetry={!!failedMessage()}
+        retryDisabled={Date.now() < retryDisabledUntil()}
+        onRetry={handleRetry}
       />
 
       {/* File Upload */}

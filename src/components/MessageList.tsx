@@ -1,5 +1,6 @@
 import { For, Show, createEffect, type Component } from "solid-js";
 import { MessageBubble } from "@components/MessageBubble";
+import { Button } from "@components/ui/button";
 import { t } from "@lib/i18n";
 import type { Message } from "@lib/types";
 
@@ -7,6 +8,9 @@ interface MessageListProps {
   messages: Message[];
   streamingContent: string;
   isLoading: boolean;
+  canRetry?: boolean;
+  retryDisabled?: boolean;
+  onRetry?: () => void;
 }
 
 export const MessageList: Component<MessageListProps> = (props) => {
@@ -48,6 +52,32 @@ export const MessageList: Component<MessageListProps> = (props) => {
             />
           )}
         </For>
+      </Show>
+
+      {/* Retry button - shown after error messages */}
+      <Show when={props.canRetry && !props.isLoading}>
+        <div class="flex justify-start">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => props.onRetry?.()}
+            disabled={props.retryDisabled}
+            class="gap-2"
+          >
+            <Show
+              when={!props.retryDisabled}
+              fallback={
+                <>
+                  <span class="i-carbon-time" />
+                  {t("chat.retryDisabled")}
+                </>
+              }
+            >
+              <span class="i-carbon-restart" />
+              {t("chat.retryButton")}
+            </Show>
+          </Button>
+        </div>
       </Show>
 
       {/* Streaming message */}

@@ -24,7 +24,10 @@
     "editContext": "Edit info",
     "initialRequest": "Submitted info",
     "showInitialRequest": "Show submitted info",
-    "hideInitialRequest": "Hide submitted info"
+    "hideInitialRequest": "Hide submitted info",
+    "reconnecting": "Reconnecting...",
+    "retryButton": "Try again",
+    "retryDisabled": "Please wait..."
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",

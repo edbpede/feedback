@@ -1,6 +1,15 @@
+/** Detailed error information for debugging */
+export interface ErrorDetails {
+  status: number;
+  message: string;
+  type?: string;
+  code?: string | null;
+  retryable: boolean;
+}
+
 export type ApiResponse<T> =
-  | { success: true; data: T; error?: never }
-  | { success: false; data?: never; error: string };
+  | { success: true; data: T; error?: never; errorDetails?: never }
+  | { success: false; data?: never; error: string; errorDetails?: ErrorDetails };
 
 export interface Message {
   role: "user" | "assistant";

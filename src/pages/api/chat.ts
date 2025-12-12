@@ -7,7 +7,18 @@ import {
   API_BASE_URL,
 } from "astro:env/server";
 import { SYSTEM_PROMPT } from "@config/systemPrompt";
-import type { ApiResponse, ChatRequest } from "@lib/types";
+import type { ApiResponse, ChatRequest, ErrorDetails } from "@lib/types";
+
+/** Status codes that are considered retryable (temporary failures) */
+const RETRYABLE_STATUS_CODES = [500, 502, 503, 504];
+
+interface NanoGptErrorBody {
+  error?: {
+    message?: string;
+    type?: string;
+    code?: string | null;
+  };
+}
 
 function verifyToken(token: string, secret: string): boolean {
   const parts = token.split(".");
@@ -60,9 +71,26 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         body: errorBody,
       });
 
+      // Parse error body to extract details
+      let parsedError: NanoGptErrorBody = {};
+      try {
+        parsedError = JSON.parse(errorBody) as NanoGptErrorBody;
+      } catch {
+        // Body wasn't JSON, use raw text as message
+      }
+
+      const errorDetails: ErrorDetails = {
+        status: nanoGptResponse.status,
+        message: parsedError.error?.message || errorBody || "Unknown error",
+        type: parsedError.error?.type,
+        code: parsedError.error?.code,
+        retryable: RETRYABLE_STATUS_CODES.includes(nanoGptResponse.status),
+      };
+
       const response: ApiResponse<never> = {
         success: false,
         error: `API error: ${nanoGptResponse.status}`,
+        errorDetails,
       };
       return new Response(JSON.stringify(response), {
         status: nanoGptResponse.status,
@@ -77,10 +105,20 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         Connection: "keep-alive",
       },
     });
-  } catch {
+  } catch (error) {
+    console.error("Chat API internal error:", error);
+
+    const errorDetails: ErrorDetails = {
+      status: 500,
+      message: error instanceof Error ? error.message : "Unknown internal error",
+      type: "InternalError",
+      retryable: true,
+    };
+
     const response: ApiResponse<never> = {
       success: false,
       error: "Internal server error",
+      errorDetails,
     };
     return new Response(JSON.stringify(response), { status: 500 });
   }

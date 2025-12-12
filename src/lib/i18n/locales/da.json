@@ -24,7 +24,10 @@
     "editContext": "Rediger info",
     "initialRequest": "Afsendt information",
     "showInitialRequest": "Vis afsendt information",
-    "hideInitialRequest": "Skjul afsendt information"
+    "hideInitialRequest": "Skjul afsendt information",
+    "reconnecting": "Forbinder igen...",
+    "retryButton": "Prøv igen",
+    "retryDisabled": "Vent venligst..."
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",
