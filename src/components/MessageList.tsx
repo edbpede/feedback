@@ -30,7 +30,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
   return (
     <div
       ref={containerRef}
-      class="flex-1 overflow-y-auto p-4 space-y-4"
+      class="flex-1 overflow-y-auto px-4 py-6 space-y-6"
     >
       <Show
         when={props.messages.length > 0}
@@ -90,7 +90,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
       {/* Loading indicator */}
       <Show when={props.isLoading && !props.streamingContent}>
         <div class="flex justify-start">
-          <div class="bg-muted rounded-lg px-4 py-2 transition-colors duration-200">
+          <div class="bg-muted rounded-lg px-5 py-4 transition-colors duration-200">
             <span class="i-carbon-loading animate-spin" />
           </div>
         </div>

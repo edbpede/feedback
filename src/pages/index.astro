@@ -179,6 +179,63 @@ import "@/styles/globals.css";
     font-size: 0.925rem;
   }
 
+  /* AI message prose variant - optimized for readability */
+  .prose-ai {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .prose-ai p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .prose-ai ul, .prose-ai ol {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+    padding-left: 1.75em;
+  }
+
+  .prose-ai li {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+  }
+
+  .prose-ai h1 { font-size: 1.5em; margin-top: 1.25em; }
+  .prose-ai h2 { font-size: 1.35em; margin-top: 1.15em; }
+  .prose-ai h3 { font-size: 1.2em; margin-top: 1em; }
+
+  .prose-ai blockquote {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0.75em 1em;
+    border-left-width: 4px;
+    background-color: oklch(var(--muted) / 0.3);
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+
+  .prose-ai pre {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 1em 1.25em;
+  }
+
+  .prose-ai table {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .prose-ai th, .prose-ai td {
+    padding: 0.625em 1em;
+  }
+
+  /* Responsive adjustment for mobile */
+  @media (max-width: 640px) {
+    .prose-ai {
+      font-size: 0.9375rem;
+    }
+  }
+
   /* Inverted prose for user messages (light text on dark background) */
   .prose-invert a {
     color: oklch(var(--primary-foreground));
