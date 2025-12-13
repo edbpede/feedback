@@ -71,11 +71,11 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                   {/* Header: Provider Logo + Name + Default badge */}
                   <div class="flex items-center gap-2 mb-2">
                     <AIProviderLogo provider={model.provider} size="sm" />
-                    <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide leading-none">
+                    <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide -translate-y-px">
                       {model.provider}
                     </span>
                     {isDefault && (
-                      <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary leading-none">
+                      <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary -translate-y-px">
                         {t("onboarding.steps.modelSelection.default")}
                       </span>
                     )}
