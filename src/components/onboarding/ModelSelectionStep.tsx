@@ -5,7 +5,7 @@ import { StepIndicator } from "./StepIndicator";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { AVAILABLE_MODELS, DEFAULT_MODEL_ID, type ModelConfig, type SpeedTier } from "@config/models";
+import { AVAILABLE_MODELS, type ModelConfig, type SpeedTier } from "@config/models";
 
 interface ModelSelectionStepProps {
   value: string;
@@ -56,7 +56,6 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
           <For each={AVAILABLE_MODELS}>
             {(model) => {
               const isSelected = () => props.value === model.id;
-              const isDefault = model.id === DEFAULT_MODEL_ID;
 
               return (
                 <button
@@ -68,17 +67,12 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                       : "border-border hover:border-muted-foreground"
                   }`}
                 >
-                  {/* Header: Provider Logo + Name + Default badge */}
+                  {/* Header: Provider Logo + Name */}
                   <div class="flex items-center gap-2 mb-2">
                     <AIProviderLogo provider={model.provider} size="sm" />
                     <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide -translate-y-px">
                       {model.provider}
                     </span>
-                    {isDefault && (
-                      <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary -translate-y-px">
-                        {t("onboarding.steps.modelSelection.default")}
-                      </span>
-                    )}
                   </div>
 
                   {/* Model name */}
