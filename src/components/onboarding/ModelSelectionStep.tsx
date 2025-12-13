@@ -138,8 +138,8 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                     </span>
                   </div>
 
-                  {/* Release date - always bottom right */}
-                  <div class="text-right">
+                  {/* Release date - always bottom right, with padding for checkmark */}
+                  <div class="text-right pr-8">
                     <span class="text-xs text-muted-foreground">
                       {model.releaseDate}
                     </span>
