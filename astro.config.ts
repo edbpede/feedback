@@ -24,7 +24,7 @@ export default defineConfig({
       NANO_GPT_MODEL: envField.string({
         context: "server",
         access: "secret",
-        default: "TEE/deepseek-r1",
+        default: "TEE/deepseek-v3.2",
       }),
       API_BASE_URL: envField.string({
         context: "server",
