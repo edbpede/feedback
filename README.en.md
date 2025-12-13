@@ -31,27 +31,6 @@ The system prompt defining the bot's pedagogical behavior is in [`src/config/sys
 
 ## Screenshots
 
-<details>
-<summary>🌙 Dark Mode</summary>
-
-| Password | Welcome |
-|:--------:|:-------:|
-| ![Password](public/screenshots/01-password-gate-dark.png) | ![Welcome](public/screenshots/02-welcome-dark.png) |
-
-| Select Subject & Grade | Describe Assignment |
-|:----------------------:|:-------------------:|
-| ![Subject & Grade](public/screenshots/03-subject-grade-dark.png) | ![Assignment](public/screenshots/04-assignment-dark.png) |
-
-| Add Your Work | Grade Assessment? |
-|:-------------:|:-----------------:|
-| ![Student Work](public/screenshots/05-student-work-dark.png) | ![Grade Preference](public/screenshots/06-grade-preference-dark.png) |
-
-| Choose AI Model | Chat with Feedback Bot |
-|:---------------:|:----------------------:|
-| ![Model Selection](public/screenshots/07-model-selection-dark.png) | ![Chat](public/screenshots/08-chat-window-dark.png) |
-
-</details>
-
 <details open>
 <summary>☀️ Light Mode</summary>
 
@@ -70,6 +49,27 @@ The system prompt defining the bot's pedagogical behavior is in [`src/config/sys
 | Choose AI Model | Chat with Feedback Bot |
 |:---------------:|:----------------------:|
 | ![Model Selection](public/screenshots/07-model-selection-light.png) | ![Chat](public/screenshots/08-chat-window-light.png) |
+
+</details>
+
+<details>
+<summary>🌙 Dark Mode</summary>
+
+| Password | Welcome |
+|:--------:|:-------:|
+| ![Password](public/screenshots/01-password-gate-dark.png) | ![Welcome](public/screenshots/02-welcome-dark.png) |
+
+| Select Subject & Grade | Describe Assignment |
+|:----------------------:|:-------------------:|
+| ![Subject & Grade](public/screenshots/03-subject-grade-dark.png) | ![Assignment](public/screenshots/04-assignment-dark.png) |
+
+| Add Your Work | Grade Assessment? |
+|:-------------:|:-----------------:|
+| ![Student Work](public/screenshots/05-student-work-dark.png) | ![Grade Preference](public/screenshots/06-grade-preference-dark.png) |
+
+| Choose AI Model | Chat with Feedback Bot |
+|:---------------:|:----------------------:|
+| ![Model Selection](public/screenshots/07-model-selection-dark.png) | ![Chat](public/screenshots/08-chat-window-dark.png) |
 
 </details>
 
