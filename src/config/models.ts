@@ -169,3 +169,16 @@ export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: stri
 export function getProviderLogoPath(provider: AIProvider, theme: "light" | "dark"): string {
   return PROVIDER_LOGO_PATHS[provider][theme];
 }
+
+/**
+ * Models that don't support the "system" role and require strict user/assistant alternation.
+ * For these models, the system prompt must be merged into the first user message.
+ */
+const STRICT_ALTERNATION_MODELS = new Set(["TEE/gemma-3-27b-it"]);
+
+/**
+ * Check if a model requires strict user/assistant role alternation (no system role support).
+ */
+export function requiresStrictAlternation(modelId: string): boolean {
+  return STRICT_ALTERNATION_MODELS.has(modelId);
+}

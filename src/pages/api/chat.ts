@@ -7,8 +7,8 @@ import {
   API_BASE_URL,
 } from "astro:env/server";
 import { SYSTEM_PROMPT } from "@config/systemPrompt";
-import { isValidModel } from "@config/models";
-import type { ApiResponse, ChatRequest, ErrorDetails } from "@lib/types";
+import { isValidModel, requiresStrictAlternation } from "@config/models";
+import type { ApiResponse, ChatRequest, ErrorDetails, Message } from "@lib/types";
 
 /** Status codes that are considered retryable (temporary failures) */
 const RETRYABLE_STATUS_CODES = [500, 502, 503, 504];
@@ -19,6 +19,45 @@ interface NanoGptErrorBody {
     type?: string;
     code?: string | null;
   };
+}
+
+/**
+ * Formats messages for the API based on model requirements.
+ * For models requiring strict user/assistant alternation (e.g., Gemma),
+ * the system prompt is merged into the first user message.
+ */
+function formatMessagesForModel(
+  systemPrompt: string,
+  messages: Message[],
+  strictAlternation: boolean
+): Array<{ role: string; content: string }> {
+  if (!strictAlternation) {
+    // Standard format with system role
+    return [
+      { role: "system", content: systemPrompt },
+      ...messages,
+    ];
+  }
+
+  // For strict alternation models: merge system prompt into first user message
+  const result: Array<{ role: string; content: string }> = [];
+
+  for (const msg of messages) {
+    if (result.length === 0 && msg.role === "user") {
+      // First user message - prepend system prompt
+      result.push({
+        role: "user",
+        content: `${systemPrompt}\n\n---\n\n${msg.content}`,
+      });
+    } else if (result.length > 0 && result[result.length - 1].role === msg.role) {
+      // Merge consecutive same-role messages
+      result[result.length - 1].content += "\n\n" + msg.content;
+    } else {
+      result.push({ role: msg.role, content: msg.content });
+    }
+  }
+
+  return result;
 }
 
 function verifyToken(token: string, secret: string): boolean {
@@ -55,10 +94,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       }
     }
 
-    const messages: Array<{ role: string; content: string }> = [
-      { role: "system", content: SYSTEM_PROMPT },
-      ...body.messages,
-    ];
+    const messages = formatMessagesForModel(
+      SYSTEM_PROMPT,
+      body.messages,
+      requiresStrictAlternation(selectedModel)
+    );
 
     const nanoGptResponse = await fetch(`${API_BASE_URL}/chat/completions`, {
       method: "POST",
