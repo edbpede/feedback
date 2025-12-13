@@ -99,21 +99,30 @@
           "budget": "Budget",
           "standard": "Standard",
           "premium": "Premium"
-        }
+        },
+        "speedTiers": {
+          "fast": "Fast",
+          "medium": "Medium",
+          "very-fast": "Very fast"
+        },
+        "bestForLabel": "Good for"
       }
     },
     "models": {
       "deepseek": {
         "name": "DeepSeek V3.2",
-        "description": "Advanced reasoning with tool use capabilities"
+        "description": "Understands complex tasks and gives thorough answers. Great at explaining things step by step.",
+        "bestFor": "Math and science"
       },
       "gptoss": {
         "name": "GPT-OSS 120B",
-        "description": "OpenAI open-weight model, strong reasoning"
+        "description": "Strong at writing and analyzing texts. Helps you structure your thoughts.",
+        "bestFor": "Danish and essays"
       },
       "glm": {
         "name": "GLM-4.6",
-        "description": "128K context, native tool calling"
+        "description": "The newest model with fast responses. Can remember a lot of your conversation.",
+        "bestFor": "Quick help and questions"
       }
     },
     "subjects": {

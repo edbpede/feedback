@@ -4,7 +4,7 @@ import { t } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
-import { AVAILABLE_MODELS, DEFAULT_MODEL_ID, type ModelConfig } from "@config/models";
+import { AVAILABLE_MODELS, DEFAULT_MODEL_ID, type ModelConfig, type SpeedTier } from "@config/models";
 
 interface ModelSelectionStepProps {
   value: string;
@@ -23,6 +23,17 @@ function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
       return "bg-blue-500/20 text-blue-600 dark:text-blue-400";
     case "premium":
       return "bg-purple-500/20 text-purple-600 dark:text-purple-400";
+  }
+}
+
+function getSpeedBadgeClass(tier: SpeedTier): string {
+  switch (tier) {
+    case "fast":
+      return "bg-amber-500/20 text-amber-600 dark:text-amber-400";
+    case "medium":
+      return "bg-slate-500/20 text-slate-600 dark:text-slate-400";
+    case "very-fast":
+      return "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400";
   }
 }
 
@@ -56,15 +67,20 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                       : "border-border hover:border-muted-foreground"
                   }`}
                 >
-                  {/* Default badge */}
-                  {isDefault && (
-                    <span class="absolute top-2 right-2 px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary">
-                      {t("onboarding.steps.modelSelection.default")}
+                  {/* Header: Provider + Default badge */}
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+                      {model.provider}
                     </span>
-                  )}
+                    {isDefault && (
+                      <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary">
+                        {t("onboarding.steps.modelSelection.default")}
+                      </span>
+                    )}
+                  </div>
 
                   {/* Model name */}
-                  <h3 class="font-semibold text-base mb-1 pr-16">
+                  <h3 class="font-semibold text-base mb-2">
                     {t(model.nameKey)}
                   </h3>
 
@@ -73,14 +89,34 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                     {t(model.descriptionKey)}
                   </p>
 
-                  {/* Footer: pricing + date */}
-                  <div class="flex items-center justify-between">
+                  {/* Best For tag */}
+                  <div class="mb-3">
+                    <span class="text-xs font-medium text-foreground/70">
+                      {t("onboarding.steps.modelSelection.bestForLabel")}:
+                    </span>
+                    <span class="text-xs font-semibold text-foreground ml-1">
+                      {t(model.bestForKey)}
+                    </span>
+                  </div>
+
+                  {/* Footer: Speed + Pricing + Date */}
+                  <div class="flex items-center gap-2 flex-wrap">
+                    {/* Speed badge */}
+                    <span
+                      class={`px-2 py-0.5 text-xs font-medium rounded-full ${getSpeedBadgeClass(model.speedTier)}`}
+                    >
+                      {t(`onboarding.steps.modelSelection.speedTiers.${model.speedTier}`)}
+                    </span>
+
+                    {/* Pricing badge */}
                     <span
                       class={`px-2 py-0.5 text-xs font-medium rounded-full ${getPricingBadgeClass(model.pricingTier)}`}
                     >
                       {t(`onboarding.steps.modelSelection.pricingTiers.${model.pricingTier}`)}
                     </span>
-                    <span class="text-xs text-muted-foreground">
+
+                    {/* Release date */}
+                    <span class="text-xs text-muted-foreground ml-auto">
                       {model.releaseDate}
                     </span>
                   </div>

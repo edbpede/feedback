@@ -4,6 +4,7 @@
  */
 
 export type PricingTier = "budget" | "standard" | "premium";
+export type SpeedTier = "fast" | "medium" | "very-fast";
 
 export interface ModelConfig {
   /** Unique model identifier sent to the API */
@@ -16,6 +17,12 @@ export interface ModelConfig {
   pricingTier: PricingTier;
   /** Release date for display (e.g., "Dec 2025") */
   releaseDate: string;
+  /** Company/organization that created the model */
+  provider: string;
+  /** Speed tier for badge display */
+  speedTier: SpeedTier;
+  /** i18n key for what the model is best suited for */
+  bestForKey: string;
 }
 
 /**
@@ -25,24 +32,33 @@ export interface ModelConfig {
 export const AVAILABLE_MODELS: ModelConfig[] = [
   {
     id: "TEE/DeepSeek-v3.2",
-    nameKey: "models.deepseek.name",
-    descriptionKey: "models.deepseek.description",
+    nameKey: "onboarding.models.deepseek.name",
+    descriptionKey: "onboarding.models.deepseek.description",
     pricingTier: "budget",
     releaseDate: "Dec 2025",
+    provider: "DeepSeek",
+    speedTier: "fast",
+    bestForKey: "onboarding.models.deepseek.bestFor",
   },
   {
     id: "TEE/gpt-oss-120b",
-    nameKey: "models.gptoss.name",
-    descriptionKey: "models.gptoss.description",
+    nameKey: "onboarding.models.gptoss.name",
+    descriptionKey: "onboarding.models.gptoss.description",
     pricingTier: "standard",
     releaseDate: "Aug 2025",
+    provider: "OpenAI",
+    speedTier: "medium",
+    bestForKey: "onboarding.models.gptoss.bestFor",
   },
   {
     id: "TEE/glm-4.6",
-    nameKey: "models.glm.name",
-    descriptionKey: "models.glm.description",
+    nameKey: "onboarding.models.glm.name",
+    descriptionKey: "onboarding.models.glm.description",
     pricingTier: "standard",
     releaseDate: "Dec 2025",
+    provider: "Zhipu AI",
+    speedTier: "very-fast",
+    bestForKey: "onboarding.models.glm.bestFor",
   },
 ] as const;
 

@@ -99,21 +99,30 @@
           "budget": "Budget",
           "standard": "Standard",
           "premium": "Premium"
-        }
+        },
+        "speedTiers": {
+          "fast": "Hurtig",
+          "medium": "Normal",
+          "very-fast": "Meget hurtig"
+        },
+        "bestForLabel": "God til"
       }
     },
     "models": {
       "deepseek": {
         "name": "DeepSeek V3.2",
-        "description": "Avanceret ræsonnement med værktøjsbrug"
+        "description": "Forstår komplekse opgaver og giver grundige svar. God til at forklare ting trin for trin.",
+        "bestFor": "Matematik og naturfag"
       },
       "gptoss": {
         "name": "GPT-OSS 120B",
-        "description": "OpenAI åben model, stærk ræsonnement"
+        "description": "Stærk til at skrive og analysere tekster. Hjælper dig med at strukturere dine tanker.",
+        "bestFor": "Dansk og essays"
       },
       "glm": {
         "name": "GLM-4.6",
-        "description": "128K kontekst, native værktøjskald"
+        "description": "Den nyeste model med hurtige svar. Kan huske meget af din samtale.",
+        "bestFor": "Hurtig hjælp og spørgsmål"
       }
     },
     "subjects": {
