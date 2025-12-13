@@ -91,17 +91,12 @@ export const DEFAULT_MODEL_ID = "TEE/DeepSeek-v3.2";
  * Subject to recommended model mapping.
  * Maps Danish school subjects to the most suitable AI model based on their strengths:
  * - DeepSeek V3.2: Best for math and science (strong reasoning capabilities)
- * - Qwen3 30B: Best for languages and writing (multilingual, instruction-following)
  * - GLM-4.6: Good for general discussion and quick responses
+ * Subjects not listed fall back to DEFAULT_MODEL_ID.
  */
 export const SUBJECT_MODEL_MAP: Record<string, string> = {
   matematik: "TEE/DeepSeek-v3.2",
   naturfag: "TEE/DeepSeek-v3.2",
-  dansk: "TEE/qwen3-30b-a3b-instruct-2507",
-  engelsk: "TEE/qwen3-30b-a3b-instruct-2507",
-  tysk: "TEE/qwen3-30b-a3b-instruct-2507",
-  historie: "TEE/qwen3-30b-a3b-instruct-2507",
-  samfundsfag: "TEE/qwen3-30b-a3b-instruct-2507",
   kristendomskundskab: "TEE/glm-4.6",
 };
 
