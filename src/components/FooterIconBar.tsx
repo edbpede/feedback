@@ -51,7 +51,7 @@ export const FooterIconBar: Component = () => {
               <img
                 src={icon.src}
                 alt=""
-                class="w-7 h-7"
+                class={icon.name === "agpl" ? "h-7 w-auto" : "w-7 h-7"}
                 aria-hidden="true"
               />
             </a>
