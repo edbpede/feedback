@@ -126,6 +126,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   };
 
   const handleSend = async (content: string) => {
+    // Prevent multiple submissions while loading
+    if (isLoading()) return;
+
     const file = attachedFile();
     let fullContent = content;
 
