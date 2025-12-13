@@ -4,7 +4,7 @@ import { t } from "@lib/i18n";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { Logo } from "@components/Logo";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@components/ui/card";
+import { Card, CardContent } from "@components/ui/card";
 import { Input } from "@components/ui/input";
 import { Button } from "@components/ui/button";
 
@@ -46,17 +46,18 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
 
   return (
     <div class="flex items-center justify-center min-h-screen p-4">
-      <Card class="w-full max-w-lg">
-        <CardHeader class="text-center">
+      <Card class="w-full max-w-lg text-center">
+        <CardContent class="pt-6">
           <div class="flex justify-end gap-1 mb-4">
             <ThemeSwitcher />
             <LanguageSwitcher />
           </div>
-          <Logo size="lg" class="mx-auto mb-4" />
-          <CardTitle>{t("auth.title")}</CardTitle>
-          <CardDescription>{t("auth.description")}</CardDescription>
-        </CardHeader>
-        <CardContent>
+
+          <Logo size="xl" class="mx-auto mb-6" />
+
+          <h1 class="text-2xl font-bold mb-4">{t("auth.title")}</h1>
+          <p class="text-muted-foreground mb-8">{t("auth.description")}</p>
+
           <form onSubmit={handleSubmit} class="space-y-4">
             <Input
               type="password"
