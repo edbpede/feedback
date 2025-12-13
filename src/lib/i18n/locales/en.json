@@ -131,6 +131,11 @@
         "name": "GLM-4.6",
         "description": "The newest model with fast responses. Can remember a lot of your conversation.",
         "bestFor": "Quick help and questions"
+      },
+      "qwen": {
+        "name": "Qwen3 30B",
+        "description": "Advanced multilingual model with excellent instruction-following. Great for writing and language tasks.",
+        "bestFor": "Languages and writing"
       }
     },
     "subjects": {

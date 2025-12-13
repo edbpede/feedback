@@ -131,6 +131,11 @@
         "name": "GLM-4.6",
         "description": "Den nyeste model med hurtige svar. Kan huske meget af din samtale.",
         "bestFor": "Hurtig hjælp og spørgsmål"
+      },
+      "qwen": {
+        "name": "Qwen3 30B",
+        "description": "Avanceret flersproget model med fremragende instruktionsfølgning. Perfekt til skrivning og sprogopgaver.",
+        "bestFor": "Sprog og skrivning"
       }
     },
     "subjects": {

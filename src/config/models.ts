@@ -9,7 +9,7 @@ export type PricingTier = "budget" | "standard" | "premium";
 export type SpeedTier = "fast" | "medium" | "very-fast";
 
 /** Supported AI provider identifiers */
-export type AIProvider = "DeepSeek" | "OpenAI" | "Zhipu AI";
+export type AIProvider = "DeepSeek" | "OpenAI" | "Zhipu AI" | "Alibaba";
 
 export interface ModelConfig {
   /** Unique model identifier sent to the API */
@@ -65,6 +65,16 @@ export const AVAILABLE_MODELS: ModelConfig[] = [
     speedTier: "very-fast",
     bestForKey: "onboarding.models.glm.bestFor",
   },
+  {
+    id: "TEE/qwen3-30b-a3b-instruct-2507",
+    nameKey: "onboarding.models.qwen.name",
+    descriptionKey: "onboarding.models.qwen.description",
+    pricingTier: "standard",
+    releaseDate: "Jul 2025",
+    provider: "Alibaba",
+    speedTier: "fast",
+    bestForKey: "onboarding.models.qwen.bestFor",
+  },
 ] as const;
 
 /** Set of valid model IDs for quick lookup */
@@ -81,17 +91,17 @@ export const DEFAULT_MODEL_ID = "TEE/DeepSeek-v3.2";
  * Subject to recommended model mapping.
  * Maps Danish school subjects to the most suitable AI model based on their strengths:
  * - DeepSeek V3.2: Best for math and science (strong reasoning capabilities)
- * - GPT-OSS 120B: Best for writing, language, and text analysis
+ * - Qwen3 30B: Best for languages and writing (multilingual, instruction-following)
  * - GLM-4.6: Good for general discussion and quick responses
  */
 export const SUBJECT_MODEL_MAP: Record<string, string> = {
   matematik: "TEE/DeepSeek-v3.2",
   naturfag: "TEE/DeepSeek-v3.2",
-  dansk: "TEE/gpt-oss-120b",
-  engelsk: "TEE/gpt-oss-120b",
-  tysk: "TEE/gpt-oss-120b",
-  historie: "TEE/gpt-oss-120b",
-  samfundsfag: "TEE/gpt-oss-120b",
+  dansk: "TEE/qwen3-30b-a3b-instruct-2507",
+  engelsk: "TEE/qwen3-30b-a3b-instruct-2507",
+  tysk: "TEE/qwen3-30b-a3b-instruct-2507",
+  historie: "TEE/qwen3-30b-a3b-instruct-2507",
+  samfundsfag: "TEE/qwen3-30b-a3b-instruct-2507",
   kristendomskundskab: "TEE/glm-4.6",
 };
 
@@ -134,6 +144,10 @@ export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: stri
   "Zhipu AI": {
     light: "/ai-providers/zhipu-ai-light.svg",
     dark: "/ai-providers/zhipu-ai.svg",
+  },
+  "Alibaba": {
+    light: "/ai-providers/qwen.svg",
+    dark: "/ai-providers/qwen.svg",
   },
 };
 
