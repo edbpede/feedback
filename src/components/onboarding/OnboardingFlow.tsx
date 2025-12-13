@@ -6,7 +6,7 @@ import { AssignmentStep } from "./AssignmentStep";
 import { StudentWorkStep } from "./StudentWorkStep";
 import { GradePreferenceStep } from "./GradePreferenceStep";
 import { ModelSelectionStep } from "./ModelSelectionStep";
-import { DEFAULT_MODEL_ID, getRecommendedModelForSubject } from "@config/models";
+import { DEFAULT_MODEL_ID } from "@config/models";
 
 interface OnboardingFlowProps {
   onComplete: (context: OnboardingContext) => void;
@@ -67,10 +67,8 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     handleNext();
   };
 
-  // Auto-select recommended model when subject changes
   const handleSubjectChange = (newSubject: string) => {
     setSubject(newSubject);
-    setModel(getRecommendedModelForSubject(newSubject));
   };
 
   return (

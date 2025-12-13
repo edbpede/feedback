@@ -6,7 +6,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { AVAILABLE_MODELS, getRecommendedModelForSubject, type ModelConfig, type SpeedTier } from "@config/models";
+import { AVAILABLE_MODELS, getRecommendedModelForSubject, DEFAULT_MODEL_ID, type ModelConfig, type SpeedTier } from "@config/models";
 
 interface ModelSelectionStepProps {
   value: string;
@@ -100,6 +100,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
             {(model) => {
               const isSelected = () => props.value === model.id;
               const isRecommended = () => recommendedModelId() === model.id;
+              const isDefault = () => model.id === DEFAULT_MODEL_ID;
 
               return (
                 <button
@@ -111,11 +112,19 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                       : "border-border hover:border-muted-foreground"
                   }`}
                 >
-                  {/* Recommendation badge */}
-                  {isRecommended() && props.subject && (
+                  {/* Standard badge for default model */}
+                  {isDefault() && (
                     <div class="absolute -top-2.5 left-3 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center gap-1">
                       <span class="i-carbon-star-filled text-[10px]" />
-                      {t("onboarding.steps.modelSelection.recommendedFor", {
+                      {t("onboarding.steps.modelSelection.default")}
+                    </div>
+                  )}
+
+                  {/* Subject recommendation badge (only for non-default recommended models) */}
+                  {isRecommended() && !isDefault() && props.subject && (
+                    <div class="absolute -top-2.5 left-3 px-2 py-0.5 bg-muted text-muted-foreground text-xs font-medium rounded-full flex items-center gap-1">
+                      <span class="i-carbon-thumbs-up text-[10px]" />
+                      {t("onboarding.steps.modelSelection.alsoGoodFor", {
                         subject: t(`onboarding.subjects.${props.subject}` as TranslationKey),
                       })}
                     </div>

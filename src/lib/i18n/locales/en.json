@@ -113,7 +113,8 @@
           "very-fast": "Very fast"
         },
         "bestForLabel": "Good for",
-        "recommendedFor": "Recommended for {{subject}}"
+        "recommendedFor": "Recommended for {{subject}}",
+        "alsoGoodFor": "Also good for {{subject}}"
       }
     },
     "models": {
