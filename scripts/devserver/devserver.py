@@ -64,7 +64,7 @@ type OutputCallback = Callable[[str], None]
 # Constants
 # =============================================================================
 
-PROJECT_ROOT: Final[Path] = Path(__file__).parent.parent.resolve()
+PROJECT_ROOT: Final[Path] = Path(__file__).parent.parent.parent.resolve()
 MODELS_TS_PATH: Final[Path] = PROJECT_ROOT / "src" / "config" / "models.ts"
 ENV_PATH: Final[Path] = PROJECT_ROOT / ".env"
 ENV_EXAMPLE_PATH: Final[Path] = PROJECT_ROOT / ".env.example"
@@ -558,24 +558,24 @@ class StatusPanel(Static):
 
     def on_mount(self) -> None:
         """Initialize tables."""
-        deps_table = self.query_one("#deps-table", DataTable[str])
+        deps_table: DataTable[str] = self.query_one("#deps-table", DataTable)
         _ = deps_table.add_columns("Name", "Status", "Message")
 
-        env_table = self.query_one("#env-table", DataTable[str])
+        env_table: DataTable[str] = self.query_one("#env-table", DataTable)
         _ = env_table.add_columns("Variable", "Status", "Value")
 
         self.refresh_status()
 
     def refresh_status(self) -> None:
         """Refresh dependency and environment status."""
-        deps_table = self.query_one("#deps-table", DataTable[str])
+        deps_table: DataTable[str] = self.query_one("#deps-table", DataTable)
         _ = deps_table.clear()
 
         for check in check_all_dependencies():
             status_text = "[green]OK[/]" if check.status == "ok" else "[red]MISSING[/]"
             _ = deps_table.add_row(check.name, status_text, check.message)
 
-        env_table = self.query_one("#env-table", DataTable[str])
+        env_table: DataTable[str] = self.query_one("#env-table", DataTable)
         _ = env_table.clear()
 
         for check in check_env_vars():

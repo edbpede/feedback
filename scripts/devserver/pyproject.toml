@@ -6,7 +6,6 @@ build-backend = "hatchling.build"
 name = "devserver"
 version = "0.1.0"
 description = "Astro Development Server Manager - A Textual TUI application for managing the Astro development server, checking dependencies, configuring environment variables, and performing cleanup"
-readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
 keywords = ["astro", "devserver", "tui", "textual", "development"]
