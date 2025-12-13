@@ -61,7 +61,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                 <button
                   type="button"
                   onClick={() => props.onChange(model.id)}
-                  class={`relative p-5 rounded-lg border-2 transition-all text-left ${
+                  class={`relative p-5 rounded-lg border-2 transition-all text-left flex flex-col ${
                     isSelected()
                       ? "border-primary bg-accent/20"
                       : "border-border hover:border-muted-foreground"
@@ -85,8 +85,8 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                     {t(model.descriptionKey)}
                   </p>
 
-                  {/* Best For tag */}
-                  <div class="mb-3">
+                  {/* Best For tag - flex-1 to push footer down */}
+                  <div class="flex-1">
                     <span class="text-xs font-medium text-foreground/70">
                       {t("onboarding.steps.modelSelection.bestForLabel")}:
                     </span>
@@ -96,7 +96,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                   </div>
 
                   {/* Footer: Speed + Pricing badges */}
-                  <div class="flex items-center gap-2 flex-wrap mb-2">
+                  <div class="flex items-center gap-2 flex-wrap mb-2 mt-3">
                     {/* Speed badge */}
                     <span
                       class={`px-2 py-0.5 text-xs font-medium rounded-full ${getSpeedBadgeClass(model.speedTier)}`}
