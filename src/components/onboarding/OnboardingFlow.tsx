@@ -32,7 +32,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     props.initialContext?.studentWorkFile ?? null
   );
   const [wantsGrade, setWantsGrade] = createSignal(
-    props.initialContext?.wantsGrade ?? true
+    props.initialContext?.wantsGrade ?? false
   );
   const [model, setModel] = createSignal(
     props.initialContext?.model ?? DEFAULT_MODEL_ID
