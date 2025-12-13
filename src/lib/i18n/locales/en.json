@@ -112,7 +112,8 @@
           "medium": "Medium",
           "very-fast": "Very fast"
         },
-        "bestForLabel": "Good for"
+        "bestForLabel": "Good for",
+        "recommendedFor": "Recommended for {{subject}}"
       }
     },
     "models": {

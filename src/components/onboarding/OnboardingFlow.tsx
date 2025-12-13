@@ -6,7 +6,7 @@ import { AssignmentStep } from "./AssignmentStep";
 import { StudentWorkStep } from "./StudentWorkStep";
 import { GradePreferenceStep } from "./GradePreferenceStep";
 import { ModelSelectionStep } from "./ModelSelectionStep";
-import { DEFAULT_MODEL_ID } from "@config/models";
+import { DEFAULT_MODEL_ID, getRecommendedModelForSubject } from "@config/models";
 
 interface OnboardingFlowProps {
   onComplete: (context: OnboardingContext) => void;
@@ -67,6 +67,12 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     handleNext();
   };
 
+  // Auto-select recommended model when subject changes
+  const handleSubjectChange = (newSubject: string) => {
+    setSubject(newSubject);
+    setModel(getRecommendedModelForSubject(newSubject));
+  };
+
   return (
     <div class="flex items-center justify-center min-h-screen p-4">
       <Switch>
@@ -78,7 +84,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
           <SubjectGradeStep
             subject={subject()}
             grade={grade()}
-            onSubjectChange={setSubject}
+            onSubjectChange={handleSubjectChange}
             onGradeChange={setGrade}
             onNext={handleNext}
             onBack={handleBack}
@@ -132,6 +138,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onBack={handleBack}
             currentStep={4}
             totalSteps={TOTAL_STEPS}
+            subject={subject()}
           />
         </Match>
       </Switch>

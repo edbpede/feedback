@@ -78,6 +78,32 @@ export const VALID_MODEL_IDS = new Set(AVAILABLE_MODELS.map((m) => m.id));
 export const DEFAULT_MODEL_ID = "TEE/DeepSeek-v3.2";
 
 /**
+ * Subject to recommended model mapping.
+ * Maps Danish school subjects to the most suitable AI model based on their strengths:
+ * - DeepSeek V3.2: Best for math and science (strong reasoning capabilities)
+ * - GPT-OSS 120B: Best for writing, language, and text analysis
+ * - GLM-4.6: Good for general discussion and quick responses
+ */
+export const SUBJECT_MODEL_MAP: Record<string, string> = {
+  matematik: "TEE/DeepSeek-v3.2",
+  naturfag: "TEE/DeepSeek-v3.2",
+  dansk: "TEE/gpt-oss-120b",
+  engelsk: "TEE/gpt-oss-120b",
+  tysk: "TEE/gpt-oss-120b",
+  historie: "TEE/gpt-oss-120b",
+  samfundsfag: "TEE/gpt-oss-120b",
+  kristendomskundskab: "TEE/glm-4.6",
+};
+
+/**
+ * Get the recommended model for a given subject.
+ * Falls back to DEFAULT_MODEL_ID if subject is not mapped.
+ */
+export function getRecommendedModelForSubject(subject: string): string {
+  return SUBJECT_MODEL_MAP[subject] ?? DEFAULT_MODEL_ID;
+}
+
+/**
  * Check if a model ID is valid.
  */
 export function isValidModel(modelId: string): boolean {

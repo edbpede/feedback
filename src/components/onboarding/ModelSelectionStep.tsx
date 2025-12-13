@@ -6,7 +6,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { AVAILABLE_MODELS, type ModelConfig, type SpeedTier } from "@config/models";
+import { AVAILABLE_MODELS, getRecommendedModelForSubject, type ModelConfig, type SpeedTier } from "@config/models";
 
 interface ModelSelectionStepProps {
   value: string;
@@ -15,6 +15,8 @@ interface ModelSelectionStepProps {
   onBack: () => void;
   currentStep: number;
   totalSteps: number;
+  /** Subject selected in step 1, used to show recommendation badge */
+  subject?: string;
 }
 
 function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
@@ -40,6 +42,9 @@ function getSpeedBadgeClass(tier: SpeedTier): string {
 }
 
 export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) => {
+  const recommendedModelId = () =>
+    props.subject ? getRecommendedModelForSubject(props.subject) : null;
+
   return (
     <Card class="w-full max-w-3xl">
       <CardContent class="pt-6">
@@ -94,6 +99,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
           <For each={AVAILABLE_MODELS}>
             {(model) => {
               const isSelected = () => props.value === model.id;
+              const isRecommended = () => recommendedModelId() === model.id;
 
               return (
                 <button
@@ -105,6 +111,16 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                       : "border-border hover:border-muted-foreground"
                   }`}
                 >
+                  {/* Recommendation badge */}
+                  {isRecommended() && props.subject && (
+                    <div class="absolute -top-2.5 left-3 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center gap-1">
+                      <span class="i-carbon-star-filled text-[10px]" />
+                      {t("onboarding.steps.modelSelection.recommendedFor", {
+                        subject: t(`onboarding.subjects.${props.subject}`),
+                      })}
+                    </div>
+                  )}
+
                   {/* Header: Provider Logo + Name */}
                   <div class="flex items-center gap-2 mb-3">
                     <AIProviderLogo provider={model.provider} size="sm" />

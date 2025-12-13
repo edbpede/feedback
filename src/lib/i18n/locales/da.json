@@ -112,7 +112,8 @@
           "medium": "Normal",
           "very-fast": "Meget hurtig"
         },
-        "bestForLabel": "God til"
+        "bestForLabel": "God til",
+        "recommendedFor": "Anbefalet til {{subject}}"
       }
     },
     "models": {
