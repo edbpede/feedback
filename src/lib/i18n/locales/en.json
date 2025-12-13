@@ -30,7 +30,10 @@
     "hideInitialRequest": "Hide submitted info",
     "reconnecting": "Reconnecting...",
     "retryButton": "Try again",
-    "retryDisabled": "Please wait..."
+    "retryDisabled": "Please wait...",
+    "retryingQuick": "Retrying...",
+    "retryingBackoff": "Waiting {{seconds}}s...",
+    "connectionFailedFinal": "Connection failed after 10 attempts. Try a different AI model, or click 'Try again'."
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",

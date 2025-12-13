@@ -30,7 +30,10 @@
     "hideInitialRequest": "Skjul afsendt information",
     "reconnecting": "Forbinder igen...",
     "retryButton": "Prøv igen",
-    "retryDisabled": "Vent venligst..."
+    "retryDisabled": "Vent venligst...",
+    "retryingQuick": "Prøver igen...",
+    "retryingBackoff": "Venter {{seconds}}s...",
+    "connectionFailedFinal": "Forbindelsen mislykkedes efter 10 forsøg. Prøv en anden AI-model, eller klik 'Prøv igen'."
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",

@@ -19,7 +19,7 @@ import {
   loadMessageCosts,
   saveMessageCosts,
 } from "@lib/storage";
-import { sendMessage, fetchBalance } from "@lib/api";
+import { sendMessage, fetchBalance, type RetryPhase } from "@lib/api";
 import { t } from "@lib/i18n";
 import { calculateCostUsd } from "@config/pricing";
 import { BalanceDisplay } from "@components/BalanceDisplay";
@@ -45,8 +45,13 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   const [attachedFile, setAttachedFile] = createSignal<AttachedFile | null>(null);
   const [streamingContent, setStreamingContent] = createSignal("");
 
-  // Retry state
-  const [retryState, setRetryState] = createSignal<{ attempt: number; max: number } | null>(null);
+  // Retry state with phase and delay info
+  const [retryState, setRetryState] = createSignal<{
+    attempt: number;
+    max: number;
+    phase: RetryPhase;
+    delayMs: number;
+  } | null>(null);
   const [failedMessage, setFailedMessage] = createSignal<Message | null>(null);
   const [retryDisabledUntil, setRetryDisabledUntil] = createSignal<number>(0);
 
@@ -163,8 +168,8 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
           assistantContent += chunk;
           setStreamingContent(assistantContent);
         },
-        onRetry: (attempt, max) => {
-          setRetryState({ attempt, max });
+        onRetry: (attempt, max, phase, delayMs) => {
+          setRetryState({ attempt, max, phase, delayMs });
         },
         onUsage: (usage) => {
           messageUsage = usage;
@@ -289,7 +294,13 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       <Show when={retryState()}>
         <div class="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground bg-muted/50 border-b border-border animate-pulse">
           <span class="i-carbon-connection-signal" />
-          {t("chat.reconnecting")} ({retryState()!.attempt}/{retryState()!.max})
+          <Show
+            when={retryState()!.phase === 'quick'}
+            fallback={t("chat.retryingBackoff", { seconds: String(Math.round(retryState()!.delayMs / 1000)) })}
+          >
+            {t("chat.retryingQuick")}
+          </Show>
+          {" "}({retryState()!.attempt}/{retryState()!.max})
         </div>
       </Show>
 

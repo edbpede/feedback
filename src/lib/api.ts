@@ -7,9 +7,12 @@ import type {
   TokenUsage,
 } from "@lib/types";
 
-/** Retry configuration */
-const MAX_RETRIES = 3;
-const RETRY_DELAYS = [1000, 2000, 4000]; // Exponential backoff: 1s, 2s, 4s
+/** Retry configuration - progressive strategy */
+const MAX_RETRIES = 10;
+const RETRY_DELAYS = [
+  1000, 1500, 2000, 2000, 2000,     // Phase 1 (attempts 1-5): quick retries
+  4000, 8000, 16000, 32000, 60000,  // Phase 2 (attempts 6-10): exponential backoff
+];
 
 /** Delay helper for retry backoff */
 function delay(ms: number): Promise<void> {
@@ -27,11 +30,15 @@ export async function authenticate(
   return response.json() as Promise<ApiResponse<unknown>>;
 }
 
+/** Retry phase indicator */
+export type RetryPhase = 'quick' | 'backoff';
+
 export interface SendMessageOptions {
   messages: Message[];
   model?: string;
   onChunk: (chunk: string) => void;
-  onRetry?: (attempt: number, maxAttempts: number) => void;
+  /** Callback with attempt number, max attempts, phase, and delay until next retry */
+  onRetry?: (attempt: number, maxAttempts: number, phase: RetryPhase, delayMs: number) => void;
   /** Callback when usage data is received (typically in final chunk) */
   onUsage?: (usage: TokenUsage) => void;
 }
@@ -56,7 +63,8 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
 
         // Check if we should retry
         if (errorData.errorDetails?.retryable && attempt < MAX_RETRIES - 1) {
-          onRetry?.(attempt + 1, MAX_RETRIES);
+          const phase: RetryPhase = attempt < 5 ? 'quick' : 'backoff';
+          onRetry?.(attempt + 1, MAX_RETRIES, phase, RETRY_DELAYS[attempt]);
           await delay(RETRY_DELAYS[attempt]);
           continue;
         }
@@ -107,13 +115,14 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
       );
 
       if (attempt < MAX_RETRIES - 1) {
-        onRetry?.(attempt + 1, MAX_RETRIES);
+        const phase: RetryPhase = attempt < 5 ? 'quick' : 'backoff';
+        onRetry?.(attempt + 1, MAX_RETRIES, phase, RETRY_DELAYS[attempt]);
         await delay(RETRY_DELAYS[attempt]);
       }
     }
   }
 
-  throw lastError || new Error("Request failed after all retries");
+  throw lastError || new Error("Connection failed after 10 attempts. Please try a different AI model.");
 }
 
 /** Log detailed error information to browser console */
