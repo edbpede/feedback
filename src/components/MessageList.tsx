@@ -1,7 +1,9 @@
 import { For, Show, createEffect, type Component } from "solid-js";
 import { MessageBubble } from "@components/MessageBubble";
+import { AIProviderLogo } from "@components/AIProviderLogo";
 import { Button } from "@components/ui/button";
 import { t } from "@lib/i18n";
+import { getModelById, type AIProvider } from "@config/models";
 import type { Message } from "@lib/types";
 
 interface MessageListProps {
@@ -11,10 +13,19 @@ interface MessageListProps {
   canRetry?: boolean;
   retryDisabled?: boolean;
   onRetry?: () => void;
+  /** Model ID for displaying provider logo on assistant messages */
+  modelId?: string;
 }
 
 export const MessageList: Component<MessageListProps> = (props) => {
   let containerRef: HTMLDivElement | undefined;
+
+  // Get provider from model ID for loading indicator
+  const loadingProvider = () => {
+    if (!props.modelId) return null;
+    const model = getModelById(props.modelId);
+    return model?.provider ?? null;
+  };
 
   // Auto-scroll to bottom when messages change
   createEffect(() => {
@@ -49,6 +60,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
             <MessageBubble
               message={message}
               isCollapsible={index() === 0 && message.role === "user"}
+              modelId={props.modelId}
             />
           )}
         </For>
@@ -84,12 +96,18 @@ export const MessageList: Component<MessageListProps> = (props) => {
       <Show when={props.streamingContent}>
         <MessageBubble
           message={{ role: "assistant", content: props.streamingContent }}
+          modelId={props.modelId}
         />
       </Show>
 
       {/* Loading indicator */}
       <Show when={props.isLoading && !props.streamingContent}>
-        <div class="flex justify-start">
+        <div class="flex justify-start gap-2">
+          <Show when={loadingProvider()}>
+            <div class="flex-shrink-0 mt-1">
+              <AIProviderLogo provider={loadingProvider()!} size="sm" class="opacity-60" />
+            </div>
+          </Show>
           <div class="bg-muted rounded-lg px-5 py-4 transition-colors duration-200">
             <span class="i-carbon-loading animate-spin" />
           </div>

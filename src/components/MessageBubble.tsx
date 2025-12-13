@@ -2,7 +2,9 @@ import { createSignal, Show, type Component } from "solid-js";
 import { marked, type Tokens } from "marked";
 import hljs from "highlight.js";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
+import { AIProviderLogo } from "@components/AIProviderLogo";
 import { t } from "@lib/i18n";
+import { getModelById } from "@config/models";
 import type { Message } from "@lib/types";
 
 // Configure marked with syntax highlighting via custom renderer
@@ -22,12 +24,21 @@ marked.setOptions({
 interface MessageBubbleProps {
   message: Message;
   isCollapsible?: boolean;
+  /** Model ID for displaying provider logo on assistant messages */
+  modelId?: string;
 }
 
 export const MessageBubble: Component<MessageBubbleProps> = (props) => {
   const isUser = () => props.message.role === "user";
   const htmlContent = () => marked.parse(props.message.content) as string;
   const [expanded, setExpanded] = createSignal(false);
+
+  // Get provider from model ID for logo display
+  const provider = () => {
+    if (!props.modelId) return null;
+    const model = getModelById(props.modelId);
+    return model?.provider ?? null;
+  };
 
   const messageContent = (
     <div
@@ -40,11 +51,23 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
     />
   );
 
+  // Fallback for non-collapsible messages (with logo for assistant)
+  const regularMessage = (
+    <>
+      <Show when={!isUser() && provider()}>
+        <div class="flex-shrink-0 mt-1">
+          <AIProviderLogo provider={provider()!} size="sm" class="opacity-60" />
+        </div>
+      </Show>
+      {messageContent}
+    </>
+  );
+
   return (
-    <div class={`flex ${isUser() ? "justify-end" : "justify-start"}`}>
+    <div class={`flex ${isUser() ? "justify-end" : "justify-start gap-2"}`}>
       <Show
         when={props.isCollapsible}
-        fallback={messageContent}
+        fallback={regularMessage}
       >
         <Collapsible open={expanded()} onOpenChange={setExpanded} class="max-w-[80%] flex flex-col items-end">
           <CollapsibleTrigger

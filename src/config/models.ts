@@ -6,6 +6,9 @@
 export type PricingTier = "budget" | "standard" | "premium";
 export type SpeedTier = "fast" | "medium" | "very-fast";
 
+/** Supported AI provider identifiers */
+export type AIProvider = "DeepSeek" | "OpenAI" | "Zhipu AI";
+
 export interface ModelConfig {
   /** Unique model identifier sent to the API */
   id: string;
@@ -18,7 +21,7 @@ export interface ModelConfig {
   /** Release date for display (e.g., "Dec 2025") */
   releaseDate: string;
   /** Company/organization that created the model */
-  provider: string;
+  provider: AIProvider;
   /** Speed tier for badge display */
   speedTier: SpeedTier;
   /** i18n key for what the model is best suited for */
@@ -84,4 +87,31 @@ export function isValidModel(modelId: string): boolean {
  */
 export function getModelById(modelId: string): ModelConfig | undefined {
   return AVAILABLE_MODELS.find((m) => m.id === modelId);
+}
+
+/**
+ * Logo paths for each AI provider, with theme variants.
+ * - light: Logo for light theme (dark-colored logo)
+ * - dark: Logo for dark theme (light-colored logo)
+ */
+export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: string }> = {
+  "DeepSeek": {
+    light: "/ai-providers/deepseek.svg",
+    dark: "/ai-providers/deepseek.svg",
+  },
+  "OpenAI": {
+    light: "/ai-providers/openai-dark.svg",
+    dark: "/ai-providers/openai-light.svg",
+  },
+  "Zhipu AI": {
+    light: "/ai-providers/zhipu-ai-light.svg",
+    dark: "/ai-providers/zhipu-ai.svg",
+  },
+};
+
+/**
+ * Get the logo path for a provider based on the current theme.
+ */
+export function getProviderLogoPath(provider: AIProvider, theme: "light" | "dark"): string {
+  return PROVIDER_LOGO_PATHS[provider][theme];
 }

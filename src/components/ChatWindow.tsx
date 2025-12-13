@@ -227,6 +227,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         canRetry={!!failedMessage()}
         retryDisabled={Date.now() < retryDisabledUntil()}
         onRetry={handleRetry}
+        modelId={props.onboardingContext?.model}
       />
 
       {/* File Upload */}
