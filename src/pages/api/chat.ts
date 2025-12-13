@@ -110,6 +110,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         model: selectedModel,
         messages,
         stream: true,
+        stream_options: { include_usage: true },
         temperature: 0.7,
         max_tokens: 4000,
       }),
