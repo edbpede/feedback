@@ -3,7 +3,7 @@ import { MessageBubble } from "@components/MessageBubble";
 import { AIProviderLogo } from "@components/AIProviderLogo";
 import { Button } from "@components/ui/button";
 import { t } from "@lib/i18n";
-import { getModelById, type AIProvider } from "@config/models";
+import { getModelById } from "@config/models";
 import type { Message } from "@lib/types";
 
 interface MessageListProps {
