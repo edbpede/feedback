@@ -51,11 +51,17 @@ export function usdToDkk(usd: number): number {
 /**
  * Format DKK amount for display (Danish format).
  * Uses comma as decimal separator.
- * @example formatDkk(0.42) -> "0,42 kr"
+ * For amounts less than 1 kr, shows øre equivalent in parentheses.
+ * @example formatDkk(0.05) -> "0,05 kr (5 øre)"
+ * @example formatDkk(0.42) -> "0,42 kr (42 øre)"
  * @example formatDkk(1.5) -> "1,50 kr"
  */
 export function formatDkk(dkk: number): string {
   const formatted = dkk.toFixed(2).replace(".", ",");
+  if (dkk < 1) {
+    const oere = Math.round(dkk * 100);
+    return `${formatted} kr (${oere} øre)`;
+  }
   return `${formatted} kr`;
 }
 
