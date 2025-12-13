@@ -4,6 +4,9 @@
     "loading": "Indlæser...",
     "error": "Fejl"
   },
+  "balance": {
+    "tooltip": "Saldoen er betalt af EDB Pede. Chatbotten stopper med at virke, når saldoen når 0 kr."
+  },
   "auth": {
     "title": "Feedback Bot til Studerende",
     "description": "Indtast adgangskoden for at få adgang til feedbacksystemet.",

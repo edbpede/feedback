@@ -1,5 +1,7 @@
 import { Show, type Component } from "solid-js";
 import { formatDkk, usdToDkk } from "@config/pricing";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
+import { t } from "@lib/i18n";
 
 interface BalanceDisplayProps {
   /** Balance in USD (null when loading/error) */
@@ -13,21 +15,29 @@ export const BalanceDisplay: Component<BalanceDisplayProps> = (props) => {
     props.balanceUsd !== null ? usdToDkk(props.balanceUsd) : null;
 
   return (
-    <div class="flex items-center gap-1.5 text-sm text-muted-foreground">
-      <span class="i-carbon-wallet" />
-      <Show
-        when={!props.isLoading && props.balanceUsd !== null}
-        fallback={
-          <Show
-            when={props.isLoading}
-            fallback={<span class="text-destructive">--</span>}
-          >
-            <span class="animate-pulse">...</span>
-          </Show>
-        }
+    <Tooltip>
+      <TooltipTrigger
+        as="div"
+        class="flex items-center gap-1.5 text-sm text-muted-foreground cursor-help"
       >
-        <span>{formatDkk(balanceDkk()!)}</span>
-      </Show>
-    </div>
+        <span class="i-carbon-wallet" />
+        <Show
+          when={!props.isLoading && props.balanceUsd !== null}
+          fallback={
+            <Show
+              when={props.isLoading}
+              fallback={<span class="text-destructive">--</span>}
+            >
+              <span class="animate-pulse">...</span>
+            </Show>
+          }
+        >
+          <span>{formatDkk(balanceDkk()!)}</span>
+        </Show>
+      </TooltipTrigger>
+      <TooltipContent class="max-w-xs">
+        {t("balance.tooltip")}
+      </TooltipContent>
+    </Tooltip>
   );
 };

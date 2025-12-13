@@ -4,6 +4,9 @@
     "loading": "Loading...",
     "error": "Error"
   },
+  "balance": {
+    "tooltip": "The balance is paid by EDB Pede. The chatbot will stop working when the balance reaches 0 DKK."
+  },
   "auth": {
     "title": "Student Feedback Bot",
     "description": "Enter the password to access the feedback system.",

@@ -11,3 +11,4 @@ export {
 } from "./card";
 export { Alert, AlertTitle, AlertDescription, alertVariants, type AlertProps } from "./alert";
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible";
+export { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
