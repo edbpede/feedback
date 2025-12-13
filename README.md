@@ -53,6 +53,7 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 </details>
 
 <details>
+
 <summary>🌙 Mørk tilstand</summary>
 
 | Adgangskode | Velkomst |
