@@ -9,7 +9,7 @@ export type PricingTier = "budget" | "standard" | "premium";
 export type SpeedTier = "fast" | "medium" | "very-fast";
 
 /** Supported AI provider identifiers */
-export type AIProvider = "DeepSeek" | "OpenAI" | "Zhipu AI" | "Alibaba";
+export type AIProvider = "DeepSeek" | "OpenAI" | "Zhipu AI" | "Alibaba" | "Google";
 
 export interface ModelConfig {
   /** Unique model identifier sent to the API */
@@ -75,6 +75,16 @@ export const AVAILABLE_MODELS: ModelConfig[] = [
     speedTier: "fast",
     bestForKey: "onboarding.models.qwen.bestFor",
   },
+  {
+    id: "TEE/gemma-3-27b-it",
+    nameKey: "onboarding.models.gemma.name",
+    descriptionKey: "onboarding.models.gemma.description",
+    pricingTier: "budget",
+    releaseDate: "Mar 2025",
+    provider: "Google",
+    speedTier: "fast",
+    bestForKey: "onboarding.models.gemma.bestFor",
+  },
 ] as const;
 
 /** Set of valid model IDs for quick lookup */
@@ -98,6 +108,9 @@ export const SUBJECT_MODEL_MAP: Record<string, string> = {
   matematik: "TEE/DeepSeek-v3.2",
   naturfag: "TEE/DeepSeek-v3.2",
   kristendomskundskab: "TEE/glm-4.6",
+  dansk: "TEE/gemma-3-27b-it",
+  engelsk: "TEE/gemma-3-27b-it",
+  tysk: "TEE/gemma-3-27b-it",
 };
 
 /**
@@ -143,6 +156,10 @@ export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: stri
   "Alibaba": {
     light: "/ai-providers/qwen.svg",
     dark: "/ai-providers/qwen.svg",
+  },
+  "Google": {
+    light: "/ai-providers/gemma.svg",
+    dark: "/ai-providers/gemma.svg",
   },
 };
 

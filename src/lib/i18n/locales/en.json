@@ -136,6 +136,11 @@
         "name": "Qwen3 30B",
         "description": "Advanced multilingual model with excellent instruction-following. Great for writing and language tasks.",
         "bestFor": "Languages and writing"
+      },
+      "gemma": {
+        "name": "Gemma 3 27B",
+        "description": "Google's multilingual model with excellent language understanding. Supports 140+ languages and long documents.",
+        "bestFor": "Languages and writing"
       }
     },
     "subjects": {

@@ -136,6 +136,11 @@
         "name": "Qwen3 30B",
         "description": "Avanceret flersproget model med fremragende instruktionsfølgning. Perfekt til skrivning og sprogopgaver.",
         "bestFor": "Sprog og skrivning"
+      },
+      "gemma": {
+        "name": "Gemma 3 27B",
+        "description": "Googles flersprogede model med fremragende sprogforståelse. Understøtter over 140 sprog og lange tekster.",
+        "bestFor": "Sprog og sprogfag"
       }
     },
     "subjects": {
