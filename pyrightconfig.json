@@ -1,0 +1,9 @@
+{
+  "venvPath": "scripts/devserver",
+  "venv": ".venv",
+  "pythonVersion": "3.14",
+  "include": [
+    "scripts/devserver"
+  ]
+}
+
