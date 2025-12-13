@@ -24,9 +24,9 @@ A Danish student feedback chatbot ("Feedback Bot til Studerende") built with Ast
 ## Commands
 
 ```bash
-bun dev      # Start development server
-bun build    # Production build
-bun preview  # Preview production build
+bun run dev      # Start development server
+bun run build    # Production build
+bun run preview  # Preview production build
 ```
 
 ## Tech Stack
