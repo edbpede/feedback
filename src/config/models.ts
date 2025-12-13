@@ -3,6 +3,8 @@
  * Models are displayed in the onboarding flow for users to choose from.
  */
 
+import type { TranslationKey } from "@lib/i18n";
+
 export type PricingTier = "budget" | "standard" | "premium";
 export type SpeedTier = "fast" | "medium" | "very-fast";
 
@@ -13,9 +15,9 @@ export interface ModelConfig {
   /** Unique model identifier sent to the API */
   id: string;
   /** i18n key for the model display name */
-  nameKey: string;
+  nameKey: TranslationKey;
   /** i18n key for the model description */
-  descriptionKey: string;
+  descriptionKey: TranslationKey;
   /** Pricing tier for badge display */
   pricingTier: PricingTier;
   /** Release date for display (e.g., "Dec 2025") */
@@ -25,7 +27,7 @@ export interface ModelConfig {
   /** Speed tier for badge display */
   speedTier: SpeedTier;
   /** i18n key for what the model is best suited for */
-  bestForKey: string;
+  bestForKey: TranslationKey;
 }
 
 /**
