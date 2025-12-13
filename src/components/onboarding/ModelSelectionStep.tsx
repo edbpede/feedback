@@ -64,15 +64,25 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
               <p class="text-muted-foreground leading-relaxed">
                 {t("onboarding.steps.modelSelection.privacy.description")}
               </p>
-              <div class="mt-3">
+              <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+                <span class="text-muted-foreground">{t("onboarding.steps.modelSelection.privacy.learnMoreLabel")}</span>
                 <a
-                  href="https://nano-gpt.com/blog/trusted-execution-environments-and-confidential-ai-on-nanogpt"
-                  class="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                  href="https://techcommunity.microsoft.com/blog/azureconfidentialcomputingblog/azure-ai-confidential-inferencing-technical-deep-dive/4253150"
+                  class="text-primary hover:underline inline-flex items-center gap-0.5"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {t("onboarding.steps.modelSelection.privacy.learnMore")}
-                  <span class="i-carbon-arrow-up-right text-xs" />
+                  {t("onboarding.steps.modelSelection.privacy.sourceAzure")}
+                  <span class="i-carbon-arrow-up-right" />
+                </a>
+                <a
+                  href="https://cloud.google.com/blog/products/identity-security/how-confidential-computing-lays-the-foundation-for-trusted-ai"
+                  class="text-primary hover:underline inline-flex items-center gap-0.5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("onboarding.steps.modelSelection.privacy.sourceGoogle")}
+                  <span class="i-carbon-arrow-up-right" />
                 </a>
               </div>
             </div>

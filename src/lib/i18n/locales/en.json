@@ -98,7 +98,9 @@
         "privacy": {
           "trigger": "Privacy & Security",
           "description": "These AI models run in Trusted Execution Environments (TEE), which means your data stays encrypted even while being processed - not just during transmission. This hardware-level protection ensures that no one, including the cloud provider, can access your conversations.",
-          "learnMore": "Learn more about TEE security"
+          "learnMoreLabel": "Learn more:",
+          "sourceAzure": "Microsoft Azure",
+          "sourceGoogle": "Google Cloud"
         },
         "pricingTiers": {
           "budget": "Budget",
