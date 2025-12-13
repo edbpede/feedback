@@ -68,9 +68,9 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                   }`}
                 >
                   {/* Header: Provider Logo + Name */}
-                  <div class="flex items-center gap-2 mb-2">
+                  <div class="flex items-center gap-2 mb-3">
                     <AIProviderLogo provider={model.provider} size="sm" />
-                    <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide -translate-y-px">
+                    <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                       {model.provider}
                     </span>
                   </div>
@@ -95,8 +95,8 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                     </span>
                   </div>
 
-                  {/* Footer: Speed + Pricing + Date */}
-                  <div class="flex items-center gap-2 flex-wrap">
+                  {/* Footer: Speed + Pricing badges */}
+                  <div class="flex items-center gap-2 flex-wrap mb-2">
                     {/* Speed badge */}
                     <span
                       class={`px-2 py-0.5 text-xs font-medium rounded-full ${getSpeedBadgeClass(model.speedTier)}`}
@@ -110,9 +110,11 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                     >
                       {t(`onboarding.steps.modelSelection.pricingTiers.${model.pricingTier}`)}
                     </span>
+                  </div>
 
-                    {/* Release date */}
-                    <span class="text-xs text-muted-foreground ml-auto">
+                  {/* Release date - always bottom right */}
+                  <div class="text-right">
+                    <span class="text-xs text-muted-foreground">
                       {model.releaseDate}
                     </span>
                   </div>
