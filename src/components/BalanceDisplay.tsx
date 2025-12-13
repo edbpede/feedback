@@ -1,5 +1,5 @@
 import { Show, type Component } from "solid-js";
-import { formatUsd, formatDkk, usdToDkk } from "@config/pricing";
+import { formatDkk, usdToDkk } from "@config/pricing";
 
 interface BalanceDisplayProps {
   /** Balance in USD (null when loading/error) */
@@ -26,9 +26,7 @@ export const BalanceDisplay: Component<BalanceDisplayProps> = (props) => {
           </Show>
         }
       >
-        <span>
-          {formatUsd(props.balanceUsd!)} / {formatDkk(balanceDkk()!)}
-        </span>
+        <span>{formatDkk(balanceDkk()!)}</span>
       </Show>
     </div>
   );
