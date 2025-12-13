@@ -36,7 +36,7 @@ const icons: FooterIcon[] = [
 
 export const FooterIconBar: Component = () => {
   return (
-    <div class="flex items-center justify-center gap-4 py-3 px-4 bg-background/50">
+    <div class="flex items-center justify-center gap-5 py-2 -mt-1 px-4 bg-background/50">
       <For each={icons}>
         {(icon) => {
           const isExternal = icon.href.startsWith("http");
@@ -51,7 +51,7 @@ export const FooterIconBar: Component = () => {
               <img
                 src={icon.src}
                 alt=""
-                class="w-6 h-6"
+                class="w-7 h-7"
                 aria-hidden="true"
               />
             </a>
