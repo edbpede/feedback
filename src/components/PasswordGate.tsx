@@ -46,7 +46,7 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
 
   return (
     <div class="flex items-center justify-center min-h-screen p-4">
-      <Card class="w-full max-w-md">
+      <Card class="w-full max-w-lg">
         <CardHeader class="text-center">
           <div class="flex justify-end gap-1 mb-4">
             <ThemeSwitcher />
