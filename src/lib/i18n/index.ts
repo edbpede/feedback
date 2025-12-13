@@ -94,12 +94,23 @@ function getNestedValue(obj: unknown, path: string): string {
 }
 
 /**
- * Get translation for a key (reactive)
+ * Get translation for a key with optional interpolation (reactive)
+ * @param key - Translation key in dot notation
+ * @param params - Optional object with values to interpolate (replaces {{key}} patterns)
  */
-export function t(key: TranslationKey): string {
+export function t(key: TranslationKey, params?: Record<string, string>): string {
   const locale = currentLocale();
   const translations = locales[locale];
-  return getNestedValue(translations, key);
+  let result = getNestedValue(translations, key);
+
+  // Interpolate {{key}} patterns if params provided
+  if (params) {
+    for (const [paramKey, value] of Object.entries(params)) {
+      result = result.replace(new RegExp(`\\{\\{${paramKey}\\}\\}`, 'g'), value);
+    }
+  }
+
+  return result;
 }
 
 /**
