@@ -226,6 +226,86 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     }
   };
 
+  // Retry API call without adding new user message (for first message retry)
+  const retryApiCall = async (existingMessages: Message[]) => {
+    if (isLoading()) return;
+
+    batch(() => {
+      setIsLoading(true);
+      setStreamingContent("");
+    });
+
+    try {
+      let assistantContent = "";
+      let messageUsage: TokenUsage | null = null;
+
+      await sendMessage({
+        messages: existingMessages,
+        model: props.onboardingContext?.model,
+        onChunk: (chunk) => {
+          assistantContent += chunk;
+          setStreamingContent(assistantContent);
+        },
+        onRetry: (attempt, max, phase, delayMs) => {
+          setRetryState({ attempt, max, phase, delayMs });
+        },
+        onUsage: (usage) => {
+          messageUsage = usage;
+        },
+      });
+
+      // Success - clear any failed message state
+      setFailedMessage(null);
+
+      // Calculate index for the new assistant message
+      const newMessageIndex = messages().length;
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantContent },
+      ]);
+
+      // Store cost for this message if usage data received
+      if (messageUsage !== null) {
+        const usage = messageUsage as TokenUsage;
+        const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
+        const costUsd = calculateCostUsd(
+          modelId,
+          usage.prompt_tokens,
+          usage.completion_tokens
+        );
+
+        setMessageCosts((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(newMessageIndex, costUsd);
+          return newMap;
+        });
+      }
+
+      // Refresh balance after successful message
+      refreshBalance();
+    } catch (error) {
+      // Store failed message for manual retry (the first user message)
+      const userMessage = existingMessages[0];
+      if (userMessage) {
+        setFailedMessage(userMessage);
+      }
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `${t("chat.errorPrefix")} ${error instanceof Error ? error.message : t("chat.failedToGetResponse")}`,
+        },
+      ]);
+    } finally {
+      batch(() => {
+        setIsLoading(false);
+        setStreamingContent("");
+        setRetryState(null);
+      });
+    }
+  };
+
   const handleRetry = () => {
     const now = Date.now();
     if (now < retryDisabledUntil()) return; // Rate limited
@@ -234,10 +314,26 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     const msg = failedMessage();
     if (msg) {
       setFailedMessage(null);
-      // Remove last error message and retry
-      setMessages((prev) => prev.slice(0, -1));
-      // Re-send the original message content
-      handleSend(msg.content);
+
+      const currentMessages = messages();
+      // Check if this is a first message retry:
+      // - 2 messages (user + error)
+      // - First is user message
+      // - Second is an error message
+      const isFirstMessageRetry =
+        currentMessages.length === 2 &&
+        currentMessages[0].role === "user" &&
+        currentMessages[1].content.startsWith(t("chat.errorPrefix"));
+
+      if (isFirstMessageRetry) {
+        // First message retry: keep original at index 0, remove error, retry API
+        setMessages((prev) => prev.slice(0, 1));
+        retryApiCall([currentMessages[0]]);
+      } else {
+        // Regular retry: remove error and call handleSend
+        setMessages((prev) => prev.slice(0, -1));
+        handleSend(msg.content);
+      }
     }
   };
 
