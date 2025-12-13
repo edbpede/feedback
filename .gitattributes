@@ -1,0 +1,12 @@
+# GitHub Linguist overrides
+# https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
+
+# Vendored dependencies - exclude from language statistics
+public/pdf.worker.min.mjs linguist-vendored
+
+# Generated files - exclude from language statistics
+public/*.min.js linguist-generated
+public/*.min.mjs linguist-generated
+
+# Configuration files kept for shadcn CLI compatibility
+tailwind.config.js linguist-vendored
