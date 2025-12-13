@@ -53,6 +53,9 @@ export default defineConfig({
 
             // UI component library
             if (id.includes("@kobalte/core")) return "kobalte";
+
+            // Fonts
+            if (id.includes("@fontsource")) return "fonts";
           },
         },
       },

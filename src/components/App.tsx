@@ -1,7 +1,18 @@
-import { createSignal, onMount, Show, type Component } from "solid-js";
+import {
+  createSignal,
+  onMount,
+  Show,
+  lazy,
+  Suspense,
+  type Component,
+} from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
-import { ChatWindow } from "@components/ChatWindow";
 import { OnboardingFlow } from "@components/onboarding";
+
+// Lazy load ChatWindow - user must complete onboarding first
+const ChatWindow = lazy(() =>
+  import("@components/ChatWindow").then((m) => ({ default: m.ChatWindow }))
+);
 import { initLocale } from "@lib/i18n";
 import { initTheme } from "@lib/theme";
 import {
@@ -100,14 +111,16 @@ export const App: Component = () => {
               />
             }
           >
-            <ChatWindow
-              onLogout={handleLogout}
-              onboardingContext={onboardingState().context}
-              onClearOnboarding={handleClearOnboarding}
-              onEditContext={handleEditContext}
-              autoSubmit={pendingAutoSubmit()}
-              onAutoSubmitComplete={handleAutoSubmitComplete}
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ChatWindow
+                onLogout={handleLogout}
+                onboardingContext={onboardingState().context}
+                onClearOnboarding={handleClearOnboarding}
+                onEditContext={handleEditContext}
+                autoSubmit={pendingAutoSubmit()}
+                onAutoSubmitComplete={handleAutoSubmitComplete}
+              />
+            </Suspense>
           </Show>
         </Show>
       </Show>

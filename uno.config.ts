@@ -11,7 +11,13 @@ export default defineConfig({
       color: false, // Using custom northern-lights theme
       darkSelector: '[data-kb-theme="dark"]',
     }),
-    presetIcons({ scale: 1.2, cdn: "https://esm.sh/" }),
+    presetIcons({
+      scale: 1.2,
+      extraProperties: {
+        display: "inline-block",
+        "vertical-align": "middle",
+      },
+    }),
   ],
   theme: {
     fontFamily: {
