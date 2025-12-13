@@ -2,6 +2,7 @@ import type { Component } from "solid-js";
 import { t } from "@lib/i18n";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
+import { Logo } from "@components/Logo";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 
@@ -18,7 +19,7 @@ export const WelcomeStep: Component<WelcomeStepProps> = (props) => {
           <LanguageSwitcher />
         </div>
 
-        <div class="text-6xl mb-6">👋</div>
+        <Logo size="xl" class="mx-auto mb-6" />
 
         <h1 class="text-2xl font-bold mb-4">{t("onboarding.welcome.title")}</h1>
         <p class="text-muted-foreground mb-8">

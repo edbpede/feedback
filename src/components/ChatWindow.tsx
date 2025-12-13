@@ -11,6 +11,7 @@ import { ChatInput } from "@components/ChatInput";
 import { FileUpload } from "@components/FileUpload";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { Logo } from "@components/Logo";
 import { Button } from "@components/ui/button";
 import { loadMessages, saveMessages, clearMessages } from "@lib/storage";
 import { sendMessage } from "@lib/api";
@@ -173,7 +174,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     <div class="flex flex-col h-screen">
       {/* Header */}
       <header class="flex items-center justify-between px-4 py-3 border-b border-border bg-card transition-colors duration-200">
-        <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
+        <div class="flex items-center gap-2">
+          <Logo size="sm" />
+          <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
+        </div>
         <div class="flex items-center gap-2">
           <ThemeSwitcher />
           <LanguageSwitcher />
