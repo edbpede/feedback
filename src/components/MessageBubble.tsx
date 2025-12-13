@@ -12,6 +12,7 @@ import markdown from "highlight.js/lib/languages/markdown";
 import plaintext from "highlight.js/lib/languages/plaintext";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
 import { AIProviderLogo } from "@components/AIProviderLogo";
+import { CostBadge } from "@components/CostBadge";
 import { t } from "@lib/i18n";
 import { getModelById } from "@config/models";
 import type { Message } from "@lib/types";
@@ -51,6 +52,8 @@ interface MessageBubbleProps {
   isCollapsible?: boolean;
   /** Model ID for displaying provider logo on assistant messages */
   modelId?: string;
+  /** Cost in USD for this message (assistant messages only) */
+  costUsd?: number;
 }
 
 export const MessageBubble: Component<MessageBubbleProps> = (props) => {
@@ -84,7 +87,14 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
           <AIProviderLogo provider={provider()!} size="sm" class="opacity-60" />
         </div>
       </Show>
-      {messageContent}
+      <div class="flex flex-col">
+        {messageContent}
+        <Show when={!isUser() && props.costUsd !== undefined}>
+          <div class="mt-1 ml-1">
+            <CostBadge costUsd={props.costUsd!} />
+          </div>
+        </Show>
+      </div>
     </>
   );
 

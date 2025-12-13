@@ -2,6 +2,7 @@ import type { Message, OnboardingState } from "@lib/types";
 
 const STORAGE_KEY = "feedback-bot-messages";
 const ONBOARDING_KEY = "feedback-bot-onboarding";
+const COSTS_KEY = "feedback-bot-costs";
 
 export function saveMessages(messages: Message[]): void {
   try {
@@ -26,6 +27,34 @@ export function clearMessages(): void {
     localStorage.removeItem(STORAGE_KEY);
   } catch {
     console.warn("Failed to clear messages from localStorage");
+  }
+}
+
+export function saveMessageCosts(costs: Map<number, number>): void {
+  try {
+    const arr = Array.from(costs.entries());
+    localStorage.setItem(COSTS_KEY, JSON.stringify(arr));
+  } catch {
+    console.warn("Failed to save message costs to localStorage");
+  }
+}
+
+export function loadMessageCosts(): Map<number, number> {
+  try {
+    const stored = localStorage.getItem(COSTS_KEY);
+    if (!stored) return new Map();
+    const arr = JSON.parse(stored) as [number, number][];
+    return new Map(arr);
+  } catch {
+    return new Map();
+  }
+}
+
+export function clearMessageCosts(): void {
+  try {
+    localStorage.removeItem(COSTS_KEY);
+  } catch {
+    console.warn("Failed to clear message costs from localStorage");
   }
 }
 

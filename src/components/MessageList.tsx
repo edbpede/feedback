@@ -15,6 +15,8 @@ interface MessageListProps {
   onRetry?: () => void;
   /** Model ID for displaying provider logo on assistant messages */
   modelId?: string;
+  /** Cost per message by index (assistant messages only) */
+  messageCosts?: Map<number, number>;
 }
 
 export const MessageList: Component<MessageListProps> = (props) => {
@@ -61,6 +63,11 @@ export const MessageList: Component<MessageListProps> = (props) => {
               message={message}
               isCollapsible={index() === 0 && message.role === "user"}
               modelId={props.modelId}
+              costUsd={
+                message.role === "assistant"
+                  ? props.messageCosts?.get(index())
+                  : undefined
+              }
             />
           )}
         </For>

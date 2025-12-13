@@ -34,6 +34,24 @@ export interface StreamChunk {
   }>;
 }
 
+/** Token usage information from API response */
+export interface TokenUsage {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+}
+
+/** Extended StreamChunk with usage data (typically in final chunk) */
+export interface StreamChunkWithUsage extends StreamChunk {
+  usage?: TokenUsage;
+}
+
+/** Account balance response from NanoGPT */
+export interface BalanceResponse {
+  /** Balance in USD */
+  balance: number;
+}
+
 /** File attached during onboarding */
 export interface AttachedFile {
   name: string;

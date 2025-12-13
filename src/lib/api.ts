@@ -1,4 +1,11 @@
-import type { ApiResponse, ErrorDetails, Message, StreamChunk } from "@lib/types";
+import type {
+  ApiResponse,
+  BalanceResponse,
+  ErrorDetails,
+  Message,
+  StreamChunkWithUsage,
+  TokenUsage,
+} from "@lib/types";
 
 /** Retry configuration */
 const MAX_RETRIES = 3;
@@ -25,10 +32,12 @@ export interface SendMessageOptions {
   model?: string;
   onChunk: (chunk: string) => void;
   onRetry?: (attempt: number, maxAttempts: number) => void;
+  /** Callback when usage data is received (typically in final chunk) */
+  onUsage?: (usage: TokenUsage) => void;
 }
 
 export async function sendMessage(options: SendMessageOptions): Promise<void> {
-  const { messages, model, onChunk, onRetry } = options;
+  const { messages, model, onChunk, onRetry, onUsage } = options;
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -73,9 +82,13 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
             if (data === "[DONE]") return;
 
             try {
-              const parsed = JSON.parse(data) as StreamChunk;
+              const parsed = JSON.parse(data) as StreamChunkWithUsage;
               const content = parsed.choices[0]?.delta?.content;
               if (content) onChunk(content);
+              // Capture usage data if present (typically in final chunk)
+              if (parsed.usage && onUsage) {
+                onUsage(parsed.usage);
+              }
             } catch {
               // Skip malformed JSON
             }
@@ -123,4 +136,28 @@ function logError(
 
 export async function logout(): Promise<void> {
   await fetch("/api/logout", { method: "POST" });
+}
+
+/**
+ * Fetch account balance from NanoGPT.
+ * Returns null on error (graceful degradation).
+ */
+export async function fetchBalance(): Promise<BalanceResponse | null> {
+  try {
+    const response = await fetch("/api/balance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      console.error("[Balance API] Failed:", response.status);
+      return null;
+    }
+
+    const data = (await response.json()) as ApiResponse<BalanceResponse>;
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error("[Balance API] Error:", error);
+    return null;
+  }
 }

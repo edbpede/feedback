@@ -13,10 +13,17 @@ import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { Logo } from "@components/Logo";
 import { Button } from "@components/ui/button";
-import { loadMessages, saveMessages, clearMessages } from "@lib/storage";
-import { sendMessage } from "@lib/api";
+import {
+  loadMessages,
+  saveMessages,
+  loadMessageCosts,
+  saveMessageCosts,
+} from "@lib/storage";
+import { sendMessage, fetchBalance } from "@lib/api";
 import { t } from "@lib/i18n";
-import type { Message, OnboardingContext } from "@lib/types";
+import { calculateCostUsd } from "@config/pricing";
+import { BalanceDisplay } from "@components/BalanceDisplay";
+import type { Message, OnboardingContext, TokenUsage } from "@lib/types";
 
 interface ChatWindowProps {
   onLogout: () => void;
@@ -43,12 +50,35 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   const [failedMessage, setFailedMessage] = createSignal<Message | null>(null);
   const [retryDisabledUntil, setRetryDisabledUntil] = createSignal<number>(0);
 
-  // Load messages from localStorage on mount
+  // Cost tracking state
+  const [balance, setBalance] = createSignal<number | null>(null);
+  const [balanceLoading, setBalanceLoading] = createSignal(false);
+  const [messageCosts, setMessageCosts] = createSignal<Map<number, number>>(new Map());
+
+  // Fetch account balance
+  const refreshBalance = async () => {
+    setBalanceLoading(true);
+    try {
+      const result = await fetchBalance();
+      if (result) {
+        setBalance(result.balance);
+      }
+    } finally {
+      setBalanceLoading(false);
+    }
+  };
+
+  // Load messages and costs from localStorage on mount, and fetch initial balance
   onMount(() => {
     const saved = loadMessages();
     if (saved.length > 0) {
       setMessages(saved);
     }
+    const savedCosts = loadMessageCosts();
+    if (savedCosts.size > 0) {
+      setMessageCosts(savedCosts);
+    }
+    refreshBalance();
   });
 
   // Auto-submit when onboarding completes
@@ -65,6 +95,14 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     const currentMessages = messages();
     if (currentMessages.length > 0) {
       saveMessages(currentMessages);
+    }
+  });
+
+  // Save costs to localStorage when they change
+  createEffect(() => {
+    const currentCosts = messageCosts();
+    if (currentCosts.size > 0) {
+      saveMessageCosts(currentCosts);
     }
   });
 
@@ -113,6 +151,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
 
     try {
       let assistantContent = "";
+      let messageUsage: TokenUsage | null = null;
 
       await sendMessage({
         messages: [...messages(), userMessage],
@@ -124,14 +163,40 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         onRetry: (attempt, max) => {
           setRetryState({ attempt, max });
         },
+        onUsage: (usage) => {
+          messageUsage = usage;
+        },
       });
 
       // Success - clear any failed message state
       setFailedMessage(null);
+
+      // Calculate index for the new assistant message
+      const newMessageIndex = messages().length;
+
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: assistantContent },
       ]);
+
+      // Store cost for this message if usage data received
+      if (messageUsage) {
+        const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
+        const costUsd = calculateCostUsd(
+          modelId,
+          messageUsage.prompt_tokens,
+          messageUsage.completion_tokens
+        );
+
+        setMessageCosts((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(newMessageIndex, costUsd);
+          return newMap;
+        });
+      }
+
+      // Refresh balance after successful message
+      refreshBalance();
     } catch (error) {
       // Store failed message for manual retry
       setFailedMessage(userMessage);
@@ -179,6 +244,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
           <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
         </div>
         <div class="flex items-center gap-2">
+          <BalanceDisplay
+            balanceUsd={balance()}
+            isLoading={balanceLoading()}
+          />
           <ThemeSwitcher />
           <LanguageSwitcher />
           <Show when={props.onboardingContext}>
@@ -228,6 +297,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         retryDisabled={Date.now() < retryDisabledUntil()}
         onRetry={handleRetry}
         modelId={props.onboardingContext?.model}
+        messageCosts={messageCosts()}
       />
 
       {/* File Upload */}
