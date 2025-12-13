@@ -87,14 +87,19 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
           <AIProviderLogo provider={provider()!} size="sm" class="opacity-60" />
         </div>
       </Show>
-      <div class="flex flex-col">
-        {messageContent}
-        <Show when={!isUser() && props.costUsd !== undefined}>
-          <div class="mt-1 ml-1">
-            <CostBadge costUsd={props.costUsd!} />
-          </div>
-        </Show>
-      </div>
+      <Show
+        when={!isUser()}
+        fallback={messageContent}
+      >
+        <div class="flex flex-col">
+          {messageContent}
+          <Show when={props.costUsd !== undefined}>
+            <div class="mt-1 ml-1">
+              <CostBadge costUsd={props.costUsd!} />
+            </div>
+          </Show>
+        </div>
+      </Show>
     </>
   );
 
