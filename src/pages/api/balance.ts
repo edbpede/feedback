@@ -1,10 +1,6 @@
 import type { APIRoute } from "astro";
 import { createHmac } from "node:crypto";
-import {
-  SESSION_SECRET,
-  NANO_GPT_API_KEY,
-  API_BASE_URL,
-} from "astro:env/server";
+import { SESSION_SECRET, NANO_GPT_API_KEY } from "astro:env/server";
 import type { ApiResponse, BalanceResponse } from "@lib/types";
 
 function verifyToken(token: string, secret: string): boolean {
@@ -29,11 +25,11 @@ export const POST: APIRoute = async ({ cookies }) => {
   }
 
   try {
-    // Call NanoGPT check-balance endpoint
-    const balanceResponse = await fetch(`${API_BASE_URL}/check-balance`, {
+    // Call NanoGPT check-balance endpoint (uses /api path, not /api/v1)
+    const balanceResponse = await fetch("https://nano-gpt.com/api/check-balance", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${NANO_GPT_API_KEY}`,
+        "x-api-key": NANO_GPT_API_KEY,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({}),
@@ -57,18 +53,11 @@ export const POST: APIRoute = async ({ cookies }) => {
 
     const data = await balanceResponse.json();
 
-    // Log response format for discovery
-    console.log("Balance API response format:", JSON.stringify(data, null, 2));
-
-    // Extract balance - try common field names
+    // NanoGPT returns usd_balance as a string (e.g., "129.46956147")
     const balance =
-      typeof data.balance === "number"
-        ? data.balance
-        : typeof data.credits === "number"
-          ? data.credits
-          : typeof data.amount === "number"
-            ? data.amount
-            : 0;
+      typeof data.usd_balance === "string"
+        ? parseFloat(data.usd_balance)
+        : 0;
 
     const response: ApiResponse<BalanceResponse> = {
       success: true,
