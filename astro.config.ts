@@ -40,9 +40,19 @@ export default defineConfig({
       rollupOptions: {
         output: {
           manualChunks(id) {
+            // File processing libraries (dynamically imported in fileParser.ts)
             if (id.includes("pdfjs-dist")) return "pdf";
             if (id.includes("mammoth")) return "docx";
+
+            // Core framework
             if (id.includes("solid-js")) return "solid";
+
+            // Markdown rendering (used in chat messages)
+            if (id.includes("highlight.js")) return "highlight";
+            if (id.includes("marked")) return "markdown";
+
+            // UI component library
+            if (id.includes("@kobalte/core")) return "kobalte";
           },
         },
       },
