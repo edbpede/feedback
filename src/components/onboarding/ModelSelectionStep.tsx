@@ -1,6 +1,6 @@
 import type { Component } from "solid-js";
 import { For } from "solid-js";
-import { t } from "@lib/i18n";
+import { t, type TranslationKey } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
@@ -116,7 +116,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                     <div class="absolute -top-2.5 left-3 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center gap-1">
                       <span class="i-carbon-star-filled text-[10px]" />
                       {t("onboarding.steps.modelSelection.recommendedFor", {
-                        subject: t(`onboarding.subjects.${props.subject}`),
+                        subject: t(`onboarding.subjects.${props.subject}` as TranslationKey),
                       })}
                     </div>
                   )}

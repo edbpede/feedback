@@ -180,12 +180,14 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       ]);
 
       // Store cost for this message if usage data received
-      if (messageUsage) {
+      if (messageUsage !== null) {
+        // Type assertion needed: TypeScript's control flow doesn't track callback assignments
+        const usage = messageUsage as TokenUsage;
         const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
         const costUsd = calculateCostUsd(
           modelId,
-          messageUsage.prompt_tokens,
-          messageUsage.completion_tokens
+          usage.prompt_tokens,
+          usage.completion_tokens
         );
 
         setMessageCosts((prev) => {
