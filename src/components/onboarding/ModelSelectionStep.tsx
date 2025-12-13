@@ -4,6 +4,7 @@ import { t } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
 import { AIProviderLogo } from "@components/AIProviderLogo";
 import { AVAILABLE_MODELS, type ModelConfig, type SpeedTier } from "@config/models";
 
@@ -47,9 +48,36 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
         <h2 class="text-xl font-bold mb-2 text-center">
           {t("onboarding.steps.modelSelection.title")}
         </h2>
-        <p class="text-muted-foreground mb-6 text-center text-sm">
+        <p class="text-muted-foreground mb-4 text-center text-sm">
           {t("onboarding.steps.modelSelection.description")}
         </p>
+
+        {/* Privacy/Security Info - Collapsible */}
+        <Collapsible class="mb-6">
+          <CollapsibleTrigger class="w-full flex items-center justify-center gap-2 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors group">
+            <span class="i-carbon-security text-primary" />
+            <span>{t("onboarding.steps.modelSelection.privacy.trigger")}</span>
+            <span class="i-carbon-chevron-down text-xs transition-transform duration-200 group-data-[expanded]:rotate-180" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div class="mt-3 p-4 bg-muted/50 rounded-lg text-sm">
+              <p class="text-muted-foreground leading-relaxed">
+                {t("onboarding.steps.modelSelection.privacy.description")}
+              </p>
+              <div class="mt-3">
+                <a
+                  href="https://nano-gpt.com/blog/trusted-execution-environments-and-confidential-ai-on-nanogpt"
+                  class="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("onboarding.steps.modelSelection.privacy.learnMore")}
+                  <span class="i-carbon-arrow-up-right text-xs" />
+                </a>
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
 
         {/* Model Cards */}
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">

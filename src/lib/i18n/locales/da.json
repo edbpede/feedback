@@ -95,6 +95,11 @@
         "title": "Vælg din AI-model",
         "description": "Vælg hvilken AI-model der skal give dig feedback",
         "default": "Standard",
+        "privacy": {
+          "trigger": "Privatliv og Sikkerhed",
+          "description": "Disse AI-modeller kører i Trusted Execution Environments (TEE), hvilket betyder, at dine data forbliver krypterede selv under behandling - ikke kun under overførsel. Denne hardware-beskyttelse sikrer, at ingen, heller ikke cloud-udbyderen, kan få adgang til dine samtaler.",
+          "learnMore": "Læs mere om TEE-sikkerhed"
+        },
         "pricingTiers": {
           "budget": "Budget",
           "standard": "Standard",

@@ -95,6 +95,11 @@
         "title": "Choose your AI model",
         "description": "Select which AI model will provide your feedback",
         "default": "Default",
+        "privacy": {
+          "trigger": "Privacy & Security",
+          "description": "These AI models run in Trusted Execution Environments (TEE), which means your data stays encrypted even while being processed - not just during transmission. This hardware-level protection ensures that no one, including the cloud provider, can access your conversations.",
+          "learnMore": "Learn more about TEE security"
+        },
         "pricingTiers": {
           "budget": "Budget",
           "standard": "Standard",
