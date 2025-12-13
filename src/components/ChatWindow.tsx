@@ -23,6 +23,7 @@ import { sendMessage, fetchBalance, type RetryPhase } from "@lib/api";
 import { t } from "@lib/i18n";
 import { calculateCostUsd } from "@config/pricing";
 import { BalanceDisplay } from "@components/BalanceDisplay";
+import { ApiError, type ErrorCategory } from "@lib/errorUtils";
 import type { Message, OnboardingContext, TokenUsage } from "@lib/types";
 
 interface ChatWindowProps {
@@ -54,6 +55,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   } | null>(null);
   const [failedMessage, setFailedMessage] = createSignal<Message | null>(null);
   const [retryDisabledUntil, setRetryDisabledUntil] = createSignal<number>(0);
+  const [errorCategory, setErrorCategory] = createSignal<ErrorCategory | null>(null);
 
   // Cost tracking state
   const [balance, setBalance] = createSignal<number | null>(null);
@@ -176,8 +178,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         },
       });
 
-      // Success - clear any failed message state
+      // Success - clear any failed message and error state
       setFailedMessage(null);
+      setErrorCategory(null);
 
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
@@ -208,15 +211,13 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       // Refresh balance after successful message
       refreshBalance();
     } catch (error) {
-      // Store failed message for manual retry
+      // Store failed message for manual retry and set error category
       setFailedMessage(userMessage);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: `${t("chat.errorPrefix")} ${error instanceof Error ? error.message : t("chat.failedToGetResponse")}`,
-        },
-      ]);
+      if (error instanceof ApiError) {
+        setErrorCategory(error.category);
+      } else {
+        setErrorCategory("unknown");
+      }
     } finally {
       batch(() => {
         setIsLoading(false);
@@ -254,8 +255,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         },
       });
 
-      // Success - clear any failed message state
+      // Success - clear any failed message and error state
       setFailedMessage(null);
+      setErrorCategory(null);
 
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
@@ -290,13 +292,11 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       if (userMessage) {
         setFailedMessage(userMessage);
       }
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: `${t("chat.errorPrefix")} ${error instanceof Error ? error.message : t("chat.failedToGetResponse")}`,
-        },
-      ]);
+      if (error instanceof ApiError) {
+        setErrorCategory(error.category);
+      } else {
+        setErrorCategory("unknown");
+      }
     } finally {
       batch(() => {
         setIsLoading(false);
@@ -313,25 +313,21 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
     setRetryDisabledUntil(now + 5000); // 5 second cooldown
     const msg = failedMessage();
     if (msg) {
+      // Clear error state
       setFailedMessage(null);
+      setErrorCategory(null);
 
       const currentMessages = messages();
-      // Check if this is a first message retry:
-      // - 2 messages (user + error)
-      // - First is user message
-      // - Second is an error message
+      // Check if this is a first message retry (only 1 user message, no assistant response yet)
       const isFirstMessageRetry =
-        currentMessages.length === 2 &&
-        currentMessages[0].role === "user" &&
-        currentMessages[1].content.startsWith(t("chat.errorPrefix"));
+        currentMessages.length === 1 &&
+        currentMessages[0].role === "user";
 
       if (isFirstMessageRetry) {
-        // First message retry: keep original at index 0, remove error, retry API
-        setMessages((prev) => prev.slice(0, 1));
+        // First message retry: keep original message and retry API
         retryApiCall([currentMessages[0]]);
       } else {
-        // Regular retry: remove error and call handleSend
-        setMessages((prev) => prev.slice(0, -1));
+        // Regular retry: resend the last user message
         handleSend(msg.content);
       }
     }
@@ -405,6 +401,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         messages={messages()}
         streamingContent={streamingContent()}
         isLoading={isLoading()}
+        errorCategory={errorCategory()}
         canRetry={!!failedMessage()}
         retryDisabled={Date.now() < retryDisabledUntil()}
         onRetry={handleRetry}

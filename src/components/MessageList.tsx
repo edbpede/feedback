@@ -1,15 +1,18 @@
 import { For, Show, createEffect, type Component } from "solid-js";
 import { MessageBubble } from "@components/MessageBubble";
+import { ErrorMessageBubble } from "@components/ErrorMessageBubble";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { Button } from "@components/ui/button";
 import { t } from "@lib/i18n";
 import { getModelById } from "@config/models";
+import type { ErrorCategory } from "@lib/errorUtils";
 import type { Message } from "@lib/types";
 
 interface MessageListProps {
   messages: Message[];
   streamingContent: string;
   isLoading: boolean;
+  /** Error category to display error bubble */
+  errorCategory?: ErrorCategory | null;
   canRetry?: boolean;
   retryDisabled?: boolean;
   onRetry?: () => void;
@@ -73,30 +76,14 @@ export const MessageList: Component<MessageListProps> = (props) => {
         </For>
       </Show>
 
-      {/* Retry button - shown after error messages */}
-      <Show when={props.canRetry && !props.isLoading}>
-        <div class="flex justify-start">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => props.onRetry?.()}
-            disabled={props.retryDisabled}
-            class="gap-2"
-          >
-            <Show
-              when={!props.retryDisabled}
-              fallback={
-                <>
-                  <span class="i-carbon-time" />
-                  {t("chat.retryDisabled")}
-                </>
-              }
-            >
-              <span class="i-carbon-restart" />
-              {t("chat.retryButton")}
-            </Show>
-          </Button>
-        </div>
+      {/* Error message bubble - shown when error occurs */}
+      <Show when={props.errorCategory && !props.isLoading}>
+        <ErrorMessageBubble
+          category={props.errorCategory!}
+          canRetry={props.canRetry}
+          retryDisabled={props.retryDisabled}
+          onRetry={props.onRetry}
+        />
       </Show>
 
       {/* Streaming message */}

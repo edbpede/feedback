@@ -4,6 +4,40 @@
     "loading": "Indlæser...",
     "error": "Fejl"
   },
+  "errors": {
+    "network": {
+      "title": "Ingen forbindelse",
+      "message": "Det ser ud til, at du har mistet forbindelsen til internettet. Tjek din forbindelse og prøv igen."
+    },
+    "timeout": {
+      "title": "Serveren svarer ikke",
+      "message": "AI-serveren er langsom lige nu. Prøv igen om et øjeblik."
+    },
+    "rateLimit": {
+      "title": "For mange beskeder",
+      "message": "Du sender beskeder lidt for hurtigt. Vent et øjeblik, og prøv igen."
+    },
+    "serverError": {
+      "title": "Midlertidig problem",
+      "message": "AI-serveren har et midlertidigt problem. Vi prøver automatisk igen."
+    },
+    "authError": {
+      "title": "Login-fejl",
+      "message": "Din session er udløbet. Log venligst ind igen."
+    },
+    "modelUnavailable": {
+      "title": "Model utilgængelig",
+      "message": "Den valgte AI-model er ikke tilgængelig lige nu. Prøv at vælge en anden model."
+    },
+    "badRequest": {
+      "title": "Noget gik galt",
+      "message": "Der opstod et problem med din besked. Prøv at omformulere og send igen."
+    },
+    "unknown": {
+      "title": "Uventet fejl",
+      "message": "Der opstod en uventet fejl. Prøv igen, eller kontakt din lærer hvis problemet fortsætter."
+    }
+  },
   "balance": {
     "tooltip": "Saldoen er betalt af EDB Pede. Chatbotten stopper med at virke, når saldoen når 0 kr."
   },

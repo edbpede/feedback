@@ -4,6 +4,40 @@
     "loading": "Loading...",
     "error": "Error"
   },
+  "errors": {
+    "network": {
+      "title": "No connection",
+      "message": "It looks like you've lost your internet connection. Check your connection and try again."
+    },
+    "timeout": {
+      "title": "Server not responding",
+      "message": "The AI server is slow right now. Try again in a moment."
+    },
+    "rateLimit": {
+      "title": "Too many messages",
+      "message": "You're sending messages a bit too fast. Wait a moment and try again."
+    },
+    "serverError": {
+      "title": "Temporary problem",
+      "message": "The AI server has a temporary problem. We'll try again automatically."
+    },
+    "authError": {
+      "title": "Login error",
+      "message": "Your session has expired. Please log in again."
+    },
+    "modelUnavailable": {
+      "title": "Model unavailable",
+      "message": "The selected AI model is not available right now. Try choosing a different model."
+    },
+    "badRequest": {
+      "title": "Something went wrong",
+      "message": "There was a problem with your message. Try rephrasing and send again."
+    },
+    "unknown": {
+      "title": "Unexpected error",
+      "message": "An unexpected error occurred. Try again, or contact your teacher if the problem continues."
+    }
+  },
   "balance": {
     "tooltip": "The balance is paid by EDB Pede. The chatbot will stop working when the balance reaches 0 DKK."
   },

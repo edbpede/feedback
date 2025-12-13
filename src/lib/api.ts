@@ -6,6 +6,7 @@ import type {
   StreamChunkWithUsage,
   TokenUsage,
 } from "@lib/types";
+import { ApiError } from "@lib/errorUtils";
 
 /** Retry configuration - progressive strategy */
 const MAX_RETRIES = 10;
@@ -69,7 +70,12 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
           continue;
         }
 
-        throw new Error(errorData.error || "Request failed");
+        const status = errorData.errorDetails?.status ?? response.status;
+        throw new ApiError(
+          status,
+          errorData.error || "Request failed",
+          errorData.errorDetails?.retryable ?? false
+        );
       }
 
       const reader = response.body?.getReader();
@@ -106,15 +112,20 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
 
       return; // Success - exit retry loop
     } catch (error) {
-      // Network error - always retryable
-      lastError = error instanceof Error ? error : new Error(String(error));
+      // Re-throw ApiError as-is (already processed)
+      if (error instanceof ApiError) {
+        lastError = error;
+      } else {
+        // Network error - status 0 indicates network failure
+        lastError = new ApiError(0, "Network error", true);
+      }
 
       console.error(
-        `[Chat API] Attempt ${attempt + 1}/${MAX_RETRIES} network error:`,
+        `[Chat API] Attempt ${attempt + 1}/${MAX_RETRIES} error:`,
         lastError.message
       );
 
-      if (attempt < MAX_RETRIES - 1) {
+      if (attempt < MAX_RETRIES - 1 && lastError.retryable) {
         const phase: RetryPhase = attempt < 5 ? 'quick' : 'backoff';
         onRetry?.(attempt + 1, MAX_RETRIES, phase, RETRY_DELAYS[attempt]);
         await delay(RETRY_DELAYS[attempt]);
@@ -122,7 +133,7 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
     }
   }
 
-  throw lastError || new Error("Connection failed after 10 attempts. Please try a different AI model.");
+  throw lastError || new ApiError(0, "Connection failed after 10 attempts", false);
 }
 
 /** Log detailed error information to browser console */
