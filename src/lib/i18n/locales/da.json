@@ -121,7 +121,7 @@
       "deepseek": {
         "name": "DeepSeek V3.2",
         "description": "Forstår komplekse opgaver og giver grundige svar. God til at forklare ting trin for trin.",
-        "bestFor": "Matematik og naturfag"
+        "bestFor": "Alle fag"
       },
       "gptoss": {
         "name": "GPT-OSS 120B",

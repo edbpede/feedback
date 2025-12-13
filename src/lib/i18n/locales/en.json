@@ -121,7 +121,7 @@
       "deepseek": {
         "name": "DeepSeek V3.2",
         "description": "Understands complex tasks and gives thorough answers. Great at explaining things step by step.",
-        "bestFor": "Math and science"
+        "bestFor": "All subjects"
       },
       "gptoss": {
         "name": "GPT-OSS 120B",
