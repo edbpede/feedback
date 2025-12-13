@@ -4,7 +4,7 @@ import { t, type TranslationKey } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
+import { PrivacyInfoBox } from "./PrivacyInfoBox";
 import { AIProviderLogo } from "@components/AIProviderLogo";
 import { AVAILABLE_MODELS, getRecommendedModelForSubject, DEFAULT_MODEL_ID, type ModelConfig, type SpeedTier } from "@config/models";
 
@@ -57,42 +57,8 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
           {t("onboarding.steps.modelSelection.description")}
         </p>
 
-        {/* Privacy/Security Info - Collapsible */}
-        <Collapsible class="mb-6">
-          <CollapsibleTrigger class="w-full flex items-center justify-center gap-2 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors group">
-            <span class="i-carbon-security text-primary" />
-            <span>{t("onboarding.steps.modelSelection.privacy.trigger")}</span>
-            <span class="i-carbon-chevron-down text-xs transition-transform duration-200 group-data-[expanded]:rotate-180" />
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div class="mt-3 p-4 bg-muted/50 rounded-lg text-sm">
-              <p class="text-muted-foreground leading-relaxed">
-                {t("onboarding.steps.modelSelection.privacy.description")}
-              </p>
-              <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-                <span class="text-muted-foreground">{t("onboarding.steps.modelSelection.privacy.learnMoreLabel")}</span>
-                <a
-                  href="https://techcommunity.microsoft.com/blog/azureconfidentialcomputingblog/azure-ai-confidential-inferencing-technical-deep-dive/4253150"
-                  class="text-primary hover:underline inline-flex items-center gap-0.5"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t("onboarding.steps.modelSelection.privacy.sourceAzure")}
-                  <span class="i-carbon-arrow-up-right" />
-                </a>
-                <a
-                  href="https://cloud.google.com/blog/products/identity-security/how-confidential-computing-lays-the-foundation-for-trusted-ai"
-                  class="text-primary hover:underline inline-flex items-center gap-0.5"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t("onboarding.steps.modelSelection.privacy.sourceGoogle")}
-                  <span class="i-carbon-arrow-up-right" />
-                </a>
-              </div>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
+        {/* Privacy/Security Info Box */}
+        <PrivacyInfoBox />
 
         {/* Model Cards */}
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">

@@ -96,8 +96,28 @@
         "description": "Select which AI model will provide your feedback",
         "default": "Default",
         "privacy": {
-          "trigger": "Privacy & Security",
-          "description": "These AI models run in Trusted Execution Environments (TEE), which means your data stays encrypted even while being processed - not just during transmission. This hardware-level protection ensures that no one, including the cloud provider, can access your conversations.",
+          "title": "Your data is protected",
+          "subtitle": "All models run in secure hardware environments",
+          "benefits": {
+            "encrypted": {
+              "title": "Encrypted processing",
+              "description": "Data stays encrypted even during AI processing"
+            },
+            "gdpr": {
+              "title": "GDPR compliant",
+              "description": "Meets data protection requirements"
+            },
+            "hardware": {
+              "title": "Hardware protection",
+              "description": "No one can access - not even the cloud provider"
+            }
+          },
+          "expandTrigger": "Learn more about TEE technology",
+          "details": {
+            "teeExplanation": "These AI models run in Trusted Execution Environments (TEE), which means your data stays encrypted even while being processed - not just during transmission. This hardware-level protection ensures that no one, including the cloud provider, can access your conversations.",
+            "performance": "Minimal performance impact (~100ms) with maximum security",
+            "verification": "Cryptographic verification ensures your data was processed securely"
+          },
           "learnMoreLabel": "Learn more:",
           "sourceAzure": "Microsoft Azure",
           "sourceGoogle": "Google Cloud"

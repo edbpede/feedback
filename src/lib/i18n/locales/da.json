@@ -96,8 +96,28 @@
         "description": "Vælg hvilken AI-model der skal give dig feedback",
         "default": "Standard",
         "privacy": {
-          "trigger": "Privatliv og Sikkerhed",
-          "description": "Disse AI-modeller kører i Trusted Execution Environments (TEE), hvilket betyder, at dine data forbliver krypterede selv under behandling - ikke kun under overførsel. Denne hardware-beskyttelse sikrer, at ingen, heller ikke cloud-udbyderen, kan få adgang til dine samtaler.",
+          "title": "Din data er beskyttet",
+          "subtitle": "Alle modeller kører i sikre hardware-miljøer",
+          "benefits": {
+            "encrypted": {
+              "title": "Krypteret behandling",
+              "description": "Data forbliver krypteret selv under AI-behandling"
+            },
+            "gdpr": {
+              "title": "GDPR-kompatibel",
+              "description": "Overholder databeskyttelseskrav"
+            },
+            "hardware": {
+              "title": "Hardware-beskyttelse",
+              "description": "Ingen kan få adgang - heller ikke cloud-udbyderen"
+            }
+          },
+          "expandTrigger": "Læs mere om TEE-teknologi",
+          "details": {
+            "teeExplanation": "Disse AI-modeller kører i Trusted Execution Environments (TEE), hvilket betyder, at dine data forbliver krypterede selv under behandling - ikke kun under overførsel. Denne hardware-beskyttelse sikrer, at ingen, heller ikke cloud-udbyderen, kan få adgang til dine samtaler.",
+            "performance": "Minimal påvirkning af hastighed (~100ms) med maksimal sikkerhed",
+            "verification": "Kryptografisk verifikation sikrer, at dine data blev behandlet sikkert"
+          },
           "learnMoreLabel": "Læs mere:",
           "sourceAzure": "Microsoft Azure",
           "sourceGoogle": "Google Cloud"
