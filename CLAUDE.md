@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Coding Guidelines
+
+When writing or modifying TypeScript, Astro, SolidJS, or UnoCSS code, consult the detailed coding standards in `.augment/rules/astro-typescript-solidjs-unocss.md`. This file contains authoritative patterns and conventions for this project.
+
+## Codebase Search
+
+**Always use the `mcp__auggie-mcp__codebase-retrieval` tool as the primary method for:**
+
+- Exploring the codebase and understanding architecture
+- Finding existing patterns before implementing new features
+- Locating relevant code when the exact file location is unknown
+- Gathering context before making edits
+- Planning tasks in plan mode
+
+This semantic search tool provides better results than grep/find for understanding code relationships. Use grep only for finding exact string matches or all occurrences of a known identifier.
+
 ## Project Overview
 
 A Danish AI-powered feedback chatbot for students (grades 7-9) that provides formative pedagogical guidance without giving direct answers. Uses NanoGPT API for multi-model LLM streaming responses.
