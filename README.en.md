@@ -35,7 +35,7 @@ The system prompt defining the bot's pedagogical behavior is in [`src/config/sys
 
 ## Screenshots
 
-<details open>
+<details closed>
 <summary>☀️ Light Mode</summary>
 
 |                          Password                          |                       Welcome                       |
@@ -56,7 +56,7 @@ The system prompt defining the bot's pedagogical behavior is in [`src/config/sys
 
 </details>
 
-<details>
+<details closed>
 <summary>🌙 Dark Mode</summary>
 
 |                         Password                          |                      Welcome                       |

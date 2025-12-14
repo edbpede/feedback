@@ -35,7 +35,7 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 
 ## Skærmbilleder
 
-<details open>
+<details closed>
 <summary>☀️ Lys tilstand</summary>
 
 |                          Adgangskode                          |                       Velkomst                       |
@@ -56,7 +56,7 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 
 </details>
 
-<details>
+<details closed>
 
 <summary>🌙 Mørk tilstand</summary>
 
