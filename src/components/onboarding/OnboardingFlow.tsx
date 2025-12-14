@@ -12,12 +12,16 @@ interface OnboardingFlowProps {
   onComplete: (context: OnboardingContext) => void;
   onSkip: () => void;
   initialContext?: OnboardingContext | null;
+  isEditing?: boolean;
 }
 
 const TOTAL_STEPS = 5;
 
 export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
-  const [currentStep, setCurrentStep] = createSignal(0);
+  // Start at step 1 (SubjectGradeStep) when editing, step 0 (WelcomeStep) otherwise
+  const [currentStep, setCurrentStep] = createSignal(
+    props.isEditing && props.initialContext ? 1 : 0
+  );
 
   // Form data with optional initial values for editing
   const [subject, setSubject] = createSignal(props.initialContext?.subject ?? "");
@@ -41,7 +45,9 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   };
 
   const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
+    // When editing, don't go back to welcome screen (step 0)
+    const minStep = props.isEditing ? 1 : 0;
+    setCurrentStep((prev) => Math.max(prev - 1, minStep));
   };
 
   const handleSubmit = () => {

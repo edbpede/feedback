@@ -119,6 +119,7 @@ export const App: Component = () => {
                 onComplete={handleOnboardingComplete}
                 onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
                 initialContext={onboardingState().context}
+                isEditing={isEditing()}
               />
             }
           >
