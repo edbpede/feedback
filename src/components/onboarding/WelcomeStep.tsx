@@ -2,6 +2,7 @@ import type { Component } from "solid-js";
 import { t } from "@lib/i18n";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
+import { CardExternalLinks } from "@components/CardExternalLinks";
 import { Logo } from "@components/Logo";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
@@ -14,9 +15,12 @@ export const WelcomeStep: Component<WelcomeStepProps> = (props) => {
   return (
     <Card class="w-full max-w-lg text-center">
       <CardContent class="pt-6">
-        <div class="flex justify-end gap-1 mb-4">
-          <ThemeSwitcher />
-          <LanguageSwitcher />
+        <div class="flex justify-between items-center mb-4">
+          <CardExternalLinks />
+          <div class="flex gap-1">
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+          </div>
         </div>
 
         <Logo size="xl" class="mx-auto mb-6" />

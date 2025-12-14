@@ -3,6 +3,7 @@ import type { ApiResponse } from "@lib/types";
 import { t } from "@lib/i18n";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { CardExternalLinks } from "@components/CardExternalLinks";
 import { Logo } from "@components/Logo";
 import { Card, CardContent } from "@components/ui/card";
 import { Input } from "@components/ui/input";
@@ -48,9 +49,12 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
     <div class="flex items-center justify-center min-h-screen p-4">
       <Card class="w-full max-w-lg text-center">
         <CardContent class="pt-6">
-          <div class="flex justify-end gap-1 mb-4">
-            <ThemeSwitcher />
-            <LanguageSwitcher />
+          <div class="flex justify-between items-center mb-4">
+            <CardExternalLinks />
+            <div class="flex gap-1">
+              <ThemeSwitcher />
+              <LanguageSwitcher />
+            </div>
           </div>
 
           <Logo size="xl" class="mx-auto mb-6" />

@@ -1,13 +1,13 @@
 import { For, type Component } from "solid-js";
 
-interface FooterIcon {
+interface ExternalLink {
   name: string;
   src: string;
   href: string;
   alt: string;
 }
 
-const icons: FooterIcon[] = [
+const links: ExternalLink[] = [
   {
     name: "edbpede",
     src: "/icons/edbpede.svg",
@@ -34,24 +34,28 @@ const icons: FooterIcon[] = [
   },
 ];
 
-export const FooterIconBar: Component = () => {
+/**
+ * Compact external links for card headers.
+ * Displays icons in a subtle, muted style for top-left corner placement.
+ */
+export const CardExternalLinks: Component = () => {
   return (
-    <div class="flex items-center justify-center gap-5 py-2 -mt-1 px-4 bg-background/50">
-      <For each={icons}>
-        {(icon) => {
-          const isExternal = icon.href.startsWith("http");
+    <div class="flex items-center gap-2.5">
+      <For each={links}>
+        {(link) => {
+          const isExternal = link.href.startsWith("http");
           return (
             <a
-              href={icon.href}
+              href={link.href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
-              class="opacity-60 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
-              aria-label={icon.alt}
+              class="opacity-40 hover:opacity-80 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded"
+              aria-label={link.alt}
             >
               <img
-                src={icon.src}
+                src={link.src}
                 alt=""
-                class={icon.name === "agpl" ? "h-7 w-auto" : "w-7 h-7"}
+                class={link.name === "agpl" ? "h-4 w-auto" : "w-4 h-4"}
                 aria-hidden="true"
               />
             </a>

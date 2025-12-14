@@ -2,6 +2,7 @@ import type { Component } from "solid-js";
 import { For } from "solid-js";
 import { t, type TranslationKey } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
+import { CardExternalLinks } from "@components/CardExternalLinks";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { PrivacyInfoBox } from "./PrivacyInfoBox";
@@ -48,6 +49,10 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
   return (
     <Card class="w-full max-w-3xl">
       <CardContent class="pt-6">
+        <div class="flex justify-start mb-4">
+          <CardExternalLinks />
+        </div>
+
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
         <h2 class="text-xl font-bold mb-2 text-center">
