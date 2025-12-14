@@ -20,7 +20,7 @@ export const MODEL_PRICING: Record<string, ModelPricing> = {
   "TEE/DeepSeek-v3.2": { input: 0.27, output: 1.1 },
   "TEE/gpt-oss-120b": { input: 1.5, output: 2.0 },
   "TEE/glm-4.6": { input: 0.5, output: 1.5 },
-  "TEE/qwen3-30b-a3b-instruct-2507": { input: 0.4, output: 1.2 },
+  "TEE/qwen3-coder": { input: 1.5, output: 2.0 },
   "TEE/gemma-3-27b-it": { input: 0.2, output: 0.8 },
 };
 

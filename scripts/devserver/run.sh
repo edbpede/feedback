@@ -27,7 +27,7 @@ AVAILABLE_MODELS=(
     "TEE/DeepSeek-v3.2"
     "TEE/gpt-oss-120b"
     "TEE/glm-4.6"
-    "TEE/qwen3-30b-a3b-instruct-2507"
+    "TEE/qwen3-coder"
     "TEE/gemma-3-27b-it"
 )
 DEFAULT_MODEL="TEE/DeepSeek-v3.2"

@@ -201,9 +201,9 @@
         "bestFor": "Hurtig hjælp og spørgsmål"
       },
       "qwen": {
-        "name": "Qwen3 30B",
-        "description": "Avanceret flersproget model med fremragende instruktionsfølgning. Perfekt til skrivning og sprogopgaver.",
-        "bestFor": "Sprog og skrivning"
+        "name": "Qwen3 480B A35B",
+        "description": "Specialiseret kodningsmodel med fremragende instruktionsfølgning. Perfekt til programmeringshjælp og tekniske opgaver.",
+        "bestFor": "Kodning og tekniske opgaver"
       },
       "gemma": {
         "name": "Gemma 3 27B",

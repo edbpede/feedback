@@ -201,9 +201,9 @@
         "bestFor": "Quick help and questions"
       },
       "qwen": {
-        "name": "Qwen3 30B",
-        "description": "Advanced multilingual model with excellent instruction-following. Great for writing and language tasks.",
-        "bestFor": "Languages and writing"
+        "name": "Qwen3 480B A35B",
+        "description": "Specialized coding model with excellent instruction-following. Great for programming help and technical tasks.",
+        "bestFor": "Coding and technical tasks"
       },
       "gemma": {
         "name": "Gemma 3 27B",

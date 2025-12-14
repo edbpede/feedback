@@ -66,7 +66,7 @@ export const AVAILABLE_MODELS: ModelConfig[] = [
     bestForKey: "onboarding.models.glm.bestFor",
   },
   {
-    id: "TEE/qwen3-30b-a3b-instruct-2507",
+    id: "TEE/qwen3-coder",
     nameKey: "onboarding.models.qwen.name",
     descriptionKey: "onboarding.models.qwen.description",
     pricingTier: "standard",
@@ -179,7 +179,7 @@ const FALLBACK_SORT_ORDER = [
   "TEE/gpt-oss-120b",
   "TEE/gemma-3-27b-it",
   "TEE/glm-4.6",
-  "TEE/qwen3-30b-a3b-instruct-2507",
+  "TEE/qwen3-coder",
 ];
 
 /**
