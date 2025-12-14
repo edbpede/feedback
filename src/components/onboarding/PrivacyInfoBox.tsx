@@ -82,7 +82,16 @@ export const PrivacyInfoBox: VoidComponent = () => {
                 {t("onboarding.steps.modelSelection.privacy.learnMoreLabel")}
               </span>
               <a
-                href="https://techcommunity.microsoft.com/blog/azureconfidentialcomputingblog/azure-ai-confidential-inferencing-technical-deep-dive/4253150"
+                href="https://docs.phala.com/phala-cloud/what-is/what-is-tee"
+                class="text-primary inline-flex items-center gap-0.5 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("onboarding.steps.modelSelection.privacy.sourcePhala")}
+                <span class="i-carbon-arrow-up-right text-[10px]" />
+              </a>
+              <a
+                href="https://learn.microsoft.com/en-us/azure/confidential-computing/trusted-execution-environment"
                 class="text-primary inline-flex items-center gap-0.5 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -91,12 +100,21 @@ export const PrivacyInfoBox: VoidComponent = () => {
                 <span class="i-carbon-arrow-up-right text-[10px]" />
               </a>
               <a
-                href="https://cloud.google.com/blog/products/identity-security/how-confidential-computing-lays-the-foundation-for-trusted-ai"
+                href="https://www.nvidia.com/en-us/data-center/solutions/confidential-computing/"
                 class="text-primary inline-flex items-center gap-0.5 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {t("onboarding.steps.modelSelection.privacy.sourceGoogle")}
+                {t("onboarding.steps.modelSelection.privacy.sourceNvidia")}
+                <span class="i-carbon-arrow-up-right text-[10px]" />
+              </a>
+              <a
+                href="https://www.ai21.com/private-ai/"
+                class="text-primary inline-flex items-center gap-0.5 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("onboarding.steps.modelSelection.privacy.sourceAI21")}
                 <span class="i-carbon-arrow-up-right text-[10px]" />
               </a>
             </div>

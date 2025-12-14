@@ -164,8 +164,10 @@
             "verification": "Kryptografisk verifikation sikrer, at dine data blev behandlet sikkert"
           },
           "learnMoreLabel": "Læs mere:",
+          "sourcePhala": "Phala Cloud",
           "sourceAzure": "Microsoft Azure",
-          "sourceGoogle": "Google Cloud"
+          "sourceNvidia": "NVIDIA",
+          "sourceAI21": "AI21"
         },
         "pricingTiers": {
           "budget": "Budget",

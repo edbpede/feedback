@@ -164,8 +164,10 @@
             "verification": "Cryptographic verification ensures your data was processed securely"
           },
           "learnMoreLabel": "Learn more:",
+          "sourcePhala": "Phala Cloud",
           "sourceAzure": "Microsoft Azure",
-          "sourceGoogle": "Google Cloud"
+          "sourceNvidia": "NVIDIA",
+          "sourceAI21": "AI21"
         },
         "pricingTiers": {
           "budget": "Budget",
