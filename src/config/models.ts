@@ -158,8 +158,8 @@ export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: stri
     dark: "/ai-providers/qwen.svg",
   },
   Google: {
-    light: "/ai-providers/gemma.svg",
-    dark: "/ai-providers/gemma.svg",
+    light: "/ai-providers/gemini.svg",
+    dark: "/ai-providers/gemini.svg",
   },
 };
 
