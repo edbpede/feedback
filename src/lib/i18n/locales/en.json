@@ -202,8 +202,8 @@
       },
       "qwen": {
         "name": "Qwen3 480B A35B",
-        "description": "Specialized coding model with excellent instruction-following. Great for programming help and technical tasks.",
-        "bestFor": "Coding and technical tasks"
+        "description": "A strong and versatile model that handles many types of tasks. Great at following instructions precisely.",
+        "bestFor": "All subjects"
       },
       "gemma": {
         "name": "Gemma 3 27B",
