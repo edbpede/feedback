@@ -87,6 +87,16 @@ export const App: Component = () => {
     setIsEditing(false);
   };
 
+  const handleModelChange = (modelId: string) => {
+    const currentState = onboardingState();
+    if (currentState.context) {
+      const newContext = { ...currentState.context, model: modelId };
+      const newState: OnboardingState = { completed: true, context: newContext };
+      setOnboardingState(newState);
+      saveOnboardingState(newState);
+    }
+  };
+
   return (
     <div class="bg-background text-foreground min-h-screen transition-colors duration-200">
       <Show when={!isLoading()} fallback={<LoadingSpinner />}>
@@ -112,6 +122,7 @@ export const App: Component = () => {
                 onEditContext={handleEditContext}
                 autoSubmit={pendingAutoSubmit()}
                 onAutoSubmitComplete={handleAutoSubmitComplete}
+                onModelChange={handleModelChange}
               />
             </Suspense>
           </Show>

@@ -62,9 +62,11 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
   const [expanded, setExpanded] = createSignal(false);
 
   // Get provider from model ID for logo display
+  // Prefer message's own modelId (for accurate per-message icons) over the prop
   const provider = () => {
-    if (!props.modelId) return null;
-    const model = getModelById(props.modelId);
+    const modelId = props.message.modelId ?? props.modelId;
+    if (!modelId) return null;
+    const model = getModelById(modelId);
     return model?.provider ?? null;
   };
 

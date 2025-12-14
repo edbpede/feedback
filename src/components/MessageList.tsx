@@ -18,6 +18,8 @@ interface MessageListProps {
   onRetry?: () => void;
   /** Model ID for displaying provider logo on assistant messages */
   modelId?: string;
+  /** Model ID being used for the current streaming request */
+  streamingModelId?: string | null;
   /** Cost per message by index (assistant messages only) */
   messageCosts?: Map<number, number>;
   /** Show fallback model selector when all retries exhausted */
@@ -33,10 +35,12 @@ interface MessageListProps {
 export const MessageList: Component<MessageListProps> = (props) => {
   let containerRef: HTMLDivElement | undefined;
 
-  // Get provider from model ID for loading indicator
-  const loadingProvider = () => {
-    if (!props.modelId) return null;
-    const model = getModelById(props.modelId);
+  // Get provider from model ID for loading/streaming indicator
+  // Prefer streamingModelId (current request) over modelId (default)
+  const streamingProvider = () => {
+    const modelId = props.streamingModelId ?? props.modelId;
+    if (!modelId) return null;
+    const model = getModelById(modelId);
     return model?.provider ?? null;
   };
 
@@ -93,16 +97,16 @@ export const MessageList: Component<MessageListProps> = (props) => {
       <Show when={props.streamingContent}>
         <MessageBubble
           message={{ role: "assistant", content: props.streamingContent }}
-          modelId={props.modelId}
+          modelId={props.streamingModelId ?? props.modelId}
         />
       </Show>
 
       {/* Loading indicator */}
       <Show when={props.isLoading && !props.streamingContent}>
         <div class="flex justify-start gap-2">
-          <Show when={loadingProvider()}>
+          <Show when={streamingProvider()}>
             <div class="mt-1 flex-shrink-0">
-              <AIProviderLogo provider={loadingProvider()!} size="sm" class="opacity-60" />
+              <AIProviderLogo provider={streamingProvider()!} size="sm" class="opacity-60" />
             </div>
           </Show>
           <div class="bg-muted rounded-lg px-5 py-4 transition-colors duration-200">

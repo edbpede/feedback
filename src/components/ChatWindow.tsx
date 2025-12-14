@@ -21,6 +21,8 @@ interface ChatWindowProps {
   onEditContext: () => void;
   autoSubmit?: boolean;
   onAutoSubmitComplete?: () => void;
+  /** Callback when model is changed (e.g., after successful fallback) */
+  onModelChange?: (modelId: string) => void;
 }
 
 interface AttachedFile {
@@ -45,6 +47,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   const [retryDisabledUntil, setRetryDisabledUntil] = createSignal<number>(0);
   const [errorCategory, setErrorCategory] = createSignal<ErrorCategory | null>(null);
   const [retriesExhausted, setRetriesExhausted] = createSignal(false);
+
+  // Track which model is being used for current streaming request
+  const [streamingModelId, setStreamingModelId] = createSignal<string | null>(null);
 
   // Cost tracking state
   const [balance, setBalance] = createSignal<number | null>(null);
@@ -141,6 +146,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
 
     const userMessage: Message = { role: "user", content: fullContent };
 
+    // Track which model is being used for streaming indicator
+    const currentModel = props.onboardingContext?.model ?? null;
+    setStreamingModelId(currentModel);
+
     // Use batch() to group multiple signal updates into single reactive cycle
     batch(() => {
       setMessages((prev) => [...prev, userMessage]);
@@ -173,15 +182,16 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
 
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
+      const modelId = props.onboardingContext?.model;
 
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent, modelId }]);
 
       // Store cost for this message if usage data received
       if (messageUsage !== null) {
         // Type assertion needed: TypeScript's control flow doesn't track callback assignments
         const usage = messageUsage as TokenUsage;
-        const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
-        const costUsd = calculateCostUsd(modelId, usage.prompt_tokens, usage.completion_tokens);
+        const costModelId = modelId ?? "TEE/DeepSeek-v3.2";
+        const costUsd = calculateCostUsd(costModelId, usage.prompt_tokens, usage.completion_tokens);
 
         setMessageCosts((prev) => {
           const newMap = new Map(prev);
@@ -208,6 +218,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         setIsLoading(false);
         setStreamingContent("");
         setRetryState(null);
+        setStreamingModelId(null);
       });
     }
   };
@@ -215,6 +226,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   // Retry API call without adding new user message (for first message retry)
   const retryApiCall = async (existingMessages: Message[]) => {
     if (isLoading()) return;
+
+    // Track which model is being used for streaming indicator
+    const currentModel = props.onboardingContext?.model ?? null;
+    setStreamingModelId(currentModel);
 
     batch(() => {
       setIsLoading(true);
@@ -246,14 +261,15 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
 
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
+      const modelId = props.onboardingContext?.model;
 
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent, modelId }]);
 
       // Store cost for this message if usage data received
       if (messageUsage !== null) {
         const usage = messageUsage as TokenUsage;
-        const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
-        const costUsd = calculateCostUsd(modelId, usage.prompt_tokens, usage.completion_tokens);
+        const costModelId = modelId ?? "TEE/DeepSeek-v3.2";
+        const costUsd = calculateCostUsd(costModelId, usage.prompt_tokens, usage.completion_tokens);
 
         setMessageCosts((prev) => {
           const newMap = new Map(prev);
@@ -283,6 +299,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         setIsLoading(false);
         setStreamingContent("");
         setRetryState(null);
+        setStreamingModelId(null);
       });
     }
   };
@@ -290,6 +307,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   // Retry API call with a specific model override (for fallback model selection)
   const retryApiCallWithModel = async (existingMessages: Message[], modelOverride: string) => {
     if (isLoading()) return;
+
+    // Track which model is being used for streaming indicator
+    setStreamingModelId(modelOverride);
 
     batch(() => {
       setIsLoading(true);
@@ -323,7 +343,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
 
-      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantContent, modelId: modelOverride },
+      ]);
 
       // Store cost for this message if usage data received
       if (messageUsage !== null) {
@@ -340,6 +363,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
           return newMap;
         });
       }
+
+      // Permanently update the model after successful fallback
+      props.onModelChange?.(modelOverride);
 
       // Refresh balance after successful message
       refreshBalance();
@@ -361,6 +387,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         setIsLoading(false);
         setStreamingContent("");
         setRetryState(null);
+        setStreamingModelId(null);
       });
     }
   };
@@ -522,6 +549,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         retryDisabled={Date.now() < retryDisabledUntil()}
         onRetry={handleRetry}
         modelId={props.onboardingContext?.model}
+        streamingModelId={streamingModelId()}
         messageCosts={messageCosts()}
         showFallbackSelector={retriesExhausted()}
         failedModelId={props.onboardingContext?.model}

@@ -14,6 +14,8 @@ export type ApiResponse<T> =
 export interface Message {
   role: "user" | "assistant";
   content: string;
+  /** Model ID that generated this message (assistant messages only) */
+  modelId?: string;
 }
 
 export interface AuthRequest {
