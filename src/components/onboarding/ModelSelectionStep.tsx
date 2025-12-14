@@ -63,6 +63,9 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
           {t("onboarding.steps.modelSelection.description")}
         </p>
 
+        {/* Privacy/Security Info Banner */}
+        <PrivacyInfoBox />
+
         {/* Model Cards */}
         <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <For each={AVAILABLE_MODELS}>
@@ -158,9 +161,6 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
             }}
           </For>
         </div>
-
-        {/* Privacy/Security Info Box */}
-        <PrivacyInfoBox />
 
         {/* Navigation */}
         <div class="flex justify-between">

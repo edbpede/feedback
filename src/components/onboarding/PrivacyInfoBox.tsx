@@ -2,6 +2,7 @@ import type { VoidComponent } from "solid-js";
 import { For } from "solid-js";
 import { t } from "@lib/i18n";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
 
 const benefits = [
   {
@@ -23,36 +24,41 @@ const benefits = [
 
 export const PrivacyInfoBox: VoidComponent = () => {
   return (
-    <div class="border-primary/20 bg-primary/5 mb-6 rounded-lg border p-4">
-      {/* Header */}
-      <div class="mb-4 flex items-center gap-3">
-        <span class="i-carbon-security text-primary flex-shrink-0 text-xl" />
-        <div>
-          <h3 class="text-sm font-semibold">
+    <div class="border-primary/20 bg-primary/5 mb-6 rounded-lg border px-4 py-3">
+      {/* Main banner row */}
+      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        {/* Title with icon */}
+        <div class="flex items-center gap-2">
+          <span class="i-carbon-security text-primary text-lg" />
+          <span class="text-sm font-semibold">
             {t("onboarding.steps.modelSelection.privacy.title")}
-          </h3>
-          <p class="text-muted-foreground text-xs">
-            {t("onboarding.steps.modelSelection.privacy.subtitle")}
-          </p>
+          </span>
+        </div>
+
+        {/* Divider (hidden on mobile) */}
+        <span class="text-border hidden sm:block">|</span>
+
+        {/* Benefits as icon + label with tooltips */}
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <For each={benefits}>
+            {(benefit) => (
+              <Tooltip>
+                <TooltipTrigger class="flex cursor-help items-center gap-1.5">
+                  <span class={`${benefit.icon} text-primary text-sm`} />
+                  <span class="text-xs font-medium">{t(benefit.titleKey)}</span>
+                </TooltipTrigger>
+                <TooltipContent class="max-w-xs">
+                  <p>{t(benefit.descKey)}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </For>
         </div>
       </div>
 
-      {/* Benefits Grid - Always Visible */}
-      <div class="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <For each={benefits}>
-          {(benefit) => (
-            <div class="bg-background rounded-md p-3 text-center shadow-sm">
-              <span class={`${benefit.icon} text-primary mx-auto mb-1 block text-lg`} />
-              <p class="text-xs font-medium">{t(benefit.titleKey)}</p>
-              <p class="text-muted-foreground mt-1 text-xs leading-snug">{t(benefit.descKey)}</p>
-            </div>
-          )}
-        </For>
-      </div>
-
-      {/* Collapsible Details */}
+      {/* Collapsible details */}
       <Collapsible>
-        <CollapsibleTrigger class="text-muted-foreground hover:text-foreground group flex w-full items-center justify-center gap-2 py-2 text-xs transition-colors">
+        <CollapsibleTrigger class="text-muted-foreground hover:text-foreground group mt-2 flex w-full items-center justify-center gap-2 py-1 text-xs transition-colors">
           <span>{t("onboarding.steps.modelSelection.privacy.expandTrigger")}</span>
           <span class="i-carbon-chevron-down text-xs transition-transform duration-200 group-data-[expanded]:rotate-180" />
         </CollapsibleTrigger>
