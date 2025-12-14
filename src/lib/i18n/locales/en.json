@@ -75,7 +75,7 @@
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",
-    "browse": "browse",
+    "browse": "Browse",
     "processing": "Processing...",
     "errorUnsupportedType": "Only DOCX and PDF files are supported.",
     "errorFileTooLarge": "File size must be less than 10MB.",

@@ -75,7 +75,7 @@
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",
-    "browse": "gennemse",
+    "browse": "Gennemse",
     "processing": "Behandler...",
     "errorUnsupportedType": "Kun DOCX- og PDF-filer understøttes.",
     "errorFileTooLarge": "Filstørrelsen skal være mindre end 10 MB.",
