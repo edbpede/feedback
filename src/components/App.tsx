@@ -13,6 +13,7 @@ import {
   saveOnboardingState,
   clearOnboardingState,
   clearMessages,
+  clearMessageCosts,
 } from "@lib/storage";
 import type { OnboardingContext, OnboardingState } from "@lib/types";
 
@@ -55,11 +56,18 @@ export const App: Component = () => {
   };
 
   const handleOnboardingComplete = (context: OnboardingContext) => {
+    const wasEditing = isEditing();
     const newState: OnboardingState = { completed: true, context };
     setOnboardingState(newState);
     saveOnboardingState(newState);
+
+    // Clear messages when completing an edit so new conversation starts fresh
+    if (wasEditing) {
+      clearMessages();
+      clearMessageCosts();
+    }
+
     setIsEditing(false);
-    // Trigger auto-submit for new onboarding completions (not edits)
     setPendingAutoSubmit(true);
   };
 
