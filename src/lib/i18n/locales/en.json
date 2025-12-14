@@ -19,7 +19,7 @@
     },
     "serverError": {
       "title": "Temporary problem",
-      "message": "The AI server has a temporary problem. We'll try again automatically."
+      "message": "The AI server has a temporary problem. Try again in a moment."
     },
     "authError": {
       "title": "Login error",
@@ -67,7 +67,11 @@
     "retryDisabled": "Please wait...",
     "retryingQuick": "Retrying...",
     "retryingBackoff": "Waiting {{seconds}}s...",
-    "connectionFailedFinal": "Connection failed after 10 attempts. Try a different AI model, or click 'Try again'."
+    "connectionFailedFinal": "Connection failed after 10 attempts. Try a different AI model, or click 'Try again'.",
+    "fallbackModelSelector": {
+      "title": "Try a different AI model:",
+      "recommended": "Recommended"
+    }
   },
   "fileUpload": {
     "dropzone": "Drop DOCX/PDF here or",

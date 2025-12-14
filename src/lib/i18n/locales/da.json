@@ -19,7 +19,7 @@
     },
     "serverError": {
       "title": "Midlertidig problem",
-      "message": "AI-serveren har et midlertidigt problem. Vi prøver automatisk igen."
+      "message": "AI-serveren har et midlertidigt problem. Prøv igen om et øjeblik."
     },
     "authError": {
       "title": "Login-fejl",
@@ -67,7 +67,11 @@
     "retryDisabled": "Vent venligst...",
     "retryingQuick": "Prøver igen...",
     "retryingBackoff": "Venter {{seconds}}s...",
-    "connectionFailedFinal": "Forbindelsen mislykkedes efter 10 forsøg. Prøv en anden AI-model, eller klik 'Prøv igen'."
+    "connectionFailedFinal": "Forbindelsen mislykkedes efter 10 forsøg. Prøv en anden AI-model, eller klik 'Prøv igen'.",
+    "fallbackModelSelector": {
+      "title": "Prøv en anden AI-model:",
+      "recommended": "Anbefalet"
+    }
   },
   "fileUpload": {
     "dropzone": "Træk DOCX/PDF hertil eller",

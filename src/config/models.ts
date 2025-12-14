@@ -171,6 +171,36 @@ export function getProviderLogoPath(provider: AIProvider, theme: "light" | "dark
 }
 
 /**
+ * Fallback model sort order for when the primary model fails.
+ * Order: DeepSeek -> GPT-OSS -> Gemma -> GLM -> Qwen
+ */
+const FALLBACK_SORT_ORDER = [
+  "TEE/DeepSeek-v3.2",
+  "TEE/gpt-oss-120b",
+  "TEE/gemma-3-27b-it",
+  "TEE/glm-4.6",
+  "TEE/qwen3-30b-a3b-instruct-2507",
+];
+
+/**
+ * Get available models for fallback selection, excluding the failed model.
+ * Returns models sorted by fallback priority with the recommended model for the subject.
+ */
+export function getFallbackModels(
+  failedModelId: string,
+  subject?: string
+): { models: ModelConfig[]; recommendedId: string | null } {
+  const filtered = AVAILABLE_MODELS
+    .filter((m) => m.id !== failedModelId)
+    .sort((a, b) => FALLBACK_SORT_ORDER.indexOf(a.id) - FALLBACK_SORT_ORDER.indexOf(b.id));
+
+  const recommendedId = subject ? getRecommendedModelForSubject(subject) : null;
+  const validRecommendedId = recommendedId !== failedModelId ? recommendedId : null;
+
+  return { models: filtered, recommendedId: validRecommendedId };
+}
+
+/**
  * Models that don't support the "system" role and require strict user/assistant alternation.
  * For these models, the system prompt must be merged into the first user message.
  */

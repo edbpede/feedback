@@ -56,6 +56,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   const [failedMessage, setFailedMessage] = createSignal<Message | null>(null);
   const [retryDisabledUntil, setRetryDisabledUntil] = createSignal<number>(0);
   const [errorCategory, setErrorCategory] = createSignal<ErrorCategory | null>(null);
+  const [retriesExhausted, setRetriesExhausted] = createSignal(false);
 
   // Cost tracking state
   const [balance, setBalance] = createSignal<number | null>(null);
@@ -215,8 +216,11 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       setFailedMessage(userMessage);
       if (error instanceof ApiError) {
         setErrorCategory(error.category);
+        // Set retriesExhausted when error is not retryable (all retries failed)
+        setRetriesExhausted(!error.retryable);
       } else {
         setErrorCategory("unknown");
+        setRetriesExhausted(true);
       }
     } finally {
       batch(() => {
@@ -294,8 +298,92 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       }
       if (error instanceof ApiError) {
         setErrorCategory(error.category);
+        // Set retriesExhausted when error is not retryable (all retries failed)
+        setRetriesExhausted(!error.retryable);
       } else {
         setErrorCategory("unknown");
+        setRetriesExhausted(true);
+      }
+    } finally {
+      batch(() => {
+        setIsLoading(false);
+        setStreamingContent("");
+        setRetryState(null);
+      });
+    }
+  };
+
+  // Retry API call with a specific model override (for fallback model selection)
+  const retryApiCallWithModel = async (existingMessages: Message[], modelOverride: string) => {
+    if (isLoading()) return;
+
+    batch(() => {
+      setIsLoading(true);
+      setStreamingContent("");
+    });
+
+    try {
+      let assistantContent = "";
+      let messageUsage: TokenUsage | null = null;
+
+      await sendMessage({
+        messages: existingMessages,
+        model: modelOverride,
+        onChunk: (chunk) => {
+          assistantContent += chunk;
+          setStreamingContent(assistantContent);
+        },
+        onRetry: (attempt, max, phase, delayMs) => {
+          setRetryState({ attempt, max, phase, delayMs });
+        },
+        onUsage: (usage) => {
+          messageUsage = usage;
+        },
+      });
+
+      // Success - clear any failed message and error state
+      setFailedMessage(null);
+      setErrorCategory(null);
+      setRetriesExhausted(false);
+
+      // Calculate index for the new assistant message
+      const newMessageIndex = messages().length;
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantContent },
+      ]);
+
+      // Store cost for this message if usage data received
+      if (messageUsage !== null) {
+        const usage = messageUsage as TokenUsage;
+        const costUsd = calculateCostUsd(
+          modelOverride,
+          usage.prompt_tokens,
+          usage.completion_tokens
+        );
+
+        setMessageCosts((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(newMessageIndex, costUsd);
+          return newMap;
+        });
+      }
+
+      // Refresh balance after successful message
+      refreshBalance();
+    } catch (error) {
+      // Store failed message for manual retry (the first user message)
+      const userMessage = existingMessages[0];
+      if (userMessage) {
+        setFailedMessage(userMessage);
+      }
+      if (error instanceof ApiError) {
+        setErrorCategory(error.category);
+        setRetriesExhausted(!error.retryable);
+      } else {
+        setErrorCategory("unknown");
+        setRetriesExhausted(true);
       }
     } finally {
       batch(() => {
@@ -316,6 +404,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       // Clear error state
       setFailedMessage(null);
       setErrorCategory(null);
+      setRetriesExhausted(false);
 
       const currentMessages = messages();
       // Check if this is a first message retry (only 1 user message, no assistant response yet)
@@ -329,6 +418,36 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       } else {
         // Regular retry: resend the last user message
         handleSend(msg.content);
+      }
+    }
+  };
+
+  // Handle selection of a fallback model after retries exhausted
+  const handleSelectFallbackModel = (modelId: string) => {
+    const now = Date.now();
+    if (now < retryDisabledUntil()) return; // Rate limited
+
+    setRetryDisabledUntil(now + 5000); // 5 second cooldown
+    const msg = failedMessage();
+    if (msg) {
+      // Clear error state
+      setFailedMessage(null);
+      setErrorCategory(null);
+      setRetriesExhausted(false);
+
+      const currentMessages = messages();
+      // Check if this is a first message retry (only 1 user message, no assistant response yet)
+      const isFirstMessageRetry =
+        currentMessages.length === 1 &&
+        currentMessages[0].role === "user";
+
+      if (isFirstMessageRetry) {
+        // First message retry: keep original message and retry API with fallback model
+        retryApiCallWithModel([currentMessages[0]], modelId);
+      } else {
+        // Regular retry with fallback model - we need to resend the last user message
+        // But use the fallback model for this one request
+        retryApiCallWithModel([...currentMessages, msg], modelId);
       }
     }
   };
@@ -407,6 +526,10 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         onRetry={handleRetry}
         modelId={props.onboardingContext?.model}
         messageCosts={messageCosts()}
+        showFallbackSelector={retriesExhausted()}
+        failedModelId={props.onboardingContext?.model}
+        subject={props.onboardingContext?.subject}
+        onSelectFallbackModel={handleSelectFallbackModel}
       />
 
       {/* File Upload */}

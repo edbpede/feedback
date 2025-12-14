@@ -20,6 +20,14 @@ interface MessageListProps {
   modelId?: string;
   /** Cost per message by index (assistant messages only) */
   messageCosts?: Map<number, number>;
+  /** Show fallback model selector when all retries exhausted */
+  showFallbackSelector?: boolean;
+  /** The model that failed (to exclude from fallback options) */
+  failedModelId?: string;
+  /** User's subject for model recommendations */
+  subject?: string;
+  /** Callback when user selects a fallback model */
+  onSelectFallbackModel?: (modelId: string) => void;
 }
 
 export const MessageList: Component<MessageListProps> = (props) => {
@@ -83,6 +91,10 @@ export const MessageList: Component<MessageListProps> = (props) => {
           canRetry={props.canRetry}
           retryDisabled={props.retryDisabled}
           onRetry={props.onRetry}
+          showFallbackSelector={props.showFallbackSelector}
+          failedModelId={props.failedModelId}
+          subject={props.subject}
+          onSelectFallbackModel={props.onSelectFallbackModel}
         />
       </Show>
 
