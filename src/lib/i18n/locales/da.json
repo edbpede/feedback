@@ -125,8 +125,9 @@
         "placeholder": "Eventuelle noter eller ekstra information...",
         "hint": "Del det du har arbejdet på – upload en fil eller skriv dit udkast herunder",
         "skipButton": "Jeg har intet endnu",
+        "dropLabel": "Træk din fil hertil, eller",
         "uploadLabel": "Upload fil (DOCX/PDF)",
-        "fileAttached": "Fil vedhæftet:",
+        "fileAttached": "Fil vedhæftet",
         "removeFile": "Fjern fil"
       },
       "gradePreference": {

@@ -125,8 +125,9 @@
         "placeholder": "Any notes or additional information...",
         "hint": "Share what you've been working on – upload a file or write your draft below",
         "skipButton": "I don't have anything yet",
+        "dropLabel": "Drop your file here, or",
         "uploadLabel": "Upload file (DOCX/PDF)",
-        "fileAttached": "File attached:",
+        "fileAttached": "File attached",
         "removeFile": "Remove file"
       },
       "gradePreference": {
