@@ -34,7 +34,7 @@ export const FallbackModelSelector: Component<FallbackModelSelectorProps> = (pro
                 class="border-border bg-background hover:border-primary hover:bg-accent/30 focus:ring-ring relative flex flex-shrink-0 items-center gap-2 rounded-lg border px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
               >
                 <Show when={isRecommended()}>
-                  <span class="bg-primary text-primary-foreground absolute -top-2 left-2 rounded-full px-1.5 py-0.5 text-[10px] font-medium">
+                  <span class="bg-primary text-primary-foreground absolute -top-2.5 left-2 rounded-full px-2 py-0.5 text-xs font-medium">
                     {t("chat.fallbackModelSelector.recommended")}
                   </span>
                 </Show>
