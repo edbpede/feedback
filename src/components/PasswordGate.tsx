@@ -46,10 +46,10 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
   };
 
   return (
-    <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="flex min-h-screen items-center justify-center p-4">
       <Card class="w-full max-w-lg text-center">
         <CardContent class="pt-6">
-          <div class="flex justify-between items-center mb-4">
+          <div class="mb-4 flex items-center justify-between">
             <CardExternalLinks />
             <div class="flex gap-1">
               <ThemeSwitcher />
@@ -59,7 +59,7 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
 
           <Logo size="xl" class="mx-auto mb-6" />
 
-          <h1 class="text-2xl font-bold mb-4">{t("auth.title")}</h1>
+          <h1 class="mb-4 text-2xl font-bold">{t("auth.title")}</h1>
           <p class="text-muted-foreground mb-8">{t("auth.description")}</p>
 
           <form onSubmit={handleSubmit} class="space-y-4">
@@ -78,7 +78,7 @@ export const PasswordGate: Component<PasswordGateProps> = (props) => {
 
             <Button type="submit" class="w-full" disabled={isLoading() || !password()}>
               <Show when={isLoading()}>
-                <span class="i-carbon-loading animate-spin inline-block mr-2" />
+                <span class="i-carbon-loading mr-2 inline-block animate-spin" />
               </Show>
               {isLoading() ? t("auth.authenticating") : t("auth.submitButton")}
             </Button>

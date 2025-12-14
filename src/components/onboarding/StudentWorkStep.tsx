@@ -92,7 +92,7 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
       <CardContent class="pt-6">
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
-        <h2 class="text-xl font-bold mb-2 text-center">
+        <h2 class="mb-2 text-center text-xl font-bold">
           {t("onboarding.steps.studentWork.title")}
         </h2>
         <p class="text-muted-foreground mb-4 text-center text-sm">
@@ -102,24 +102,24 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
         <PrivacyWarning />
 
         {/* File Upload Section */}
-        <div class="mt-4 mb-4">
+        <div class="mb-4 mt-4">
           <Show
             when={!props.file}
             fallback={
-              <div class="flex items-center gap-2 p-3 bg-accent/20 rounded-lg transition-colors duration-200">
+              <div class="bg-accent/20 flex items-center gap-2 rounded-lg p-3 transition-colors duration-200">
                 <span class="i-carbon-document text-primary text-xl" />
-                <div class="flex-1 min-w-0">
-                  <span class="text-sm text-muted-foreground">
+                <div class="min-w-0 flex-1">
+                  <span class="text-muted-foreground text-sm">
                     {t("onboarding.steps.studentWork.fileAttached")}
                   </span>
-                  <p class="font-medium truncate">{props.file?.name}</p>
+                  <p class="truncate font-medium">{props.file?.name}</p>
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={handleClearFile}
                   title={t("onboarding.steps.studentWork.removeFile")}
-                  class="h-8 w-8 text-muted-foreground hover:text-destructive"
+                  class="text-muted-foreground hover:text-destructive h-8 w-8"
                 >
                   <span class="i-carbon-close text-lg" />
                 </Button>
@@ -130,23 +130,21 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              class={`border-2 border-dashed rounded-lg p-4 text-center transition-colors duration-200 ${
-                isDragging()
-                  ? "border-primary bg-accent/20"
-                  : "border-border"
+              class={`rounded-lg border-2 border-dashed p-4 text-center transition-colors duration-200 ${
+                isDragging() ? "border-primary bg-accent/20" : "border-border"
               }`}
             >
               <Show
                 when={!isProcessing()}
                 fallback={
                   <span class="text-muted-foreground">
-                    <span class="i-carbon-loading animate-spin inline-block mr-2" />
+                    <span class="i-carbon-loading mr-2 inline-block animate-spin" />
                     {t("fileUpload.processing")}
                   </span>
                 }
               >
-                <label class="cursor-pointer text-muted-foreground">
-                  <span class="i-carbon-upload inline-block mr-1" />
+                <label class="text-muted-foreground cursor-pointer">
+                  <span class="i-carbon-upload mr-1 inline-block" />
                   {t("onboarding.steps.studentWork.uploadLabel")}{" "}
                   <span class="text-primary hover:underline">{t("fileUpload.browse")}</span>
                   <input
@@ -161,7 +159,7 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
           </Show>
 
           <Show when={error()}>
-            <p class="text-destructive text-xs mt-1">{error()}</p>
+            <p class="text-destructive mt-1 text-xs">{error()}</p>
           </Show>
         </div>
 
@@ -176,18 +174,14 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
         </div>
 
         {/* Navigation */}
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <Button variant="secondary" onClick={() => props.onBack()}>
             <span class="i-carbon-arrow-left mr-1" />
             {t("onboarding.navigation.back")}
           </Button>
 
-          <div class="flex gap-2 items-center">
-            <Button
-              variant="link"
-              onClick={() => props.onSkip()}
-              class="text-muted-foreground"
-            >
+          <div class="flex items-center gap-2">
+            <Button variant="link" onClick={() => props.onSkip()} class="text-muted-foreground">
               {t("onboarding.steps.studentWork.skipButton")}
             </Button>
             <Button onClick={() => props.onNext()} disabled={!canProceed()}>

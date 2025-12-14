@@ -8,16 +8,16 @@ interface StepIndicatorProps {
 
 export const StepIndicator: Component<StepIndicatorProps> = (props) => {
   return (
-    <div class="flex items-center justify-center gap-2 mb-6">
+    <div class="mb-6 flex items-center justify-center gap-2">
       <For each={Array.from({ length: props.totalSteps })}>
         {(_, index) => (
           <div
             class={`h-2 rounded-full transition-all duration-300 ${
               index() < props.currentStep
-                ? "w-2 bg-primary"
+                ? "bg-primary w-2"
                 : index() === props.currentStep
-                  ? "w-6 bg-primary"
-                  : "w-2 bg-muted"
+                  ? "bg-primary w-6"
+                  : "bg-muted w-2"
             }`}
           />
         )}

@@ -29,7 +29,7 @@ export const ChatInput: Component<ChatInputProps> = (props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      class="border-t border-border p-4 bg-card transition-colors duration-200"
+      class="border-border bg-card border-t p-4 transition-colors duration-200"
     >
       <div class="flex gap-2">
         <Textarea
@@ -37,14 +37,14 @@ export const ChatInput: Component<ChatInputProps> = (props) => {
           onInput={(e) => setMessage(e.currentTarget.value)}
           onKeyDown={handleKeyDown}
           placeholder={t("chat.inputPlaceholder")}
-          class="flex-1 resize-none min-h-[44px] max-h-32"
+          class="max-h-32 min-h-[44px] flex-1 resize-none"
           rows="1"
           disabled={props.disabled}
         />
         <Button
           type="submit"
           size="icon"
-          class="self-end h-11 w-11 shrink-0"
+          class="h-11 w-11 shrink-0 self-end"
           disabled={props.disabled || !message().trim()}
         >
           <span class="i-carbon-send text-lg" />

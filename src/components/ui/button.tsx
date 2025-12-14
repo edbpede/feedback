@@ -30,8 +30,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends JSX.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  extends JSX.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {}
 
 const Button: Component<ButtonProps> = (props) => {
   const [local, others] = splitProps(props, ["variant", "size", "class", "children"]);

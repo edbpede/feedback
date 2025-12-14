@@ -15,7 +15,7 @@ export const WelcomeStep: Component<WelcomeStepProps> = (props) => {
   return (
     <Card class="w-full max-w-lg text-center">
       <CardContent class="pt-6">
-        <div class="flex justify-between items-center mb-4">
+        <div class="mb-4 flex items-center justify-between">
           <CardExternalLinks />
           <div class="flex gap-1">
             <ThemeSwitcher />
@@ -25,16 +25,10 @@ export const WelcomeStep: Component<WelcomeStepProps> = (props) => {
 
         <Logo size="xl" class="mx-auto mb-6" />
 
-        <h1 class="text-2xl font-bold mb-4">{t("onboarding.welcome.title")}</h1>
-        <p class="text-muted-foreground mb-8">
-          {t("onboarding.welcome.description")}
-        </p>
+        <h1 class="mb-4 text-2xl font-bold">{t("onboarding.welcome.title")}</h1>
+        <p class="text-muted-foreground mb-8">{t("onboarding.welcome.description")}</p>
 
-        <Button
-          onClick={() => props.onStart()}
-          size="lg"
-          class="w-full sm:w-auto"
-        >
+        <Button onClick={() => props.onStart()} size="lg" class="w-full sm:w-auto">
           <span class="mr-2">🚀</span>
           {t("onboarding.welcome.startButton")}
         </Button>

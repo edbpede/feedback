@@ -17,7 +17,7 @@ const TooltipContent: ParentComponent<TooltipContentProps> = (props) => {
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         class={cn(
-          "z-50 overflow-hidden rounded-md border border-border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md",
+          "border-border bg-popover text-popover-foreground z-50 overflow-hidden rounded-md border px-3 py-1.5 text-sm shadow-md",
           "animate-in fade-in-0 zoom-in-95",
           "data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95",
           local.class

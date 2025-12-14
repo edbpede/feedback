@@ -6,10 +6,10 @@ interface LogoProps {
 }
 
 const sizeMap = {
-  sm: "w-8 h-8",    // 32px
-  md: "w-16 h-16",  // 64px
-  lg: "w-24 h-24",  // 96px
-  xl: "w-32 h-32",  // 128px
+  sm: "w-8 h-8", // 32px
+  md: "w-16 h-16", // 64px
+  lg: "w-24 h-24", // 96px
+  xl: "w-32 h-32", // 128px
 };
 
 export const Logo: Component<LogoProps> = (props) => {

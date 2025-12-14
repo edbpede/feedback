@@ -6,7 +6,13 @@ import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { PrivacyInfoBox } from "./PrivacyInfoBox";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { AVAILABLE_MODELS, getRecommendedModelForSubject, DEFAULT_MODEL_ID, type ModelConfig, type SpeedTier } from "@config/models";
+import {
+  AVAILABLE_MODELS,
+  getRecommendedModelForSubject,
+  DEFAULT_MODEL_ID,
+  type ModelConfig,
+  type SpeedTier,
+} from "@config/models";
 
 interface ModelSelectionStepProps {
   value: string;
@@ -50,7 +56,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
       <CardContent class="pt-6">
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
-        <h2 class="text-xl font-bold mb-2 text-center">
+        <h2 class="mb-2 text-center text-xl font-bold">
           {t("onboarding.steps.modelSelection.title")}
         </h2>
         <p class="text-muted-foreground mb-4 text-center text-sm">
@@ -58,7 +64,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
         </p>
 
         {/* Model Cards */}
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <For each={AVAILABLE_MODELS}>
             {(model) => {
               const isSelected = () => props.value === model.id;
@@ -69,7 +75,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                 <button
                   type="button"
                   onClick={() => props.onChange(model.id)}
-                  class={`relative p-5 rounded-lg border-2 transition-all text-left flex flex-col ${
+                  class={`relative flex flex-col rounded-lg border-2 p-5 text-left transition-all ${
                     isSelected()
                       ? "border-primary bg-accent/20"
                       : "border-border hover:border-muted-foreground"
@@ -77,7 +83,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                 >
                   {/* Standard badge for default model */}
                   {isDefault() && (
-                    <div class="absolute -top-2.5 left-3 px-2 py-0.5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center gap-1">
+                    <div class="bg-primary text-primary-foreground absolute -top-2.5 left-3 flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium">
                       <span class="i-carbon-star-filled text-[10px]" />
                       {t("onboarding.steps.modelSelection.default")}
                     </div>
@@ -85,7 +91,7 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
 
                   {/* Subject recommendation badge (only for non-default recommended models) */}
                   {isRecommended() && !isDefault() && props.subject && (
-                    <div class="absolute -top-2.5 left-3 px-2 py-0.5 bg-muted text-muted-foreground text-xs font-medium rounded-full flex items-center gap-1">
+                    <div class="bg-muted text-muted-foreground absolute -top-2.5 left-3 flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium">
                       <span class="i-carbon-thumbs-up text-[10px]" />
                       {t("onboarding.steps.modelSelection.alsoGoodFor", {
                         subject: t(`onboarding.subjects.${props.subject}` as TranslationKey),
@@ -94,55 +100,51 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
                   )}
 
                   {/* Header: Provider Logo + Name */}
-                  <div class="flex items-center gap-2 mb-3">
+                  <div class="mb-3 flex items-center gap-2">
                     <AIProviderLogo provider={model.provider} size="sm" />
-                    <span class="text-xs text-muted-foreground font-medium uppercase tracking-wide">
+                    <span class="text-muted-foreground text-xs font-medium uppercase tracking-wide">
                       {model.provider}
                     </span>
                   </div>
 
                   {/* Model name */}
-                  <h3 class="font-semibold text-base mb-2">
-                    {t(model.nameKey)}
-                  </h3>
+                  <h3 class="mb-2 text-base font-semibold">{t(model.nameKey)}</h3>
 
                   {/* Description */}
-                  <p class="text-sm text-muted-foreground mb-3 leading-snug">
+                  <p class="text-muted-foreground mb-3 text-sm leading-snug">
                     {t(model.descriptionKey)}
                   </p>
 
                   {/* Best For tag - flex-1 to push footer down */}
                   <div class="flex-1">
-                    <span class="text-xs font-medium text-foreground/70">
+                    <span class="text-foreground/70 text-xs font-medium">
                       {t("onboarding.steps.modelSelection.bestForLabel")}:
                     </span>
-                    <span class="text-xs font-semibold text-foreground ml-1">
+                    <span class="text-foreground ml-1 text-xs font-semibold">
                       {t(model.bestForKey)}
                     </span>
                   </div>
 
                   {/* Footer: Speed + Pricing badges */}
-                  <div class="flex items-center gap-2 flex-wrap mb-2 mt-3">
+                  <div class="mb-2 mt-3 flex flex-wrap items-center gap-2">
                     {/* Speed badge */}
                     <span
-                      class={`px-2 py-0.5 text-xs font-medium rounded-full ${getSpeedBadgeClass(model.speedTier)}`}
+                      class={`rounded-full px-2 py-0.5 text-xs font-medium ${getSpeedBadgeClass(model.speedTier)}`}
                     >
                       {t(`onboarding.steps.modelSelection.speedTiers.${model.speedTier}`)}
                     </span>
 
                     {/* Pricing badge */}
                     <span
-                      class={`px-2 py-0.5 text-xs font-medium rounded-full ${getPricingBadgeClass(model.pricingTier)}`}
+                      class={`rounded-full px-2 py-0.5 text-xs font-medium ${getPricingBadgeClass(model.pricingTier)}`}
                     >
                       {t(`onboarding.steps.modelSelection.pricingTiers.${model.pricingTier}`)}
                     </span>
                   </div>
 
                   {/* Release date - always bottom right, with padding for checkmark */}
-                  <div class="text-right pr-8">
-                    <span class="text-xs text-muted-foreground">
-                      {model.releaseDate}
-                    </span>
+                  <div class="pr-8 text-right">
+                    <span class="text-muted-foreground text-xs">{model.releaseDate}</span>
                   </div>
 
                   {/* Selection indicator */}

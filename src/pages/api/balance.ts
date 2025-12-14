@@ -7,9 +7,7 @@ function verifyToken(token: string, secret: string): boolean {
   const parts = token.split(".");
   if (parts.length !== 2) return false;
   const [payload, signature] = parts;
-  const expectedSignature = createHmac("sha256", secret)
-    .update(payload)
-    .digest("base64url");
+  const expectedSignature = createHmac("sha256", secret).update(payload).digest("base64url");
   return signature === expectedSignature;
 }
 
@@ -54,10 +52,7 @@ export const POST: APIRoute = async ({ cookies }) => {
     const data = await balanceResponse.json();
 
     // NanoGPT returns usd_balance as a string (e.g., "129.46956147")
-    const balance =
-      typeof data.usd_balance === "string"
-        ? parseFloat(data.usd_balance)
-        : 0;
+    const balance = typeof data.usd_balance === "string" ? parseFloat(data.usd_balance) : 0;
 
     const response: ApiResponse<BalanceResponse> = {
       success: true,

@@ -25,18 +25,12 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   const [assignmentDescription, setAssignmentDescription] = createSignal(
     props.initialContext?.assignmentDescription ?? ""
   );
-  const [studentWork, setStudentWork] = createSignal(
-    props.initialContext?.studentWork ?? ""
-  );
+  const [studentWork, setStudentWork] = createSignal(props.initialContext?.studentWork ?? "");
   const [studentWorkFile, setStudentWorkFile] = createSignal<AttachedFile | null>(
     props.initialContext?.studentWorkFile ?? null
   );
-  const [wantsGrade, setWantsGrade] = createSignal(
-    props.initialContext?.wantsGrade ?? false
-  );
-  const [model, setModel] = createSignal(
-    props.initialContext?.model ?? DEFAULT_MODEL_ID
-  );
+  const [wantsGrade, setWantsGrade] = createSignal(props.initialContext?.wantsGrade ?? false);
+  const [model, setModel] = createSignal(props.initialContext?.model ?? DEFAULT_MODEL_ID);
 
   const handleStart = () => {
     setCurrentStep(1);
@@ -72,7 +66,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   };
 
   return (
-    <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="flex min-h-screen items-center justify-center p-4">
       <Switch>
         <Match when={currentStep() === 0}>
           <WelcomeStep onStart={handleStart} />

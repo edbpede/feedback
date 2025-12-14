@@ -49,13 +49,13 @@ export const CardExternalLinks: Component = () => {
               href={link.href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
-              class="opacity-40 hover:opacity-80 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded"
+              class="focus-visible:ring-ring rounded opacity-40 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
               aria-label={link.alt}
             >
               <img
                 src={link.src}
                 alt=""
-                class={link.name === "agpl" ? "h-4 w-auto" : "w-4 h-4"}
+                class={link.name === "agpl" ? "h-4 w-auto" : "h-4 w-4"}
                 aria-hidden="true"
               />
             </a>

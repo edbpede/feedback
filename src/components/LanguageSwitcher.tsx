@@ -15,7 +15,7 @@ export const LanguageSwitcher: Component = () => {
       size="sm"
       onClick={toggleLocale}
       title={t("language.label")}
-      class="gap-1 text-muted-foreground hover:text-foreground"
+      class="text-muted-foreground hover:text-foreground gap-1"
     >
       <span class="i-carbon-language" />
       <span class="hidden sm:inline">

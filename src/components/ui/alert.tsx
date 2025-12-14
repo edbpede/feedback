@@ -9,10 +9,8 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: "bg-background text-foreground",
-        destructive:
-          "border-destructive/50 text-destructive [&>svg]:text-destructive",
-        warning:
-          "border-amber-500/50 bg-amber-50 text-amber-900 [&>svg]:text-amber-600",
+        destructive: "border-destructive/50 text-destructive [&>svg]:text-destructive",
+        warning: "border-amber-500/50 bg-amber-50 text-amber-900 [&>svg]:text-amber-600",
       },
     },
     defaultVariants: {
@@ -22,8 +20,7 @@ const alertVariants = cva(
 );
 
 export interface AlertProps
-  extends JSX.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {}
+  extends JSX.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {}
 
 const Alert: Component<AlertProps> = (props) => {
   const [local, others] = splitProps(props, ["class", "variant", "children"]);
@@ -41,10 +38,7 @@ const Alert: Component<AlertProps> = (props) => {
 const AlertTitle: Component<JSX.HTMLAttributes<HTMLHeadingElement>> = (props) => {
   const [local, others] = splitProps(props, ["class", "children"]);
   return (
-    <h5
-      class={cn("mb-1 font-medium leading-none tracking-tight", local.class)}
-      {...others}
-    >
+    <h5 class={cn("mb-1 font-medium leading-none tracking-tight", local.class)} {...others}>
       {local.children}
     </h5>
   );

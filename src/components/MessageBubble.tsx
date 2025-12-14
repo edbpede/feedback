@@ -70,10 +70,10 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
 
   const messageContent = (
     <div
-      class={`rounded-lg break-words transition-colors duration-200 ${
+      class={`break-words rounded-lg transition-colors duration-200 ${
         isUser()
-          ? "max-w-[80%] px-4 py-2 prose prose-sm bg-primary text-primary-foreground prose-invert"
-          : "max-w-[65ch] px-5 py-4 prose prose-ai bg-muted text-foreground"
+          ? "prose prose-sm bg-primary text-primary-foreground prose-invert max-w-[80%] px-4 py-2"
+          : "prose prose-ai bg-muted text-foreground max-w-[65ch] px-5 py-4"
       }`}
       innerHTML={htmlContent()}
     />
@@ -83,18 +83,15 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
   const regularMessage = (
     <>
       <Show when={!isUser() && provider()}>
-        <div class="flex-shrink-0 mt-1">
+        <div class="mt-1 flex-shrink-0">
           <AIProviderLogo provider={provider()!} size="sm" class="opacity-60" />
         </div>
       </Show>
-      <Show
-        when={!isUser()}
-        fallback={messageContent}
-      >
+      <Show when={!isUser()} fallback={messageContent}>
         <div class="flex flex-col">
           {messageContent}
           <Show when={props.costUsd !== undefined}>
-            <div class="mt-1 ml-1">
+            <div class="ml-1 mt-1">
               <CostBadge costUsd={props.costUsd!} />
             </div>
           </Show>
@@ -105,14 +102,13 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
 
   return (
     <div class={`flex ${isUser() ? "justify-end" : "justify-start gap-2"}`}>
-      <Show
-        when={props.isCollapsible}
-        fallback={regularMessage}
-      >
-        <Collapsible open={expanded()} onOpenChange={setExpanded} class="max-w-[80%] flex flex-col items-end">
-          <CollapsibleTrigger
-            class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/80 text-primary-foreground hover:bg-primary transition-colors"
-          >
+      <Show when={props.isCollapsible} fallback={regularMessage}>
+        <Collapsible
+          open={expanded()}
+          onOpenChange={setExpanded}
+          class="flex max-w-[80%] flex-col items-end"
+        >
+          <CollapsibleTrigger class="bg-primary/80 text-primary-foreground hover:bg-primary flex items-center gap-2 rounded-lg px-4 py-2 transition-colors">
             <span
               class="i-carbon-chevron-right transition-transform duration-200"
               classList={{ "rotate-90": expanded() }}
@@ -121,7 +117,7 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
               {expanded() ? t("chat.hideInitialRequest") : t("chat.showInitialRequest")}
             </span>
           </CollapsibleTrigger>
-          <CollapsibleContent class="mt-2 w-full flex justify-end">
+          <CollapsibleContent class="mt-2 flex w-full justify-end">
             {messageContent}
           </CollapsibleContent>
         </Collapsible>

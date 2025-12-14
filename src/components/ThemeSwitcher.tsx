@@ -13,7 +13,7 @@ export const ThemeSwitcher: Component = () => {
       onClick={toggleTheme}
       title={isDark() ? t("theme.switchToLight") : t("theme.switchToDark")}
       aria-label={isDark() ? t("theme.switchToLight") : t("theme.switchToDark")}
-      class="w-9 h-9"
+      class="h-9 w-9"
     >
       <span
         class={`text-lg transition-transform duration-200 ${isDark() ? "i-carbon-sun" : "i-carbon-moon"}`}

@@ -10,48 +10,48 @@
   --background: 0.9824 0.0013 286.3757;
   --foreground: 0.2303 0.0125 264.2926;
 
-  --card: 0.9950 0.0005 286.3757;
+  --card: 0.995 0.0005 286.3757;
   --card-foreground: 0.2303 0.0125 264.2926;
 
-  --popover: 0.9950 0.0005 286.3757;
+  --popover: 0.995 0.0005 286.3757;
   --popover-foreground: 0.2303 0.0125 264.2926;
 
   --primary: 0.6487 0.1538 150.3071;
   --primary-foreground: 0.98 0.01 150;
 
-  --secondary: 0.6746 0.1414 261.3380;
+  --secondary: 0.6746 0.1414 261.338;
   --secondary-foreground: 0.98 0.01 261;
 
-  --muted: 0.9200 0.0100 264.2926;
-  --muted-foreground: 0.5000 0.0200 264.2926;
+  --muted: 0.92 0.01 264.2926;
+  --muted-foreground: 0.5 0.02 264.2926;
 
-  --accent: 0.8269 0.1080 211.9627;
+  --accent: 0.8269 0.108 211.9627;
   --accent-foreground: 0.2303 0.0125 264.2926;
 
   --destructive: 0.5732 0.1901 25.5409;
   --destructive-foreground: 0.98 0.01 25;
 
-  --border: 0.8500 0.0150 264.2926;
-  --input: 0.8500 0.0150 264.2926;
+  --border: 0.85 0.015 264.2926;
+  --input: 0.85 0.015 264.2926;
   --ring: 0.6487 0.1538 150.3071;
 
   --radius: 0.5rem;
 
   /* Chart colors */
   --chart-1: 0.6487 0.1538 150.3071;
-  --chart-2: 0.6746 0.1414 261.3380;
-  --chart-3: 0.8269 0.1080 211.9627;
-  --chart-4: 0.7000 0.1200 45.0000;
-  --chart-5: 0.6500 0.1300 330.0000;
+  --chart-2: 0.6746 0.1414 261.338;
+  --chart-3: 0.8269 0.108 211.9627;
+  --chart-4: 0.7 0.12 45;
+  --chart-5: 0.65 0.13 330;
 
   /* Sidebar */
-  --sidebar-background: 0.9700 0.0010 286.3757;
+  --sidebar-background: 0.97 0.001 286.3757;
   --sidebar-foreground: 0.2303 0.0125 264.2926;
   --sidebar-primary: 0.6487 0.1538 150.3071;
   --sidebar-primary-foreground: 0.98 0.01 150;
-  --sidebar-accent: 0.9200 0.0100 264.2926;
+  --sidebar-accent: 0.92 0.01 264.2926;
   --sidebar-accent-foreground: 0.2303 0.0125 264.2926;
-  --sidebar-border: 0.8500 0.0150 264.2926;
+  --sidebar-border: 0.85 0.015 264.2926;
   --sidebar-ring: 0.6487 0.1538 150.3071;
 }
 
@@ -60,46 +60,46 @@
   --background: 0.2303 0.0125 264.2926;
   --foreground: 0.9219 0 0;
 
-  --card: 0.2800 0.0150 264.2926;
+  --card: 0.28 0.015 264.2926;
   --card-foreground: 0.9219 0 0;
 
-  --popover: 0.2800 0.0150 264.2926;
+  --popover: 0.28 0.015 264.2926;
   --popover-foreground: 0.9219 0 0;
 
   --primary: 0.6487 0.1538 150.3071;
   --primary-foreground: 0.15 0.01 150;
 
-  --secondary: 0.6746 0.1414 261.3380;
+  --secondary: 0.6746 0.1414 261.338;
   --secondary-foreground: 0.98 0.01 261;
 
-  --muted: 0.3500 0.0150 264.2926;
-  --muted-foreground: 0.6500 0.0150 264.2926;
+  --muted: 0.35 0.015 264.2926;
+  --muted-foreground: 0.65 0.015 264.2926;
 
-  --accent: 0.5269 0.1080 211.9627;
+  --accent: 0.5269 0.108 211.9627;
   --accent-foreground: 0.9219 0 0;
 
   --destructive: 0.6732 0.1901 25.5409;
   --destructive-foreground: 0.15 0.01 25;
 
-  --border: 0.3800 0.0150 264.2926;
-  --input: 0.3800 0.0150 264.2926;
+  --border: 0.38 0.015 264.2926;
+  --input: 0.38 0.015 264.2926;
   --ring: 0.6487 0.1538 150.3071;
 
   /* Chart colors - darker variants */
   --chart-1: 0.7487 0.1538 150.3071;
-  --chart-2: 0.7746 0.1414 261.3380;
-  --chart-3: 0.7269 0.1080 211.9627;
-  --chart-4: 0.7500 0.1200 45.0000;
-  --chart-5: 0.7000 0.1300 330.0000;
+  --chart-2: 0.7746 0.1414 261.338;
+  --chart-3: 0.7269 0.108 211.9627;
+  --chart-4: 0.75 0.12 45;
+  --chart-5: 0.7 0.13 330;
 
   /* Sidebar */
-  --sidebar-background: 0.2000 0.0100 264.2926;
+  --sidebar-background: 0.2 0.01 264.2926;
   --sidebar-foreground: 0.9219 0 0;
   --sidebar-primary: 0.6487 0.1538 150.3071;
   --sidebar-primary-foreground: 0.15 0.01 150;
-  --sidebar-accent: 0.3500 0.0150 264.2926;
+  --sidebar-accent: 0.35 0.015 264.2926;
   --sidebar-accent-foreground: 0.9219 0 0;
-  --sidebar-border: 0.3800 0.0150 264.2926;
+  --sidebar-border: 0.38 0.015 264.2926;
   --sidebar-ring: 0.6487 0.1538 150.3071;
 }
 
@@ -116,5 +116,7 @@ body {
 
 /* Smooth theme transitions */
 html {
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }

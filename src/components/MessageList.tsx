@@ -52,18 +52,13 @@ export const MessageList: Component<MessageListProps> = (props) => {
   });
 
   return (
-    <div
-      ref={containerRef}
-      class="flex-1 overflow-y-auto px-4 py-6 space-y-6"
-    >
+    <div ref={containerRef} class="flex-1 space-y-6 overflow-y-auto px-4 py-6">
       <Show
         when={props.messages.length > 0}
         fallback={
-          <div class="text-center text-muted-foreground mt-8">
-            <p class="text-lg mb-2">{t("chat.welcomeTitle")}</p>
-            <p class="text-sm">
-              {t("chat.welcomeMessage")}
-            </p>
+          <div class="text-muted-foreground mt-8 text-center">
+            <p class="mb-2 text-lg">{t("chat.welcomeTitle")}</p>
+            <p class="text-sm">{t("chat.welcomeMessage")}</p>
           </div>
         }
       >
@@ -74,11 +69,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
               message={message}
               isCollapsible={index() === 0 && message.role === "user"}
               modelId={props.modelId}
-              costUsd={
-                message.role === "assistant"
-                  ? props.messageCosts?.get(index())
-                  : undefined
-              }
+              costUsd={message.role === "assistant" ? props.messageCosts?.get(index()) : undefined}
             />
           )}
         </For>
@@ -110,7 +101,7 @@ export const MessageList: Component<MessageListProps> = (props) => {
       <Show when={props.isLoading && !props.streamingContent}>
         <div class="flex justify-start gap-2">
           <Show when={loadingProvider()}>
-            <div class="flex-shrink-0 mt-1">
+            <div class="mt-1 flex-shrink-0">
               <AIProviderLogo provider={loadingProvider()!} size="sm" class="opacity-60" />
             </div>
           </Show>

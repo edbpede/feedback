@@ -13,9 +13,9 @@ interface AIProviderLogoProps {
 }
 
 const sizeMap = {
-  xs: "w-4 h-4",   // 16px - for inline with text
-  sm: "w-6 h-6",   // 24px - for message bubbles
-  md: "w-8 h-8",   // 32px - for cards
+  xs: "w-4 h-4", // 16px - for inline with text
+  sm: "w-6 h-6", // 24px - for message bubbles
+  md: "w-8 h-8", // 32px - for cards
   lg: "w-12 h-12", // 48px - for large displays
 };
 

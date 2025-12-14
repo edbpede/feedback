@@ -37,7 +37,7 @@ export const SubjectGradeStep: Component<SubjectGradeStepProps> = (props) => {
       <CardContent class="pt-6">
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
-        <h2 class="text-xl font-bold mb-2 text-center">
+        <h2 class="mb-2 text-center text-xl font-bold">
           {t("onboarding.steps.subjectGrade.title")}
         </h2>
         <p class="text-muted-foreground mb-6 text-center">
@@ -45,35 +45,33 @@ export const SubjectGradeStep: Component<SubjectGradeStepProps> = (props) => {
         </p>
 
         {/* Subject Selection */}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <For each={SUBJECTS}>
             {(subject) => (
               <button
                 type="button"
                 onClick={() => props.onSubjectChange(subject.key)}
-                class={`p-4 rounded-lg border-2 transition-all text-center ${
+                class={`rounded-lg border-2 p-4 text-center transition-all ${
                   props.subject === subject.key
                     ? "border-primary bg-accent/20"
                     : "border-border hover:border-muted-foreground"
                 }`}
               >
-                <span class="block text-2xl mb-1">{subject.icon}</span>
-                <span class="text-sm font-medium">
-                  {t(`onboarding.subjects.${subject.key}`)}
-                </span>
+                <span class="mb-1 block text-2xl">{subject.icon}</span>
+                <span class="text-sm font-medium">{t(`onboarding.subjects.${subject.key}`)}</span>
               </button>
             )}
           </For>
         </div>
 
         {/* Grade Selection */}
-        <div class="flex justify-center gap-2 mb-8">
+        <div class="mb-8 flex justify-center gap-2">
           <For each={GRADES}>
             {(grade) => (
               <button
                 type="button"
                 onClick={() => props.onGradeChange(grade)}
-                class={`px-4 py-2 rounded-full border-2 transition-all font-medium ${
+                class={`rounded-full border-2 px-4 py-2 font-medium transition-all ${
                   props.grade === grade
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border hover:border-muted-foreground"

@@ -15,7 +15,7 @@ const CollapsibleTrigger: ParentComponent<CollapsibleTriggerProps> = (props) => 
     <CollapsiblePrimitive.Trigger
       class={cn(
         "flex items-center gap-2 text-sm font-medium transition-colors",
-        "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "hover:text-foreground focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
         local.class
       )}
       {...others}
@@ -34,7 +34,7 @@ const CollapsibleContent: ParentComponent<CollapsibleContentProps> = (props) => 
   return (
     <CollapsiblePrimitive.Content
       class={cn(
-        "overflow-hidden transition-all data-[expanded]:animate-collapsible-down data-[closed]:animate-collapsible-up",
+        "data-[expanded]:animate-collapsible-down data-[closed]:animate-collapsible-up overflow-hidden transition-all",
         local.class
       )}
       {...others}

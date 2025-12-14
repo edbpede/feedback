@@ -6,7 +6,7 @@ const Card: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
   const [local, others] = splitProps(props, ["class", "children"]);
   return (
     <div
-      class={cn("rounded-lg border bg-card text-card-foreground shadow-sm", local.class)}
+      class={cn("bg-card text-card-foreground rounded-lg border shadow-sm", local.class)}
       {...others}
     >
       {local.children}
@@ -26,10 +26,7 @@ const CardHeader: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 const CardTitle: Component<JSX.HTMLAttributes<HTMLHeadingElement>> = (props) => {
   const [local, others] = splitProps(props, ["class", "children"]);
   return (
-    <h3
-      class={cn("text-2xl font-semibold leading-none tracking-tight", local.class)}
-      {...others}
-    >
+    <h3 class={cn("text-2xl font-semibold leading-none tracking-tight", local.class)} {...others}>
       {local.children}
     </h3>
   );
@@ -38,7 +35,7 @@ const CardTitle: Component<JSX.HTMLAttributes<HTMLHeadingElement>> = (props) => 
 const CardDescription: Component<JSX.HTMLAttributes<HTMLParagraphElement>> = (props) => {
   const [local, others] = splitProps(props, ["class", "children"]);
   return (
-    <p class={cn("text-sm text-muted-foreground", local.class)} {...others}>
+    <p class={cn("text-muted-foreground text-sm", local.class)} {...others}>
       {local.children}
     </p>
   );

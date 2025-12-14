@@ -106,7 +106,7 @@ export function t(key: TranslationKey, params?: Record<string, string>): string 
   // Interpolate {{key}} patterns if params provided
   if (params) {
     for (const [paramKey, value] of Object.entries(params)) {
-      result = result.replace(new RegExp(`\\{\\{${paramKey}\\}\\}`, 'g'), value);
+      result = result.replace(new RegExp(`\\{\\{${paramKey}\\}\\}`, "g"), value);
     }
   }
 

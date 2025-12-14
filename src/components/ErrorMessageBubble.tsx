@@ -24,20 +24,12 @@ export const ErrorMessageBubble: Component<ErrorMessageBubbleProps> = (props) =>
 
   return (
     <div class="flex justify-start gap-2">
-      <div
-        class="max-w-[65ch] rounded-lg border bg-destructive/10 border-destructive/30 transition-colors duration-200"
-      >
+      <div class="bg-destructive/10 border-destructive/30 max-w-[65ch] rounded-lg border transition-colors duration-200">
         <div class="flex items-start gap-3 px-5 py-4">
-          <span
-            class={`${errorInfo().icon} text-destructive text-xl flex-shrink-0 mt-0.5`}
-          />
-          <div class="flex-1 min-w-0">
-            <h4 class="font-semibold text-destructive mb-1">
-              {t(errorInfo().titleKey)}
-            </h4>
-            <p class="text-sm text-muted-foreground">
-              {t(errorInfo().messageKey)}
-            </p>
+          <span class={`${errorInfo().icon} text-destructive mt-0.5 flex-shrink-0 text-xl`} />
+          <div class="min-w-0 flex-1">
+            <h4 class="text-destructive mb-1 font-semibold">{t(errorInfo().titleKey)}</h4>
+            <p class="text-muted-foreground text-sm">{t(errorInfo().messageKey)}</p>
             <Show when={props.canRetry}>
               <div class="mt-3">
                 <Button

@@ -1,11 +1,4 @@
-import {
-  createSignal,
-  createEffect,
-  onMount,
-  batch,
-  Show,
-  type Component,
-} from "solid-js";
+import { createSignal, createEffect, onMount, batch, Show, type Component } from "solid-js";
 import { MessageList } from "@components/MessageList";
 import { ChatInput } from "@components/ChatInput";
 import { FileUpload } from "@components/FileUpload";
@@ -13,12 +6,7 @@ import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { Logo } from "@components/Logo";
 import { Button } from "@components/ui/button";
-import {
-  loadMessages,
-  saveMessages,
-  loadMessageCosts,
-  saveMessageCosts,
-} from "@lib/storage";
+import { loadMessages, saveMessages, loadMessageCosts, saveMessageCosts } from "@lib/storage";
 import { sendMessage, fetchBalance, type RetryPhase } from "@lib/api";
 import { t } from "@lib/i18n";
 import { calculateCostUsd } from "@config/pricing";
@@ -186,21 +174,14 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: assistantContent },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
 
       // Store cost for this message if usage data received
       if (messageUsage !== null) {
         // Type assertion needed: TypeScript's control flow doesn't track callback assignments
         const usage = messageUsage as TokenUsage;
         const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
-        const costUsd = calculateCostUsd(
-          modelId,
-          usage.prompt_tokens,
-          usage.completion_tokens
-        );
+        const costUsd = calculateCostUsd(modelId, usage.prompt_tokens, usage.completion_tokens);
 
         setMessageCosts((prev) => {
           const newMap = new Map(prev);
@@ -266,20 +247,13 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: assistantContent },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
 
       // Store cost for this message if usage data received
       if (messageUsage !== null) {
         const usage = messageUsage as TokenUsage;
         const modelId = props.onboardingContext?.model ?? "TEE/DeepSeek-v3.2";
-        const costUsd = calculateCostUsd(
-          modelId,
-          usage.prompt_tokens,
-          usage.completion_tokens
-        );
+        const costUsd = calculateCostUsd(modelId, usage.prompt_tokens, usage.completion_tokens);
 
         setMessageCosts((prev) => {
           const newMap = new Map(prev);
@@ -349,10 +323,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       // Calculate index for the new assistant message
       const newMessageIndex = messages().length;
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: assistantContent },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", content: assistantContent }]);
 
       // Store cost for this message if usage data received
       if (messageUsage !== null) {
@@ -409,8 +380,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       const currentMessages = messages();
       // Check if this is a first message retry (only 1 user message, no assistant response yet)
       const isFirstMessageRetry =
-        currentMessages.length === 1 &&
-        currentMessages[0].role === "user";
+        currentMessages.length === 1 && currentMessages[0].role === "user";
 
       if (isFirstMessageRetry) {
         // First message retry: keep original message and retry API
@@ -438,8 +408,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       const currentMessages = messages();
       // Check if this is a first message retry (only 1 user message, no assistant response yet)
       const isFirstMessageRetry =
-        currentMessages.length === 1 &&
-        currentMessages[0].role === "user";
+        currentMessages.length === 1 && currentMessages[0].role === "user";
 
       if (isFirstMessageRetry) {
         // First message retry: keep original message and retry API with fallback model
@@ -457,44 +426,44 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
   };
 
   return (
-    <div class="flex flex-col h-screen">
+    <div class="flex h-screen flex-col">
       {/* Header */}
-      <header class="flex items-center justify-between px-4 py-3 border-b border-border bg-card transition-colors duration-200">
+      <header class="border-border bg-card flex items-center justify-between border-b px-4 py-3 transition-colors duration-200">
         <div class="flex items-center gap-2">
           <Logo size="sm" />
           <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
           {/* External links */}
-          <div class="flex items-center gap-3 ml-2">
+          <div class="ml-2 flex items-center gap-3">
             <a
               href="/"
-              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
               aria-label="EDB Pede - Homepage"
             >
-              <img src="/icons/edbpede.svg" alt="" class="w-5 h-5" aria-hidden="true" />
+              <img src="/icons/edbpede.svg" alt="" class="h-5 w-5" aria-hidden="true" />
             </a>
             <a
               href="https://github.com/edbpede/feedback"
               target="_blank"
               rel="noopener noreferrer"
-              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
               aria-label="GitHub Repository"
             >
-              <img src="/icons/github.svg" alt="" class="w-5 h-5" aria-hidden="true" />
+              <img src="/icons/github.svg" alt="" class="h-5 w-5" aria-hidden="true" />
             </a>
             <a
               href="https://kutt.it/Hrtu2H"
               target="_blank"
               rel="noopener noreferrer"
-              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
               aria-label="Support/Donate"
             >
-              <img src="/icons/donate.svg" alt="" class="w-5 h-5" aria-hidden="true" />
+              <img src="/icons/donate.svg" alt="" class="h-5 w-5" aria-hidden="true" />
             </a>
             <a
               href="https://www.gnu.org/licenses/agpl-3.0.en.html"
               target="_blank"
               rel="noopener noreferrer"
-              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
               aria-label="AGPL-3.0 License"
             >
               <img src="/icons/agpl.svg" alt="" class="h-5 w-auto" aria-hidden="true" />
@@ -502,10 +471,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <BalanceDisplay
-            balanceUsd={balance()}
-            isLoading={balanceLoading()}
-          />
+          <BalanceDisplay balanceUsd={balance()} isLoading={balanceLoading()} />
           <ThemeSwitcher />
           <LanguageSwitcher />
           <Show when={props.onboardingContext}>
@@ -519,19 +485,11 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
               {t("chat.editContext")}
             </Button>
           </Show>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleClearConversation}
-          >
+          <Button variant="secondary" size="sm" onClick={handleClearConversation}>
             <span class="i-carbon-trash-can mr-1" />
             {t("chat.clearButton")}
           </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => props.onLogout()}
-          >
+          <Button variant="secondary" size="sm" onClick={() => props.onLogout()}>
             <span class="i-carbon-logout mr-1" />
             {t("chat.logoutButton")}
           </Button>
@@ -540,15 +498,17 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
 
       {/* Retry indicator banner */}
       <Show when={retryState()}>
-        <div class="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground bg-muted/50 border-b border-border animate-pulse">
+        <div class="text-muted-foreground bg-muted/50 border-border flex animate-pulse items-center gap-2 border-b px-4 py-2 text-sm">
           <span class="i-carbon-connection-signal" />
           <Show
-            when={retryState()!.phase === 'quick'}
-            fallback={t("chat.retryingBackoff", { seconds: String(Math.round(retryState()!.delayMs / 1000)) })}
+            when={retryState()!.phase === "quick"}
+            fallback={t("chat.retryingBackoff", {
+              seconds: String(Math.round(retryState()!.delayMs / 1000)),
+            })}
           >
             {t("chat.retryingQuick")}
-          </Show>
-          {" "}({retryState()!.attempt}/{retryState()!.max})
+          </Show>{" "}
+          ({retryState()!.attempt}/{retryState()!.max})
         </div>
       </Show>
 

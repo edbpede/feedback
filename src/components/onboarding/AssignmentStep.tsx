@@ -21,9 +21,7 @@ export const AssignmentStep: Component<AssignmentStepProps> = (props) => {
       <CardContent class="pt-6">
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
-        <h2 class="text-xl font-bold mb-2 text-center">
-          {t("onboarding.steps.assignment.title")}
-        </h2>
+        <h2 class="mb-2 text-center text-xl font-bold">{t("onboarding.steps.assignment.title")}</h2>
         <p class="text-muted-foreground mb-6 text-center text-sm">
           {t("onboarding.steps.assignment.hint")}
         </p>
@@ -39,18 +37,14 @@ export const AssignmentStep: Component<AssignmentStepProps> = (props) => {
         </div>
 
         {/* Navigation */}
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <Button variant="secondary" onClick={() => props.onBack()}>
             <span class="i-carbon-arrow-left mr-1" />
             {t("onboarding.navigation.back")}
           </Button>
 
-          <div class="flex gap-2 items-center">
-            <Button
-              variant="link"
-              onClick={() => props.onSkip()}
-              class="text-muted-foreground"
-            >
+          <div class="flex items-center gap-2">
+            <Button variant="link" onClick={() => props.onSkip()} class="text-muted-foreground">
               {t("onboarding.steps.assignment.skipButton")}
             </Button>
             <Button onClick={() => props.onNext()} disabled={!props.value.trim()}>

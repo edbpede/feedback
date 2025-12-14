@@ -21,10 +21,8 @@ export const FallbackModelSelector: Component<FallbackModelSelectorProps> = (pro
 
   return (
     <div class="mt-4">
-      <p class="text-sm text-muted-foreground mb-3">
-        {t("chat.fallbackModelSelector.title")}
-      </p>
-      <div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+      <p class="text-muted-foreground mb-3 text-sm">{t("chat.fallbackModelSelector.title")}</p>
+      <div class="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
         <For each={fallbackData().models}>
           {(model: ModelConfig) => {
             const isRecommended = () => model.id === fallbackData().recommendedId;
@@ -33,17 +31,15 @@ export const FallbackModelSelector: Component<FallbackModelSelectorProps> = (pro
               <button
                 type="button"
                 onClick={() => props.onSelectModel(model.id)}
-                class="relative flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-background hover:border-primary hover:bg-accent/30 transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                class="border-border bg-background hover:border-primary hover:bg-accent/30 focus:ring-ring relative flex flex-shrink-0 items-center gap-2 rounded-lg border px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
               >
                 <Show when={isRecommended()}>
-                  <span class="absolute -top-2 left-2 px-1.5 py-0.5 bg-primary text-primary-foreground text-[10px] font-medium rounded-full">
+                  <span class="bg-primary text-primary-foreground absolute -top-2 left-2 rounded-full px-1.5 py-0.5 text-[10px] font-medium">
                     {t("chat.fallbackModelSelector.recommended")}
                   </span>
                 </Show>
                 <AIProviderLogo provider={model.provider} size="xs" />
-                <span class="text-sm font-medium whitespace-nowrap">
-                  {t(model.nameKey)}
-                </span>
+                <span class="whitespace-nowrap text-sm font-medium">{t(model.nameKey)}</span>
               </button>
             );
           }}

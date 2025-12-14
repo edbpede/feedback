@@ -1,11 +1,6 @@
 import type { APIRoute } from "astro";
 import { createHmac } from "node:crypto";
-import {
-  SESSION_SECRET,
-  NANO_GPT_API_KEY,
-  NANO_GPT_MODEL,
-  API_BASE_URL,
-} from "astro:env/server";
+import { SESSION_SECRET, NANO_GPT_API_KEY, NANO_GPT_MODEL, API_BASE_URL } from "astro:env/server";
 import { SYSTEM_PROMPT } from "@config/systemPrompt";
 import { isValidModel, requiresStrictAlternation } from "@config/models";
 import type { ApiResponse, ChatRequest, ErrorDetails, Message } from "@lib/types";
@@ -33,10 +28,7 @@ function formatMessagesForModel(
 ): Array<{ role: string; content: string }> {
   if (!strictAlternation) {
     // Standard format with system role
-    return [
-      { role: "system", content: systemPrompt },
-      ...messages,
-    ];
+    return [{ role: "system", content: systemPrompt }, ...messages];
   }
 
   // For strict alternation models: merge system prompt into first user message
@@ -64,9 +56,7 @@ function verifyToken(token: string, secret: string): boolean {
   const parts = token.split(".");
   if (parts.length !== 2) return false;
   const [payload, signature] = parts;
-  const expectedSignature = createHmac("sha256", secret)
-    .update(payload)
-    .digest("base64url");
+  const expectedSignature = createHmac("sha256", secret).update(payload).digest("base64url");
   return signature === expectedSignature;
 }
 

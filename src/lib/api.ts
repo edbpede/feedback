@@ -11,8 +11,16 @@ import { ApiError } from "@lib/errorUtils";
 /** Retry configuration - progressive strategy */
 const MAX_RETRIES = 10;
 const RETRY_DELAYS = [
-  1000, 1500, 2000, 2000, 2000,     // Phase 1 (attempts 1-5): quick retries
-  4000, 8000, 16000, 32000, 60000,  // Phase 2 (attempts 6-10): exponential backoff
+  1000,
+  1500,
+  2000,
+  2000,
+  2000, // Phase 1 (attempts 1-5): quick retries
+  4000,
+  8000,
+  16000,
+  32000,
+  60000, // Phase 2 (attempts 6-10): exponential backoff
 ];
 
 /** Delay helper for retry backoff */
@@ -20,9 +28,7 @@ function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function authenticate(
-  password: string
-): Promise<ApiResponse<unknown>> {
+export async function authenticate(password: string): Promise<ApiResponse<unknown>> {
   const response = await fetch("/api/auth", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -32,7 +38,7 @@ export async function authenticate(
 }
 
 /** Retry phase indicator */
-export type RetryPhase = 'quick' | 'backoff';
+export type RetryPhase = "quick" | "backoff";
 
 export interface SendMessageOptions {
   messages: Message[];
@@ -64,7 +70,7 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
 
         // Check if we should retry
         if (errorData.errorDetails?.retryable && attempt < MAX_RETRIES - 1) {
-          const phase: RetryPhase = attempt < 5 ? 'quick' : 'backoff';
+          const phase: RetryPhase = attempt < 5 ? "quick" : "backoff";
           onRetry?.(attempt + 1, MAX_RETRIES, phase, RETRY_DELAYS[attempt]);
           await delay(RETRY_DELAYS[attempt]);
           continue;
@@ -120,13 +126,10 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
         lastError = new ApiError(0, "Network error", true);
       }
 
-      console.error(
-        `[Chat API] Attempt ${attempt + 1}/${MAX_RETRIES} error:`,
-        lastError.message
-      );
+      console.error(`[Chat API] Attempt ${attempt + 1}/${MAX_RETRIES} error:`, lastError.message);
 
       if (attempt < MAX_RETRIES - 1 && lastError.retryable) {
-        const phase: RetryPhase = attempt < 5 ? 'quick' : 'backoff';
+        const phase: RetryPhase = attempt < 5 ? "quick" : "backoff";
         onRetry?.(attempt + 1, MAX_RETRIES, phase, RETRY_DELAYS[attempt]);
         await delay(RETRY_DELAYS[attempt]);
       }
@@ -137,11 +140,7 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
 }
 
 /** Log detailed error information to browser console */
-function logError(
-  attempt: number,
-  errorDetails?: ErrorDetails,
-  fallbackMessage?: string
-): void {
+function logError(attempt: number, errorDetails?: ErrorDetails, fallbackMessage?: string): void {
   const errorInfo = {
     attempt: `${attempt + 1}/${MAX_RETRIES}`,
     status: errorDetails?.status,

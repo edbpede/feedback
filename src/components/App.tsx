@@ -1,11 +1,4 @@
-import {
-  createSignal,
-  onMount,
-  Show,
-  lazy,
-  Suspense,
-  type Component,
-} from "solid-js";
+import { createSignal, onMount, Show, lazy, Suspense, type Component } from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
 import { OnboardingFlow } from "@components/onboarding";
 
@@ -95,7 +88,7 @@ export const App: Component = () => {
   };
 
   return (
-    <div class="min-h-screen bg-background text-foreground transition-colors duration-200">
+    <div class="bg-background text-foreground min-h-screen transition-colors duration-200">
       <Show when={!isLoading()} fallback={<LoadingSpinner />}>
         <Show
           when={isAuthenticated()}
@@ -129,7 +122,7 @@ export const App: Component = () => {
 };
 
 const LoadingSpinner: Component = () => (
-  <div class="flex items-center justify-center min-h-screen">
-    <div class="i-carbon-loading animate-spin text-4xl text-primary" />
+  <div class="flex min-h-screen items-center justify-center">
+    <div class="i-carbon-loading text-primary animate-spin text-4xl" />
   </div>
 );

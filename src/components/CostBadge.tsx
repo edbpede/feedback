@@ -11,7 +11,7 @@ export const CostBadge: Component<CostBadgeProps> = (props) => {
 
   return (
     <span
-      class="inline-flex items-center gap-1 text-xs text-muted-foreground opacity-60 hover:opacity-100 transition-opacity"
+      class="text-muted-foreground inline-flex items-center gap-1 text-xs opacity-60 transition-opacity hover:opacity-100"
       title={`$${props.costUsd.toFixed(4)} USD`}
     >
       <span class="i-carbon-currency" />

@@ -4,18 +4,14 @@ import { PASSWORD_HASH, SESSION_SECRET } from "astro:env/server";
 import type { ApiResponse, AuthRequest } from "@lib/types";
 
 function signToken(payload: string, secret: string): string {
-  const signature = createHmac("sha256", secret)
-    .update(payload)
-    .digest("base64url");
+  const signature = createHmac("sha256", secret).update(payload).digest("base64url");
   return `${payload}.${signature}`;
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = (await request.json()) as AuthRequest;
-    const hashedInput = createHash("sha256")
-      .update(body.password)
-      .digest("hex");
+    const hashedInput = createHash("sha256").update(body.password).digest("hex");
 
     if (hashedInput !== PASSWORD_HASH) {
       const response: ApiResponse<never> = {

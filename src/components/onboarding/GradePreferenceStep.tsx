@@ -19,7 +19,7 @@ export const GradePreferenceStep: Component<GradePreferenceStepProps> = (props) 
       <CardContent class="pt-6">
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
-        <h2 class="text-xl font-bold mb-2 text-center">
+        <h2 class="mb-2 text-center text-xl font-bold">
           {t("onboarding.steps.gradePreference.title")}
         </h2>
         <p class="text-muted-foreground mb-6 text-center text-sm">
@@ -27,30 +27,30 @@ export const GradePreferenceStep: Component<GradePreferenceStepProps> = (props) 
         </p>
 
         {/* Grade Toggle Cards */}
-        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row">
           <button
             type="button"
             onClick={() => props.onChange(true)}
-            class={`flex-1 p-6 rounded-lg border-2 transition-all text-center ${
+            class={`flex-1 rounded-lg border-2 p-6 text-center transition-all ${
               props.value
                 ? "border-primary bg-accent/20"
                 : "border-border hover:border-muted-foreground"
             }`}
           >
-            <span class="block text-3xl mb-3">📊</span>
+            <span class="mb-3 block text-3xl">📊</span>
             <span class="font-medium">{t("onboarding.steps.gradePreference.yes")}</span>
           </button>
 
           <button
             type="button"
             onClick={() => props.onChange(false)}
-            class={`flex-1 p-6 rounded-lg border-2 transition-all text-center ${
+            class={`flex-1 rounded-lg border-2 p-6 text-center transition-all ${
               !props.value
                 ? "border-primary bg-accent/20"
                 : "border-border hover:border-muted-foreground"
             }`}
           >
-            <span class="block text-3xl mb-3">💬</span>
+            <span class="mb-3 block text-3xl">💬</span>
             <span class="font-medium">{t("onboarding.steps.gradePreference.no")}</span>
           </button>
         </div>

@@ -141,11 +141,11 @@ export function getModelById(modelId: string): ModelConfig | undefined {
  * - dark: Logo for dark theme (light-colored logo)
  */
 export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: string }> = {
-  "DeepSeek": {
+  DeepSeek: {
     light: "/ai-providers/deepseek.svg",
     dark: "/ai-providers/deepseek.svg",
   },
-  "OpenAI": {
+  OpenAI: {
     light: "/ai-providers/openai-dark.svg",
     dark: "/ai-providers/openai-light.svg",
   },
@@ -153,11 +153,11 @@ export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: stri
     light: "/ai-providers/zhipu-ai-light.svg",
     dark: "/ai-providers/zhipu-ai.svg",
   },
-  "Alibaba": {
+  Alibaba: {
     light: "/ai-providers/qwen.svg",
     dark: "/ai-providers/qwen.svg",
   },
-  "Google": {
+  Google: {
     light: "/ai-providers/gemma.svg",
     dark: "/ai-providers/gemma.svg",
   },
@@ -190,9 +190,9 @@ export function getFallbackModels(
   failedModelId: string,
   subject?: string
 ): { models: ModelConfig[]; recommendedId: string | null } {
-  const filtered = AVAILABLE_MODELS
-    .filter((m) => m.id !== failedModelId)
-    .sort((a, b) => FALLBACK_SORT_ORDER.indexOf(a.id) - FALLBACK_SORT_ORDER.indexOf(b.id));
+  const filtered = AVAILABLE_MODELS.filter((m) => m.id !== failedModelId).sort(
+    (a, b) => FALLBACK_SORT_ORDER.indexOf(a.id) - FALLBACK_SORT_ORDER.indexOf(b.id)
+  );
 
   const recommendedId = subject ? getRecommendedModelForSubject(subject) : null;
   const validRecommendedId = recommendedId !== failedModelId ? recommendedId : null;

@@ -9,6 +9,7 @@ When writing or modifying TypeScript, Astro, SolidJS, or UnoCSS code, consult th
 ## Codebase Search
 
 **Always use the `mcp__auggie-mcp__codebase-retrieval` tool as the primary method for:**
+
 - Exploring the codebase and understanding architecture
 - Finding existing patterns before implementing new features
 - Locating relevant code when the exact file location is unknown
@@ -40,6 +41,7 @@ bun run preview  # Preview production build
 ## Architecture
 
 ### Path Aliases
+
 ```
 @/*           → src/*
 @components/* → src/components/*
@@ -48,6 +50,7 @@ bun run preview  # Preview production build
 ```
 
 ### Key Directories
+
 - `src/pages/api/` - API routes: auth, chat (streaming), logout
 - `src/components/ui/` - shadcn-solid components (Button, Card, Input, etc.)
 - `src/components/onboarding/` - Multi-step onboarding flow
@@ -55,11 +58,13 @@ bun run preview  # Preview production build
 - `src/config/systemPrompt.ts` - Danish-language system prompt for the AI
 
 ### Application Flow
+
 1. `PasswordGate` - Session authentication
 2. `OnboardingFlow` - Collects subject, grade level, assignment, student work
 3. `ChatWindow` - Streaming chat interface with NanoGPT backend
 
 ### Environment Variables (astro:env/server)
+
 - `PASSWORD_HASH`, `SESSION_SECRET` - Authentication
 - `NANO_GPT_API_KEY`, `NANO_GPT_MODEL`, `API_BASE_URL` - AI backend
 

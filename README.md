@@ -34,20 +34,20 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 <details open>
 <summary>☀️ Lys tilstand</summary>
 
-| Adgangskode | Velkomst |
-|:-----------:|:--------:|
+|                          Adgangskode                          |                       Velkomst                       |
+| :-----------------------------------------------------------: | :--------------------------------------------------: |
 | ![Adgangskode](public/screenshots/01-password-gate-light.png) | ![Velkomst](public/screenshots/02-welcome-light.png) |
 
-| Vælg fag og klassetrin | Beskriv opgaven |
-|:----------------------:|:---------------:|
+|                       Vælg fag og klassetrin                        |                         Beskriv opgaven                          |
+| :-----------------------------------------------------------------: | :--------------------------------------------------------------: |
 | ![Fag og klassetrin](public/screenshots/03-subject-grade-light.png) | ![Opgavebeskrivelse](public/screenshots/04-assignment-light.png) |
 
-| Indsæt dit arbejde | Karaktervurdering? |
-|:------------------:|:------------------:|
+|                      Indsæt dit arbejde                      |                           Karaktervurdering?                            |
+| :----------------------------------------------------------: | :---------------------------------------------------------------------: |
 | ![Elevarbejde](public/screenshots/05-student-work-light.png) | ![Karakterpræference](public/screenshots/06-grade-preference-light.png) |
 
-| Vælg AI-model | Chat med feedback-botten |
-|:-------------:|:------------------------:|
+|                         Vælg AI-model                         |               Chat med feedback-botten               |
+| :-----------------------------------------------------------: | :--------------------------------------------------: |
 | ![Modelvalg](public/screenshots/07-model-selection-light.png) | ![Chat](public/screenshots/08-chat-window-light.png) |
 
 </details>
@@ -56,20 +56,20 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 
 <summary>🌙 Mørk tilstand</summary>
 
-| Adgangskode | Velkomst |
-|:-----------:|:--------:|
+|                         Adgangskode                          |                      Velkomst                       |
+| :----------------------------------------------------------: | :-------------------------------------------------: |
 | ![Adgangskode](public/screenshots/01-password-gate-dark.png) | ![Velkomst](public/screenshots/02-welcome-dark.png) |
 
-| Vælg fag og klassetrin | Beskriv opgaven |
-|:----------------------:|:---------------:|
+|                       Vælg fag og klassetrin                       |                         Beskriv opgaven                         |
+| :----------------------------------------------------------------: | :-------------------------------------------------------------: |
 | ![Fag og klassetrin](public/screenshots/03-subject-grade-dark.png) | ![Opgavebeskrivelse](public/screenshots/04-assignment-dark.png) |
 
-| Indsæt dit arbejde | Karaktervurdering? |
-|:------------------:|:------------------:|
+|                     Indsæt dit arbejde                      |                           Karaktervurdering?                           |
+| :---------------------------------------------------------: | :--------------------------------------------------------------------: |
 | ![Elevarbejde](public/screenshots/05-student-work-dark.png) | ![Karakterpræference](public/screenshots/06-grade-preference-dark.png) |
 
-| Vælg AI-model | Chat med feedback-botten |
-|:-------------:|:------------------------:|
+|                        Vælg AI-model                         |              Chat med feedback-botten               |
+| :----------------------------------------------------------: | :-------------------------------------------------: |
 | ![Modelvalg](public/screenshots/07-model-selection-dark.png) | ![Chat](public/screenshots/08-chat-window-dark.png) |
 
 </details>
