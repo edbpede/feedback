@@ -1,0 +1,28 @@
+# Build outputs
+dist/
+.astro/
+.vercel/
+
+# Dependencies
+node_modules/
+
+# Lock files
+bun.lockb
+pnpm-lock.yaml
+package-lock.json
+
+# Cache
+.cache/
+.turbo/
+
+# IDE
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.*
+
+# Generated
+*.min.js
+*.min.css
