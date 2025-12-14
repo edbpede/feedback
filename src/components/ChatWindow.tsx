@@ -463,6 +463,43 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
         <div class="flex items-center gap-2">
           <Logo size="sm" />
           <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
+          {/* External links */}
+          <div class="flex items-center gap-3 ml-2">
+            <a
+              href="/"
+              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              aria-label="EDB Pede - Homepage"
+            >
+              <img src="/icons/edbpede.svg" alt="" class="w-5 h-5" aria-hidden="true" />
+            </a>
+            <a
+              href="https://github.com/edbpede/feedback"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              aria-label="GitHub Repository"
+            >
+              <img src="/icons/github.svg" alt="" class="w-5 h-5" aria-hidden="true" />
+            </a>
+            <a
+              href="https://kutt.it/Hrtu2H"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              aria-label="Support/Donate"
+            >
+              <img src="/icons/donate.svg" alt="" class="w-5 h-5" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.gnu.org/licenses/agpl-3.0.en.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+              aria-label="AGPL-3.0 License"
+            >
+              <img src="/icons/agpl.svg" alt="" class="h-5 w-auto" aria-hidden="true" />
+            </a>
+          </div>
         </div>
         <div class="flex items-center gap-2">
           <BalanceDisplay

@@ -8,7 +8,6 @@ import {
 } from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
 import { OnboardingFlow } from "@components/onboarding";
-import { FooterIconBar } from "@components/FooterIconBar";
 
 // Lazy load ChatWindow - user must complete onboarding first
 const ChatWindow = lazy(() =>
@@ -96,38 +95,35 @@ export const App: Component = () => {
   };
 
   return (
-    <div class="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-200">
-      <div class="flex-1">
-        <Show when={!isLoading()} fallback={<LoadingSpinner />}>
+    <div class="min-h-screen bg-background text-foreground transition-colors duration-200">
+      <Show when={!isLoading()} fallback={<LoadingSpinner />}>
+        <Show
+          when={isAuthenticated()}
+          fallback={<PasswordGate onSuccess={() => setIsAuthenticated(true)} />}
+        >
           <Show
-            when={isAuthenticated()}
-            fallback={<PasswordGate onSuccess={() => setIsAuthenticated(true)} />}
+            when={onboardingState().completed && !isEditing()}
+            fallback={
+              <OnboardingFlow
+                onComplete={handleOnboardingComplete}
+                onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
+                initialContext={onboardingState().context}
+              />
+            }
           >
-            <Show
-              when={onboardingState().completed && !isEditing()}
-              fallback={
-                <OnboardingFlow
-                  onComplete={handleOnboardingComplete}
-                  onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
-                  initialContext={onboardingState().context}
-                />
-              }
-            >
-              <Suspense fallback={<LoadingSpinner />}>
-                <ChatWindow
-                  onLogout={handleLogout}
-                  onboardingContext={onboardingState().context}
-                  onClearOnboarding={handleClearOnboarding}
-                  onEditContext={handleEditContext}
-                  autoSubmit={pendingAutoSubmit()}
-                  onAutoSubmitComplete={handleAutoSubmitComplete}
-                />
-              </Suspense>
-            </Show>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ChatWindow
+                onLogout={handleLogout}
+                onboardingContext={onboardingState().context}
+                onClearOnboarding={handleClearOnboarding}
+                onEditContext={handleEditContext}
+                autoSubmit={pendingAutoSubmit()}
+                onAutoSubmitComplete={handleAutoSubmitComplete}
+              />
+            </Suspense>
           </Show>
         </Show>
-      </div>
-      <FooterIconBar />
+      </Show>
     </div>
   );
 };
