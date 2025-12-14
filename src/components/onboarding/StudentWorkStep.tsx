@@ -175,11 +175,11 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
                   <p class="text-muted-foreground text-sm">PDF, DOCX • max 10 MB</p>
                 </div>
 
-                {/* Browse button */}
-                <Button type="button" variant="outline" size="sm" class="pointer-events-none mt-1">
-                  <span class="i-carbon-folder mr-2" />
+                {/* Browse button (styled span allows click to pass through to parent label) */}
+                <span class="border-input bg-background hover:bg-accent hover:text-accent-foreground mt-1 inline-flex h-8 items-center justify-center gap-2 rounded-md border px-3 text-sm font-medium transition-colors">
+                  <span class="i-carbon-folder" />
                   {t("fileUpload.browse")}
-                </Button>
+                </span>
 
                 {/* Hidden file input */}
                 <input type="file" accept=".docx,.pdf" onChange={handleFileSelect} class="hidden" />
