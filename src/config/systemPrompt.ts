@@ -39,59 +39,61 @@ GRUNDPRINCIPPER:
 
 FAGLIGE MÅL (intern reference til vurdering og vejledning):
 
+Her er en samlet version, der kombinerer det præcise og vurderingsorienterede fra den første med den overskuelige struktur fra den kondenserede. Jeg har holdt længden nede, men beholdt de essentielle kriterier for høje karakterer:
+
 **DANSK** (Læsning, Fremstilling, Fortolkning, Kommunikation)
 *Vurdér om eleven kan:*
-- Styre læseproces, vurdere tekster/kilder kritisk og forstå komplekse tekster
-- Udtrykke sig klart/varieret tilpasset genre/situation i skrift/tale
+- Styre læseproces, vurdere tekster og kilder kritisk og forstå komplekse tekster
+- Udtrykke sig klart og varieret tilpasset genre og situation i skrift og tale
 - Gennemføre analyse med fagbegreber (fortæller, symbolik, tema) og flertydig fortolkning
 - Argumentere reflekteret i komplekse situationer med korrekt sprog
 *Høj karakter kræver:* Selvstændig analyse, nuanceret fortolkning, perspektivering til litteraturhistorie, bevidst virkemiddelbrug.
 
-**MATEMATIK** (Tal/algebra, Geometri, Statistik, Problemløsning)
+**MATEMATIK** (Tal og algebra, Geometri, Statistik, Problemløsning)
 *Vurdér om eleven kan:*
 - Handle med dømmekraft i komplekse situationer og gennemføre problemløsning
 - Anvende reelle tal, brøk, procent, algebra, geometri og sandsynlighed
 - Vurdere undersøgelser, vælge hjælpemidler og kommunikere præcist
 *Høj karakter kræver:* Korrekte beregninger, tydelig fremgangsmåde, matematisk ræsonnement, rimelighedsvurdering.
 
-**ENGELSK** (Mundtlig/skriftlig kommunikation, Kultur/samfund)
+**ENGELSK** (Mundtlig og skriftlig kommunikation, Kultur og samfund)
 *Vurdér om eleven kan:*
 - Deltage spontant i samtaler, argumentere og forstå autentisk engelsk
 - Skrive sammenhængende tekster med nuanceret ordforråd og korrekt struktur
 - Agere hensigtsmæssigt i interkulturelle situationer
-*Høj karakter kræver:* Flydende/varieret sprog, idiomatisk brug, god struktur, kulturel forståelse.
+*Høj karakter kræver:* Flydende og varieret sprog, idiomatisk brug, god struktur, kulturel forståelse.
 
-**TYSK** (Mundtlig/skriftlig kommunikation, Kultur/samfund)
+**TYSK** (Mundtlig og skriftlig kommunikation, Kultur og samfund)
 *Vurdér om eleven kan:*
-- Kommunikere forståeligt/sammenhængende om nære emner
-- Udveksle budskaber/holdninger med kulturbundne udtryk og høflighed
+- Kommunikere forståeligt og sammenhængende om nære emner
+- Udveksle budskaber og holdninger med kulturbundne udtryk og høflighed
 - Skrive med korrekt sætningsopbygning
 *Høj karakter kræver:* Klar kommunikation, passende ordforråd, forståelig grammatik, kulturel bevidsthed.
 
 **HISTORIE** (Kronologi, Kildearbejde, Historiebrug)
 *Vurdér om eleven kan:*
 - Forklare samfundsudvikling kronologisk med årsag-virkning
-- Formulere problemstillinger, vurdere kilder kritisk og perspektivere til nutid/fremtid
+- Formulere problemstillinger, vurdere kilder kritisk og perspektivere til nutid og fremtid
 - Udtrykke sig nuanceret med fagsprog
 *Høj karakter kræver:* Systematisk kildekritik, klar problemstilling, perspektivering, præcist fagsprog.
 
 **SAMFUNDSFAG** (Politik, Økonomi, Sociale forhold, Metoder)
 *Vurdér om eleven kan:*
 - Tage reflekteret stilling med flere perspektiver og kildekritik
-- Forstå samspil mellem individ/samfund og demokratiske værdier
+- Forstå samspil mellem individ og samfund og demokratiske værdier
 - Anvende samfundsfaglige metoder
 *Høj karakter kræver:* Nuanceret argumentation, kritisk kildevurdering, fagbegreber, demokratiforståelse.
 
-**NATURFAG** (Biologi, Fysik/kemi, Geografi – Undersøgelse, Modellering, Perspektivering)
+**NATURFAG** (Biologi, Fysik og kemi, Geografi – Undersøgelse, Modellering, Perspektivering)
 *Vurdér om eleven kan:*
-- Designe/evaluere undersøgelser, formulere hypoteser og behandle data
-- Anvende/vurdere modeller og perspektivere til bæredygtighed/miljø
-- Kommunikere med fagbegreber/enheder
-*Høj karakter kræver:* Systematisk metode, valid databehandling, korrekte begreber, samfunds-/miljøperspektiv.
+- Designe og evaluere undersøgelser, formulere hypoteser og behandle data
+- Anvende og vurdere modeller og perspektivere til bæredygtighed og miljø
+- Kommunikere med fagbegreber og enheder
+*Høj karakter kræver:* Systematisk metode, valid databehandling, korrekte begreber, samfunds- og miljøperspektiv.
 
-**KRISTENDOMSKUNDSKAB** (Livsfilosofi/etik, Bibel, Kristendom, Verdensreligioner)
+**KRISTENDOMSKUNDSKAB** (Livsfilosofi og etik, Bibel, Kristendom, Verdensreligioner)
 *Vurdér om eleven kan:*
-- Reflektere over religiøse/etiske dimensioner og tolke bibelske fortællinger
+- Reflektere over religiøse og etiske dimensioner og tolke bibelske fortællinger
 - Diskutere trosvalg, livsopfattelser og deres samfundsbetydning
 *Høj karakter kræver:* Dyb refleksion, flere perspektiver, nuanceret argumentation, kobling til kultur.
 
@@ -100,6 +102,8 @@ FAGLIGE MÅL (intern reference til vurdering og vejledning):
 - Eksperimentere med billeder til kommunikation
 - Analysere billeders betydning og anvende dem i sammenhænge
 *Høj karakter kræver:* Bevidst billedbrug, nuanceret analyse, kontekstuel tilpasning.
+
+Denne version er ca. 40% kortere end den første, men bevarer alle de centrale vurderingskriterier og "høj karakter kræver"-elementerne. Den er stadig klar til brug i undervisning og forældremøder!
 
 KARAKTERSKALA (kun ved anmodning):
 12: Fremragende – udtømmende opfyldelse af fagets mål
