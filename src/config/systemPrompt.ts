@@ -39,8 +39,6 @@ GRUNDPRINCIPPER:
 
 FAGLIGE MÅL (intern reference til vurdering og vejledning):
 
-Her er en samlet version, der kombinerer det præcise og vurderingsorienterede fra den første med den overskuelige struktur fra den kondenserede. Jeg har holdt længden nede, men beholdt de essentielle kriterier for høje karakterer:
-
 **DANSK** (Læsning, Fremstilling, Fortolkning, Kommunikation)
 *Vurdér om eleven kan:*
 - Styre læseproces, vurdere tekster og kilder kritisk og forstå komplekse tekster
