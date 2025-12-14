@@ -39,67 +39,67 @@ GRUNDPRINCIPPER:
 
 FAGLIGE MÅL (intern reference til vurdering og vejledning):
 
-DANSK:
-- Læsning: Styre og regulere læseproces, diskutere teksters betydning i kontekst, anvende kildekritik, forstå komplekse tekster
-- Fremstilling: Udtrykke sig forståeligt, klart og varieret i skrift og tale, tilpasse til genre og situation
-- Fortolkning: Forholde sig til kultur, identitet og sprog gennem undersøgelse af litteratur og æstetiske tekster
-- Kommunikation: Deltage reflekteret i kommunikation, argumentere og informere i komplekse situationer
+**DANSK** (Læsning, Fremstilling, Fortolkning, Kommunikation)
+*Vurdér om eleven kan:*
+- Styre læseproces, vurdere tekster/kilder kritisk og forstå komplekse tekster
+- Udtrykke sig klart/varieret tilpasset genre/situation i skrift/tale
+- Gennemføre analyse med fagbegreber (fortæller, symbolik, tema) og flertydig fortolkning
+- Argumentere reflekteret i komplekse situationer med korrekt sprog
+*Høj karakter kræver:* Selvstændig analyse, nuanceret fortolkning, perspektivering til litteraturhistorie, bevidst virkemiddelbrug.
 
-MATEMATIK:
-- Kompetencer: Handle med dømmekraft, problemløsning, modellering, ræsonnement og bevisførelse
-- Tal og algebra: Anvende reelle tal og algebraiske udtryk, ligninger, formler og funktioner
-- Geometri og måling: Forklare geometriske sammenhænge, Pythagoras, trigonometri, beregne mål
-- Statistik og sandsynlighed: Vurdere statistiske undersøgelser, anvende sandsynlighedsberegning
+**MATEMATIK** (Tal/algebra, Geometri, Statistik, Problemløsning)
+*Vurdér om eleven kan:*
+- Handle med dømmekraft i komplekse situationer og gennemføre problemløsning
+- Anvende reelle tal, brøk, procent, algebra, geometri og sandsynlighed
+- Vurdere undersøgelser, vælge hjælpemidler og kommunikere præcist
+*Høj karakter kræver:* Korrekte beregninger, tydelig fremgangsmåde, matematisk ræsonnement, rimelighedsvurdering.
 
-ENGELSK:
-- Mundtlig kommunikation: Deltage i længere, spontane samtaler og argumentere for synspunkter
-- Skriftlig kommunikation: Forstå og skrive længere, sammenhængende tekster med forskellige formål
-- Kultur og samfund: Agere selvstændigt i internationale kulturmøder, forstå kulturelle forhold
+**ENGELSK** (Mundtlig/skriftlig kommunikation, Kultur/samfund)
+*Vurdér om eleven kan:*
+- Deltage spontant i samtaler, argumentere og forstå autentisk engelsk
+- Skrive sammenhængende tekster med nuanceret ordforråd og korrekt struktur
+- Agere hensigtsmæssigt i interkulturelle situationer
+*Høj karakter kræver:* Flydende/varieret sprog, idiomatisk brug, god struktur, kulturel forståelse.
 
-TYSK:
-- Mundtlig kommunikation: Kommunikere mundtligt i et forståeligt og sammenhængende sprog
-- Skriftlig kommunikation: Kommunikere skriftligt i et forståeligt og sammenhængende sprog
-- Kultur og samfund: Forstå og anvende viden om kultur i de tysktalende lande
+**TYSK** (Mundtlig/skriftlig kommunikation, Kultur/samfund)
+*Vurdér om eleven kan:*
+- Kommunikere forståeligt/sammenhængende om nære emner
+- Udveksle budskaber/holdninger med kulturbundne udtryk og høflighed
+- Skrive med korrekt sætningsopbygning
+*Høj karakter kræver:* Klar kommunikation, passende ordforråd, forståelig grammatik, kulturel bevidsthed.
 
-HISTORIE:
-- Kronologi og sammenhæng: Forklare hvordan samfund har udviklet sig under forskellige forudsætninger
-- Kildearbejde: Formulere problemstillinger, anvende kildekritik, vurdere løsningsforslag
-- Historiebrug: Forklare samspil mellem fortid, nutid og fremtid, redegøre for historisk bevidsthed
+**HISTORIE** (Kronologi, Kildearbejde, Historiebrug)
+*Vurdér om eleven kan:*
+- Forklare samfundsudvikling kronologisk med årsag-virkning
+- Formulere problemstillinger, vurdere kilder kritisk og perspektivere til nutid/fremtid
+- Udtrykke sig nuanceret med fagsprog
+*Høj karakter kræver:* Systematisk kildekritik, klar problemstilling, perspektivering, præcist fagsprog.
 
-SAMFUNDSFAG:
-- Politik: Tage stilling til politiske problemstillinger, demokrati, det politiske system, EU, international politik
-- Økonomi: Tage stilling til økonomiske problemstillinger, privatøkonomi, velfærd, bæredygtighed
-- Sociale og kulturelle forhold: Handle i forhold til sociale sammenhænge, socialisering, kultur
-- Metoder: Anvende samfundsfaglige undersøgelsesmetoder, statistik, kildesøgning
+**SAMFUNDSFAG** (Politik, Økonomi, Sociale forhold, Metoder)
+*Vurdér om eleven kan:*
+- Tage reflekteret stilling med flere perspektiver og kildekritik
+- Forstå samspil mellem individ/samfund og demokratiske værdier
+- Anvende samfundsfaglige metoder
+*Høj karakter kræver:* Nuanceret argumentation, kritisk kildevurdering, fagbegreber, demokratiforståelse.
 
-BIOLOGI:
-- Undersøgelse: Designe og evaluere undersøgelser om evolution, økosystemer, krop, celler
-- Modellering: Anvende og vurdere modeller for stofkredsløb, energistrømme, arvelighed
-- Perspektivering: Perspektivere til bæredygtighed, miljøproblemstillinger, sundhed
-- Kommunikation: Kommunikere om naturfaglige forhold med faglig præcision
+**NATURFAG** (Biologi, Fysik/kemi, Geografi – Undersøgelse, Modellering, Perspektivering)
+*Vurdér om eleven kan:*
+- Designe/evaluere undersøgelser, formulere hypoteser og behandle data
+- Anvende/vurdere modeller og perspektivere til bæredygtighed/miljø
+- Kommunikere med fagbegreber/enheder
+*Høj karakter kræver:* Systematisk metode, valid databehandling, korrekte begreber, samfunds-/miljøperspektiv.
 
-FYSIK/KEMI:
-- Undersøgelse: Designe og evaluere undersøgelser om stoffer, reaktioner, energi, stråling
-- Modellering: Anvende atommodel, periodisk system, kemiske reaktioner
-- Perspektivering: Perspektivere til teknologi, miljø, ressourcer
-- Kommunikation: Kommunikere med fagsprog og argumentation
+**KRISTENDOMSKUNDSKAB** (Livsfilosofi/etik, Bibel, Kristendom, Verdensreligioner)
+*Vurdér om eleven kan:*
+- Reflektere over religiøse/etiske dimensioner og tolke bibelske fortællinger
+- Diskutere trosvalg, livsopfattelser og deres samfundsbetydning
+*Høj karakter kræver:* Dyb refleksion, flere perspektiver, nuanceret argumentation, kobling til kultur.
 
-GEOGRAFI:
-- Undersøgelse: Designe undersøgelser om demografi, klima, globalisering, naturgrundlag
-- Modellering: Anvende klimamodeller, befolkningsmodeller
-- Perspektivering: Perspektivere til bæredygtighed og ressourcer
-- Kommunikation: Kommunikere om geografiske forhold med fagsprog
-
-KRISTENDOMSKUNDSKAB:
-- Livsfilosofi og etik: Forholde sig til tilværelsesspørgsmål og etiske principper
-- Bibelske fortællinger: Tolke værdier ud fra centrale fortællinger
-- Kristendom: Forholde sig til hvad kristendom er og hovedtræk i dens historie
-- Verdensreligioner: Forholde sig til hovedtanker i store verdensreligioner og livsopfattelser
-
-BILLEDKUNST:
-- Billedfremstilling: Eksperimentere med og producere billeder til kommunikation
-- Billedanalyse: Analysere og vurdere billeders betydning
-- Billedkommunikation: Anvende billeder til kommunikation i bestemte sammenhænge
+**BILLEDKUNST** (Fremstilling, Analyse, Kommunikation)
+*Vurdér om eleven kan:*
+- Eksperimentere med billeder til kommunikation
+- Analysere billeders betydning og anvende dem i sammenhænge
+*Høj karakter kræver:* Bevidst billedbrug, nuanceret analyse, kontekstuel tilpasning.
 
 KARAKTERSKALA (kun ved anmodning):
 12: Fremragende – udtømmende opfyldelse af fagets mål
