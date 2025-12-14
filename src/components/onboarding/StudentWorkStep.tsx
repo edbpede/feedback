@@ -176,23 +176,13 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
                 </div>
 
                 {/* Browse button */}
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  class="pointer-events-none mt-1"
-                >
+                <Button type="button" variant="outline" size="sm" class="pointer-events-none mt-1">
                   <span class="i-carbon-folder mr-2" />
                   {t("fileUpload.browse")}
                 </Button>
 
                 {/* Hidden file input */}
-                <input
-                  type="file"
-                  accept=".docx,.pdf"
-                  onChange={handleFileSelect}
-                  class="hidden"
-                />
+                <input type="file" accept=".docx,.pdf" onChange={handleFileSelect} class="hidden" />
               </Show>
             </label>
           </Show>
