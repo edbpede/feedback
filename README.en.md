@@ -19,6 +19,10 @@
   A Danish AI-powered feedback chatbot for students in grades 7-9, providing formative guidance on schoolwork without giving direct answers.
 </p>
 
+<p align="center">
+  <img src="public/demo.gif" alt="Feedback Bot demo - from login to chat" width="800" />
+</p>
+
 ---
 
 ## How It Works
