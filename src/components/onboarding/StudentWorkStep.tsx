@@ -1,7 +1,6 @@
 import { createSignal, Show, type Component } from "solid-js";
 import { t } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
-import { CardExternalLinks } from "@components/CardExternalLinks";
 import { PrivacyWarning } from "./PrivacyWarning";
 import { extractTextFromFile } from "@lib/fileParser";
 import type { AttachedFile } from "@lib/types";
@@ -91,10 +90,6 @@ export const StudentWorkStep: Component<StudentWorkStepProps> = (props) => {
   return (
     <Card class="w-full max-w-2xl">
       <CardContent class="pt-6">
-        <div class="flex justify-start mb-4">
-          <CardExternalLinks />
-        </div>
-
         <StepIndicator totalSteps={props.totalSteps} currentStep={props.currentStep} />
 
         <h2 class="text-xl font-bold mb-2 text-center">
