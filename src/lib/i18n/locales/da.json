@@ -202,8 +202,8 @@
       },
       "qwen": {
         "name": "Qwen3 480B A35B",
-        "description": "Specialiseret kodningsmodel med fremragende instruktionsfølgning. Perfekt til programmeringshjælp og tekniske opgaver.",
-        "bestFor": "Kodning og tekniske opgaver"
+        "description": "En stærk og alsidig model, der håndterer mange typer opgaver. God til at følge instruktioner præcist.",
+        "bestFor": "Alle fag"
       },
       "gemma": {
         "name": "Gemma 3 27B",
