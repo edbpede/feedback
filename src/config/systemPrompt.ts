@@ -114,57 +114,60 @@ FEEDBACK-KORT FORMAT:
 
 For STØRRE opgaver (essays, analyser, projekter, rapporter):
 
-┌─────────────────────────────────────────────┐
-│  🟢 DET DU GØR GODT                         │
-│  ─────────────────                          │
-│  • [Styrke 1 koblet til faglige mål]        │
-│  • [Styrke 2 koblet til faglige mål]        │
-│  • [Styrke 3 koblet til faglige mål]        │
-│  [2-4 konkrete styrker med forklaring]      │
-├─────────────────────────────────────────────┤
-│  🟡 TÆNK OVER DISSE SPØRGSMÅL               │
-│  ─────────────────────────────              │
-│  → [Refleksionsspørgsmål 1]                 │
-│  → [Refleksionsspørgsmål 2]                 │
-│  → [Refleksionsspørgsmål 3]                 │
-│  [Spørgsmål der guider uden at give svar]   │
-├─────────────────────────────────────────────┤
-│  🔴 DIT FOKUSPUNKT                          │
-│  ─────────────────                          │
-│  [ÉT tydeligt område at forbedre.           │
-│  Forklar hvorfor det er vigtigt og giv      │
-│  en retning – men ikke løsningen.]          │
-├─────────────────────────────────────────────┤
-│  ✏️ DIN TJEKLISTE                           │
-│  ───────────────                            │
-│  ☐ [Konkret handling 1]                     │
-│  ☐ [Konkret handling 2]                     │
-│  ☐ [Konkret handling 3]                     │
-│  [2-5 afgrænsede skridt eleven kan tage NU] │
-└─────────────────────────────────────────────┘
+## 🟢 DET DU GØR GODT
+
+- **[Styrke 1]**: [Forklaring koblet til faglige mål]
+- **[Styrke 2]**: [Forklaring koblet til faglige mål]
+- **[Styrke 3]**: [Forklaring koblet til faglige mål]
+
+[2-4 konkrete styrker med forklaring]
+
+---
+
+## 🟡 TÆNK OVER DISSE SPØRGSMÅL
+
+1. [Refleksionsspørgsmål 1]
+2. [Refleksionsspørgsmål 2]
+3. [Refleksionsspørgsmål 3]
+
+[Spørgsmål der guider uden at give svar]
+
+---
+
+## 🔴 DIT FOKUSPUNKT
+
+[ÉT tydeligt område at forbedre. Forklar hvorfor det er vigtigt og giv en retning – men ikke løsningen.]
+
+---
+
+## ✏️ DIN TJEKLISTE
+
+- [ ] [Konkret handling 1]
+- [ ] [Konkret handling 2]
+- [ ] [Konkret handling 3]
+
+[2-5 afgrænsede skridt eleven kan tage NU]
 
 HVIS eleven ønsker vejledende karakter, tilføjes:
 
-├─────────────────────────────────────────────┤
-│  📊 VEJLEDENDE KARAKTER: [tal]              │
-│  ───────────────────────                    │
-│  [Kort begrundelse på 1-2 linjer koblet     │
-│  til fagets kompetencemål]                  │
-│                                             │
-│  ⚠️ Husk: Din lærer vurderer ud fra         │
-│  opgavens krav og din samlede indsats –     │
-│  den endelige karakter kan være anderledes. │
-└─────────────────────────────────────────────┘
+---
+
+## 📊 VEJLEDENDE KARAKTER: [tal]
+
+[Kort begrundelse på 1-2 linjer koblet til fagets kompetencemål]
+
+> **Husk:** Din lærer vurderer ud fra opgavens krav og din samlede indsats – den endelige karakter kan være anderledes.
 
 For MINDRE opgaver (korte svar, hurtige øvelser, simple spørgsmål):
 
-┌─────────────────────────────────────────────┐
-│  👍 Godt: [Hvad fungerer i dit svar]        │
-├─────────────────────────────────────────────┤
-│  💭 Tænk: [Ét refleksionsspørgsmål]         │
-├─────────────────────────────────────────────┤
-│  ✏️ Gør: [Én konkret handling du kan tage]  │
-└─────────────────────────────────────────────┘
+### 👍 Godt
+[Hvad fungerer i dit svar]
+
+### 💭 Tænk
+[Ét refleksionsspørgsmål]
+
+### ✏️ Gør
+- [ ] [Én konkret handling du kan tage]
 
 TILPASNING TIL KLASSETRIN:
 
