@@ -36,19 +36,19 @@ The system prompt defining the bot's pedagogical behavior is in [`src/config/sys
 
 |                          Password                          |                       Welcome                       |
 | :--------------------------------------------------------: | :-------------------------------------------------: |
-| ![Password](public/screenshots/01-password-gate-light.png) | ![Welcome](public/screenshots/02-welcome-light.png) |
+| [![Password](public/screenshots/01-password-gate-light.png)](public/screenshots/fullsize/01-password-gate-light.png) | [![Welcome](public/screenshots/02-welcome-light.png)](public/screenshots/fullsize/02-welcome-light.png) |
 
 |                      Select Subject & Grade                       |                    Describe Assignment                    |
 | :---------------------------------------------------------------: | :-------------------------------------------------------: |
-| ![Subject & Grade](public/screenshots/03-subject-grade-light.png) | ![Assignment](public/screenshots/04-assignment-light.png) |
+| [![Subject & Grade](public/screenshots/03-subject-grade-light.png)](public/screenshots/fullsize/03-subject-grade-light.png) | [![Assignment](public/screenshots/04-assignment-light.png)](public/screenshots/fullsize/04-assignment-light.png) |
 
 |                         Add Your Work                         |                           Grade Assessment?                           |
 | :-----------------------------------------------------------: | :-------------------------------------------------------------------: |
-| ![Student Work](public/screenshots/05-student-work-light.png) | ![Grade Preference](public/screenshots/06-grade-preference-light.png) |
+| [![Student Work](public/screenshots/05-student-work-light.png)](public/screenshots/fullsize/05-student-work-light.png) | [![Grade Preference](public/screenshots/06-grade-preference-light.png)](public/screenshots/fullsize/06-grade-preference-light.png) |
 
 |                           Choose AI Model                           |                Chat with Feedback Bot                |
 | :-----------------------------------------------------------------: | :--------------------------------------------------: |
-| ![Model Selection](public/screenshots/07-model-selection-light.png) | ![Chat](public/screenshots/08-chat-window-light.png) |
+| [![Model Selection](public/screenshots/07-model-selection-light.png)](public/screenshots/fullsize/07-model-selection-light.png) | [![Chat](public/screenshots/08-chat-window-light.png)](public/screenshots/fullsize/08-chat-window-light.png) |
 
 </details>
 
@@ -57,19 +57,19 @@ The system prompt defining the bot's pedagogical behavior is in [`src/config/sys
 
 |                         Password                          |                      Welcome                       |
 | :-------------------------------------------------------: | :------------------------------------------------: |
-| ![Password](public/screenshots/01-password-gate-dark.png) | ![Welcome](public/screenshots/02-welcome-dark.png) |
+| [![Password](public/screenshots/01-password-gate-dark.png)](public/screenshots/fullsize/01-password-gate-dark.png) | [![Welcome](public/screenshots/02-welcome-dark.png)](public/screenshots/fullsize/02-welcome-dark.png) |
 
 |                      Select Subject & Grade                      |                   Describe Assignment                    |
 | :--------------------------------------------------------------: | :------------------------------------------------------: |
-| ![Subject & Grade](public/screenshots/03-subject-grade-dark.png) | ![Assignment](public/screenshots/04-assignment-dark.png) |
+| [![Subject & Grade](public/screenshots/03-subject-grade-dark.png)](public/screenshots/fullsize/03-subject-grade-dark.png) | [![Assignment](public/screenshots/04-assignment-dark.png)](public/screenshots/fullsize/04-assignment-dark.png) |
 
 |                        Add Your Work                         |                          Grade Assessment?                           |
 | :----------------------------------------------------------: | :------------------------------------------------------------------: |
-| ![Student Work](public/screenshots/05-student-work-dark.png) | ![Grade Preference](public/screenshots/06-grade-preference-dark.png) |
+| [![Student Work](public/screenshots/05-student-work-dark.png)](public/screenshots/fullsize/05-student-work-dark.png) | [![Grade Preference](public/screenshots/06-grade-preference-dark.png)](public/screenshots/fullsize/06-grade-preference-dark.png) |
 
 |                          Choose AI Model                           |               Chat with Feedback Bot                |
 | :----------------------------------------------------------------: | :-------------------------------------------------: |
-| ![Model Selection](public/screenshots/07-model-selection-dark.png) | ![Chat](public/screenshots/08-chat-window-dark.png) |
+| [![Model Selection](public/screenshots/07-model-selection-dark.png)](public/screenshots/fullsize/07-model-selection-dark.png) | [![Chat](public/screenshots/08-chat-window-dark.png)](public/screenshots/fullsize/08-chat-window-dark.png) |
 
 </details>
 

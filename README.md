@@ -36,19 +36,19 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 
 |                          Adgangskode                          |                       Velkomst                       |
 | :-----------------------------------------------------------: | :--------------------------------------------------: |
-| ![Adgangskode](public/screenshots/01-password-gate-light.png) | ![Velkomst](public/screenshots/02-welcome-light.png) |
+| [![Adgangskode](public/screenshots/01-password-gate-light.png)](public/screenshots/fullsize/01-password-gate-light.png) | [![Velkomst](public/screenshots/02-welcome-light.png)](public/screenshots/fullsize/02-welcome-light.png) |
 
 |                       Vælg fag og klassetrin                        |                         Beskriv opgaven                          |
 | :-----------------------------------------------------------------: | :--------------------------------------------------------------: |
-| ![Fag og klassetrin](public/screenshots/03-subject-grade-light.png) | ![Opgavebeskrivelse](public/screenshots/04-assignment-light.png) |
+| [![Fag og klassetrin](public/screenshots/03-subject-grade-light.png)](public/screenshots/fullsize/03-subject-grade-light.png) | [![Opgavebeskrivelse](public/screenshots/04-assignment-light.png)](public/screenshots/fullsize/04-assignment-light.png) |
 
 |                      Indsæt dit arbejde                      |                           Karaktervurdering?                            |
 | :----------------------------------------------------------: | :---------------------------------------------------------------------: |
-| ![Elevarbejde](public/screenshots/05-student-work-light.png) | ![Karakterpræference](public/screenshots/06-grade-preference-light.png) |
+| [![Elevarbejde](public/screenshots/05-student-work-light.png)](public/screenshots/fullsize/05-student-work-light.png) | [![Karakterpræference](public/screenshots/06-grade-preference-light.png)](public/screenshots/fullsize/06-grade-preference-light.png) |
 
 |                         Vælg AI-model                         |               Chat med feedback-botten               |
 | :-----------------------------------------------------------: | :--------------------------------------------------: |
-| ![Modelvalg](public/screenshots/07-model-selection-light.png) | ![Chat](public/screenshots/08-chat-window-light.png) |
+| [![Modelvalg](public/screenshots/07-model-selection-light.png)](public/screenshots/fullsize/07-model-selection-light.png) | [![Chat](public/screenshots/08-chat-window-light.png)](public/screenshots/fullsize/08-chat-window-light.png) |
 
 </details>
 
@@ -58,19 +58,19 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 
 |                         Adgangskode                          |                      Velkomst                       |
 | :----------------------------------------------------------: | :-------------------------------------------------: |
-| ![Adgangskode](public/screenshots/01-password-gate-dark.png) | ![Velkomst](public/screenshots/02-welcome-dark.png) |
+| [![Adgangskode](public/screenshots/01-password-gate-dark.png)](public/screenshots/fullsize/01-password-gate-dark.png) | [![Velkomst](public/screenshots/02-welcome-dark.png)](public/screenshots/fullsize/02-welcome-dark.png) |
 
 |                       Vælg fag og klassetrin                       |                         Beskriv opgaven                         |
 | :----------------------------------------------------------------: | :-------------------------------------------------------------: |
-| ![Fag og klassetrin](public/screenshots/03-subject-grade-dark.png) | ![Opgavebeskrivelse](public/screenshots/04-assignment-dark.png) |
+| [![Fag og klassetrin](public/screenshots/03-subject-grade-dark.png)](public/screenshots/fullsize/03-subject-grade-dark.png) | [![Opgavebeskrivelse](public/screenshots/04-assignment-dark.png)](public/screenshots/fullsize/04-assignment-dark.png) |
 
 |                     Indsæt dit arbejde                      |                           Karaktervurdering?                           |
 | :---------------------------------------------------------: | :--------------------------------------------------------------------: |
-| ![Elevarbejde](public/screenshots/05-student-work-dark.png) | ![Karakterpræference](public/screenshots/06-grade-preference-dark.png) |
+| [![Elevarbejde](public/screenshots/05-student-work-dark.png)](public/screenshots/fullsize/05-student-work-dark.png) | [![Karakterpræference](public/screenshots/06-grade-preference-dark.png)](public/screenshots/fullsize/06-grade-preference-dark.png) |
 
 |                        Vælg AI-model                         |              Chat med feedback-botten               |
 | :----------------------------------------------------------: | :-------------------------------------------------: |
-| ![Modelvalg](public/screenshots/07-model-selection-dark.png) | ![Chat](public/screenshots/08-chat-window-dark.png) |
+| [![Modelvalg](public/screenshots/07-model-selection-dark.png)](public/screenshots/fullsize/07-model-selection-dark.png) | [![Chat](public/screenshots/08-chat-window-dark.png)](public/screenshots/fullsize/08-chat-window-dark.png) |
 
 </details>
 
