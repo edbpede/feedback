@@ -285,7 +285,11 @@
       "description": "We're scanning your text to protect your privacy",
       "retrying": "Retrying ({{attempt}}/{{max}})...",
       "tryingModel": "Trying alternative model ({{current}}/{{total}})...",
-      "lastError": "Last error"
+      "lastError": "Last error",
+      "teeBadge": {
+        "label": "TEE protected",
+        "tooltip": "Your text is processed in a Trusted Execution Environment (TEE) - data stays encrypted even during AI processing, and is GDPR compliant."
+      }
     },
     "review": {
       "title": "We found personal information",

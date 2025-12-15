@@ -2,6 +2,7 @@ import { Show, type Component } from "solid-js";
 import { t } from "@lib/i18n";
 import { Card, CardContent } from "@components/ui/card";
 import { AIProviderLogo } from "@components/AIProviderLogo";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
 import { getModelById } from "@config/models";
 import type { PIIDetectionStatus } from "@lib/types";
 
@@ -45,9 +46,23 @@ export const PIIDetectionLoading: Component<PIIDetectionLoadingProps> = (props) 
           {/* Model info when available */}
           <Show when={modelConfig()}>
             {(config) => (
-              <div class="flex items-center gap-2">
-                <AIProviderLogo provider={config().provider} size="sm" />
-                <span class="text-muted-foreground text-sm">{t(config().nameKey)}</span>
+              <div class="flex flex-col items-center gap-2">
+                <div class="flex items-center gap-2">
+                  <AIProviderLogo provider={config().provider} size="sm" />
+                  <span class="text-muted-foreground text-sm">{t(config().nameKey)}</span>
+                </div>
+                {/* TEE security badge */}
+                <Tooltip>
+                  <TooltipTrigger class="flex cursor-help items-center gap-1.5">
+                    <span class="i-carbon-locked text-primary text-sm" />
+                    <span class="text-primary text-xs font-medium">
+                      {t("pii.detecting.teeBadge.label")}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent class="max-w-xs">
+                    <p>{t("pii.detecting.teeBadge.tooltip")}</p>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             )}
           </Show>
