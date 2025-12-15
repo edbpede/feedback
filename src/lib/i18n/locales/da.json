@@ -2,7 +2,8 @@
   "common": {
     "appName": "Feedback Bot til Studerende",
     "loading": "Indlæser...",
-    "error": "Fejl"
+    "error": "Fejl",
+    "back": "Tilbage"
   },
   "errors": {
     "network": {

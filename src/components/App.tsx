@@ -1,7 +1,6 @@
 import { createSignal, onMount, Show, lazy, Suspense, type Component } from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
 import { OnboardingFlow } from "@components/onboarding";
-import { ModelPathStep } from "@components/ModelPathStep";
 import { PIIReviewFlow } from "@components/pii";
 
 // Lazy load ChatWindow - user must complete onboarding first
@@ -16,7 +15,6 @@ import {
   clearOnboardingState,
   clearMessages,
   clearMessageCosts,
-  loadModelPath,
   saveModelPath,
   clearGDPRState,
   saveAnonymizationState,
@@ -26,17 +24,12 @@ import type {
   OnboardingContext,
   OnboardingState,
   ModelPathState,
-  ModelPath,
   AnonymizationState,
 } from "@lib/types";
 
 export const App: Component = () => {
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(true);
-  const [modelPathState, setModelPathState] = createSignal<ModelPathState>({
-    selected: false,
-    path: null,
-  });
   const [onboardingState, setOnboardingState] = createSignal<OnboardingState>({
     completed: false,
     context: null,
@@ -54,8 +47,7 @@ export const App: Component = () => {
     initLocale();
     initTheme();
 
-    // Load model path and onboarding state from localStorage
-    setModelPathState(loadModelPath());
+    // Load onboarding state from localStorage
     setOnboardingState(loadOnboardingState());
 
     // Check if session cookie exists by making a lightweight request
@@ -78,19 +70,12 @@ export const App: Component = () => {
     setIsAuthenticated(false);
   };
 
-  const handleModelPathSelect = (path: ModelPath) => {
-    const newState: ModelPathState = { selected: true, path };
-    setModelPathState(newState);
-    saveModelPath(newState);
-  };
-
   const handleChangeModelPath = () => {
     // Reset all state when changing model path
     clearGDPRState();
     clearOnboardingState();
     clearMessages();
     clearMessageCosts();
-    setModelPathState({ selected: false, path: null });
     setOnboardingState({ completed: false, context: null });
     setIsEditing(false);
   };
@@ -123,6 +108,10 @@ export const App: Component = () => {
     const newState: OnboardingState = { completed: true, context };
     setOnboardingState(newState);
     saveOnboardingState(newState);
+
+    // Save model path separately for quick access
+    const modelPathState: ModelPathState = { selected: true, path: context.modelPath };
+    saveModelPath(modelPathState);
 
     // Clear messages when completing an edit so new conversation starts fresh
     if (wasEditing) {
@@ -209,56 +198,45 @@ export const App: Component = () => {
           when={isAuthenticated()}
           fallback={<PasswordGate onSuccess={() => setIsAuthenticated(true)} />}
         >
-          {/* Model Path Selection Step */}
+          {/* PII Review Flow (for commercial models) */}
           <Show
-            when={modelPathState().selected}
+            when={showPIIReview()}
             fallback={
-              <div class="flex min-h-screen items-center justify-center p-4">
-                <ModelPathStep onContinue={handleModelPathSelect} />
-              </div>
+              /* Onboarding or Chat */
+              <Show
+                when={onboardingState().completed && !isEditing()}
+                fallback={
+                  <OnboardingFlow
+                    onComplete={handleOnboardingComplete}
+                    onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
+                    initialContext={onboardingState().context}
+                    isEditing={isEditing()}
+                  />
+                }
+              >
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ChatWindow
+                    onLogout={handleLogout}
+                    onboardingContext={onboardingState().context}
+                    onClearOnboarding={handleClearOnboarding}
+                    onEditContext={handleEditContext}
+                    autoSubmit={pendingAutoSubmit()}
+                    onAutoSubmitComplete={handleAutoSubmitComplete}
+                    onModelChange={handleModelChange}
+                    onChangeModelPath={handleChangeModelPath}
+                    modelPath={onboardingState().context?.modelPath ?? null}
+                  />
+                </Suspense>
+              </Show>
             }
           >
-            {/* PII Review Flow (for commercial models) */}
-            <Show
-              when={showPIIReview()}
-              fallback={
-                /* Onboarding or Chat */
-                <Show
-                  when={onboardingState().completed && !isEditing()}
-                  fallback={
-                    <OnboardingFlow
-                      onComplete={handleOnboardingComplete}
-                      onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
-                      initialContext={onboardingState().context}
-                      isEditing={isEditing()}
-                      modelPath={modelPathState().path}
-                    />
-                  }
-                >
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ChatWindow
-                      onLogout={handleLogout}
-                      onboardingContext={onboardingState().context}
-                      onClearOnboarding={handleClearOnboarding}
-                      onEditContext={handleEditContext}
-                      autoSubmit={pendingAutoSubmit()}
-                      onAutoSubmitComplete={handleAutoSubmitComplete}
-                      onModelChange={handleModelChange}
-                      onChangeModelPath={handleChangeModelPath}
-                      modelPath={modelPathState().path}
-                    />
-                  </Suspense>
-                </Show>
-              }
-            >
-              <div class="flex min-h-screen items-center justify-center p-4">
-                <PIIReviewFlow
-                  text={textForPIIReview()}
-                  onComplete={handlePIIReviewComplete}
-                  onBack={handlePIIReviewBack}
-                />
-              </div>
-            </Show>
+            <div class="flex min-h-screen items-center justify-center p-4">
+              <PIIReviewFlow
+                text={textForPIIReview()}
+                onComplete={handlePIIReviewComplete}
+                onBack={handlePIIReviewBack}
+              />
+            </div>
           </Show>
         </Show>
       </Show>

@@ -72,6 +72,8 @@ export interface OnboardingContext {
   wantsGrade: boolean;
   /** Selected AI model ID */
   model: string;
+  /** Selected model path (privacy-first or enhanced-quality) */
+  modelPath: ModelPath;
 }
 
 /** Persisted onboarding state */

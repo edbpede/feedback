@@ -1,6 +1,7 @@
 import { createSignal, Switch, Match, type Component } from "solid-js";
 import type { OnboardingContext, AttachedFile, ModelPath } from "@lib/types";
 import { WelcomeStep } from "./WelcomeStep";
+import { ModelPathStep } from "../ModelPathStep";
 import { SubjectGradeStep } from "./SubjectGradeStep";
 import { AssignmentStep } from "./AssignmentStep";
 import { StudentWorkStep } from "./StudentWorkStep";
@@ -13,16 +14,19 @@ interface OnboardingFlowProps {
   onSkip: () => void;
   initialContext?: OnboardingContext | null;
   isEditing?: boolean;
-  /** Selected model path (privacy-first or enhanced-quality) */
-  modelPath?: ModelPath | null;
 }
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
-  // Start at step 1 (SubjectGradeStep) when editing, step 0 (WelcomeStep) otherwise
+  // Start at step 2 (SubjectGradeStep) when editing, step 0 (WelcomeStep) otherwise
   const [currentStep, setCurrentStep] = createSignal(
-    props.isEditing && props.initialContext ? 1 : 0
+    props.isEditing && props.initialContext ? 2 : 0
+  );
+
+  // Model path state (privacy-first or enhanced-quality)
+  const [modelPath, setModelPath] = createSignal<ModelPath>(
+    props.initialContext?.modelPath ?? "privacy-first"
   );
 
   // Form data with optional initial values for editing
@@ -39,8 +43,8 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   // Use initial context model, or default model for the selected path, or global default
   const getInitialModel = () => {
     if (props.initialContext?.model) return props.initialContext.model;
-    if (props.modelPath) return getDefaultModelForPath(props.modelPath);
-    return DEFAULT_MODEL_ID;
+    const path = props.initialContext?.modelPath ?? "privacy-first";
+    return getDefaultModelForPath(path);
   };
   const [model, setModel] = createSignal(getInitialModel());
 
@@ -48,13 +52,20 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     setCurrentStep(1);
   };
 
+  const handleModelPathSelect = (path: ModelPath) => {
+    setModelPath(path);
+    // Update model to default for the selected path
+    setModel(getDefaultModelForPath(path));
+    setCurrentStep(2);
+  };
+
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, TOTAL_STEPS));
   };
 
   const handleBack = () => {
-    // When editing, don't go back to welcome screen (step 0)
-    const minStep = props.isEditing ? 1 : 0;
+    // When editing, don't go back to welcome or model path selection (step 0 or 1)
+    const minStep = props.isEditing ? 2 : 0;
     setCurrentStep((prev) => Math.max(prev - 1, minStep));
   };
 
@@ -67,6 +78,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
       studentWorkFile: studentWorkFile(),
       wantsGrade: wantsGrade(),
       model: model(),
+      modelPath: modelPath(),
     };
     props.onComplete(context);
   };
@@ -87,6 +99,16 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
         </Match>
 
         <Match when={currentStep() === 1}>
+          <ModelPathStep
+            onContinue={handleModelPathSelect}
+            onBack={() => setCurrentStep(0)}
+            currentStep={0}
+            totalSteps={TOTAL_STEPS}
+            initialPath={modelPath()}
+          />
+        </Match>
+
+        <Match when={currentStep() === 2}>
           <SubjectGradeStep
             subject={subject()}
             grade={grade()}
@@ -94,29 +116,15 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onGradeChange={setGrade}
             onNext={handleNext}
             onBack={handleBack}
-            currentStep={0}
-            totalSteps={TOTAL_STEPS}
-          />
-        </Match>
-
-        <Match when={currentStep() === 2}>
-          <AssignmentStep
-            value={assignmentDescription()}
-            onChange={setAssignmentDescription}
-            onNext={handleNext}
-            onBack={handleBack}
-            onSkip={handleSkipStep}
             currentStep={1}
             totalSteps={TOTAL_STEPS}
           />
         </Match>
 
         <Match when={currentStep() === 3}>
-          <StudentWorkStep
-            value={studentWork()}
-            onChange={setStudentWork}
-            file={studentWorkFile()}
-            onFileChange={setStudentWorkFile}
+          <AssignmentStep
+            value={assignmentDescription()}
+            onChange={setAssignmentDescription}
             onNext={handleNext}
             onBack={handleBack}
             onSkip={handleSkipStep}
@@ -126,26 +134,40 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
         </Match>
 
         <Match when={currentStep() === 4}>
-          <GradePreferenceStep
-            value={wantsGrade()}
-            onChange={setWantsGrade}
+          <StudentWorkStep
+            value={studentWork()}
+            onChange={setStudentWork}
+            file={studentWorkFile()}
+            onFileChange={setStudentWorkFile}
             onNext={handleNext}
             onBack={handleBack}
+            onSkip={handleSkipStep}
             currentStep={3}
             totalSteps={TOTAL_STEPS}
           />
         </Match>
 
         <Match when={currentStep() === 5}>
+          <GradePreferenceStep
+            value={wantsGrade()}
+            onChange={setWantsGrade}
+            onNext={handleNext}
+            onBack={handleBack}
+            currentStep={4}
+            totalSteps={TOTAL_STEPS}
+          />
+        </Match>
+
+        <Match when={currentStep() === 6}>
           <ModelSelectionStep
             value={model()}
             onChange={setModel}
             onSubmit={handleSubmit}
             onBack={handleBack}
-            currentStep={4}
+            currentStep={5}
             totalSteps={TOTAL_STEPS}
             subject={subject()}
-            modelPath={props.modelPath}
+            modelPath={modelPath()}
           />
         </Match>
       </Switch>
