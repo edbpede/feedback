@@ -5,6 +5,8 @@ import type {
   Message,
   StreamChunkWithUsage,
   TokenUsage,
+  PIIDetectionResult,
+  PIIDetectionRequest,
 } from "@lib/types";
 import { ApiError } from "@lib/errorUtils";
 
@@ -187,4 +189,43 @@ export async function fetchBalance(): Promise<BalanceResponse | null> {
     console.error("[Balance API] Error:", error);
     return null;
   }
+}
+
+/**
+ * Detect PII (Personally Identifiable Information) in text.
+ * Uses a TEE model to analyze Danish student text for personal information.
+ *
+ * @param text - The text to analyze
+ * @param context - Optional user-provided context about the text
+ * @returns PIIDetectionResult with findings and anonymized text
+ * @throws ApiError on failure
+ */
+export async function detectPII(text: string, context?: string): Promise<PIIDetectionResult> {
+  const requestBody: PIIDetectionRequest = { text, context };
+
+  const response = await fetch("/api/pii-detect", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(requestBody),
+  });
+
+  const data = (await response.json()) as ApiResponse<PIIDetectionResult>;
+
+  if (!response.ok || !data.success) {
+    const errorDetails = data.errorDetails;
+    console.error("[PII Detection API] Failed:", {
+      status: errorDetails?.status ?? response.status,
+      message: errorDetails?.message ?? data.error,
+      type: errorDetails?.type,
+      code: errorDetails?.code,
+    });
+
+    throw new ApiError(
+      errorDetails?.status ?? response.status,
+      data.error || "PII detection failed",
+      errorDetails?.retryable ?? false
+    );
+  }
+
+  return data.data;
 }

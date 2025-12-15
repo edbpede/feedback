@@ -181,7 +181,8 @@
         },
         "bestForLabel": "Good for",
         "recommendedFor": "Recommended for {{subject}}",
-        "alsoGoodFor": "Also good for {{subject}}"
+        "alsoGoodFor": "Also good for {{subject}}",
+        "commercialWarning": "You've selected commercial AI models. After this setup, we will check your text for personal information and anonymize it before sending to the AI model."
       }
     },
     "models": {
@@ -209,6 +210,26 @@
         "name": "Gemma 3 27B",
         "description": "Google's multilingual model with excellent language understanding. Supports 140+ languages and long documents.",
         "bestFor": "Languages and writing"
+      },
+      "gpt5": {
+        "name": "GPT-5.1",
+        "description": "OpenAI's latest and most advanced model. Exceptional for complex tasks and nuanced feedback.",
+        "bestFor": "All subjects (premium)"
+      },
+      "grok": {
+        "name": "Grok 4.1 Fast",
+        "description": "xAI's fast model with 2M context. Perfect for long texts and quick responses.",
+        "bestFor": "Long texts"
+      },
+      "gemini3": {
+        "name": "Gemini 3 Pro",
+        "description": "Google's latest Pro model with multimodal understanding. Strong at analysis and creative writing.",
+        "bestFor": "Analysis and creative writing"
+      },
+      "claude": {
+        "name": "Claude Sonnet 4.5",
+        "description": "Anthropic's top model with exceptional language understanding. Excellent for nuanced feedback and dialogue.",
+        "bestFor": "Language and nuanced feedback"
       }
     },
     "subjects": {
@@ -231,6 +252,89 @@
       "next": "Next",
       "submit": "Start chat",
       "cancel": "Cancel"
+    }
+  },
+  "modelPath": {
+    "title": "Choose your AI experience",
+    "description": "Select between privacy and quality based on your needs",
+    "continueButton": "Continue",
+    "privacyFirst": {
+      "title": "Privacy first",
+      "description": "Hardware-encrypted open source models",
+      "badge": "Default",
+      "features": {
+        "tee": "TEE protection (Trusted Execution Environment)",
+        "fast": "Fast and direct processing",
+        "gdpr": "GDPR compliant without anonymization"
+      }
+    },
+    "enhancedQuality": {
+      "title": "Enhanced quality",
+      "description": "Commercial top models with anonymization",
+      "features": {
+        "quality": "Highest quality feedback",
+        "models": "Claude, GPT-5, Grok, Gemini",
+        "anonymization": "Requires anonymization of personal information"
+      }
+    }
+  },
+  "pii": {
+    "detecting": {
+      "title": "Checking for personal information...",
+      "description": "We're scanning your text to protect your privacy"
+    },
+    "review": {
+      "title": "We found personal information",
+      "description": "The following information will be anonymized before being sent to the AI model",
+      "acceptButton": "Accept changes",
+      "declineButton": "I disagree",
+      "noDetections": "No personal information found",
+      "proceedButton": "Continue to chat"
+    },
+    "categories": {
+      "name": "Name",
+      "place": "Place",
+      "institution": "Institution",
+      "contact": "Contact information",
+      "other": "Other"
+    },
+    "confidence": {
+      "high": "High confidence",
+      "medium": "Medium confidence",
+      "low": "Low confidence"
+    },
+    "decline": {
+      "title": "Why do you disagree?",
+      "alreadyRemoved": "I've already removed personal information",
+      "falsePositive": "Something was flagged incorrectly",
+      "selectiveKeep": "Keep specific items"
+    },
+    "verification": {
+      "title": "Verifying your text...",
+      "description": "We're verifying that personal information has been removed"
+    },
+    "falsePositive": {
+      "title": "Tell us more",
+      "placeholder": "Explain why this flag is incorrect...",
+      "retryButton": "Retry with context"
+    },
+    "selectiveKeep": {
+      "title": "Select what to keep",
+      "description": "Select the items you want to keep in your text",
+      "keepLabel": "Keep",
+      "confirmButton": "Confirm selection"
+    },
+    "warning": {
+      "title": "Warning: Personal information",
+      "description": "You've chosen to keep personal information in your text. This may pose a risk to your privacy.",
+      "items": "Information you're keeping:",
+      "confirmButton": "I understand the risk",
+      "cancelButton": "Go back"
+    },
+    "error": {
+      "title": "An error occurred",
+      "description": "Could not check for personal information. Please try again.",
+      "retryButton": "Try again"
     }
   }
 }

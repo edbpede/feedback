@@ -1,6 +1,8 @@
 import { createSignal, onMount, Show, lazy, Suspense, type Component } from "solid-js";
 import { PasswordGate } from "@components/PasswordGate";
 import { OnboardingFlow } from "@components/onboarding";
+import { ModelPathStep } from "@components/ModelPathStep";
+import { PIIReviewFlow } from "@components/pii";
 
 // Lazy load ChatWindow - user must complete onboarding first
 const ChatWindow = lazy(() =>
@@ -14,12 +16,27 @@ import {
   clearOnboardingState,
   clearMessages,
   clearMessageCosts,
+  loadModelPath,
+  saveModelPath,
+  clearGDPRState,
+  saveAnonymizationState,
 } from "@lib/storage";
-import type { OnboardingContext, OnboardingState } from "@lib/types";
+import { requiresPIIAnonymization } from "@config/models";
+import type {
+  OnboardingContext,
+  OnboardingState,
+  ModelPathState,
+  ModelPath,
+  AnonymizationState,
+} from "@lib/types";
 
 export const App: Component = () => {
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(true);
+  const [modelPathState, setModelPathState] = createSignal<ModelPathState>({
+    selected: false,
+    path: null,
+  });
   const [onboardingState, setOnboardingState] = createSignal<OnboardingState>({
     completed: false,
     context: null,
@@ -27,12 +44,18 @@ export const App: Component = () => {
   const [isEditing, setIsEditing] = createSignal(false);
   const [pendingAutoSubmit, setPendingAutoSubmit] = createSignal(false);
 
+  // PII Review state
+  const [showPIIReview, setShowPIIReview] = createSignal(false);
+  const [pendingContext, setPendingContext] = createSignal<OnboardingContext | null>(null);
+  const [textForPIIReview, setTextForPIIReview] = createSignal("");
+
   onMount(async () => {
     // Initialize locale and theme from localStorage
     initLocale();
     initTheme();
 
-    // Load onboarding state from localStorage
+    // Load model path and onboarding state from localStorage
+    setModelPathState(loadModelPath());
     setOnboardingState(loadOnboardingState());
 
     // Check if session cookie exists by making a lightweight request
@@ -55,8 +78,48 @@ export const App: Component = () => {
     setIsAuthenticated(false);
   };
 
+  const handleModelPathSelect = (path: ModelPath) => {
+    const newState: ModelPathState = { selected: true, path };
+    setModelPathState(newState);
+    saveModelPath(newState);
+  };
+
+  const handleChangeModelPath = () => {
+    // Reset all state when changing model path
+    clearGDPRState();
+    clearOnboardingState();
+    clearMessages();
+    clearMessageCosts();
+    setModelPathState({ selected: false, path: null });
+    setOnboardingState({ completed: false, context: null });
+    setIsEditing(false);
+  };
+
   const handleOnboardingComplete = (context: OnboardingContext) => {
     const wasEditing = isEditing();
+
+    // Check if model requires PII anonymization
+    if (requiresPIIAnonymization(context.model)) {
+      const studentWorkText = context.studentWork?.trim() || "";
+      const fileContent = context.studentWorkFile?.content?.trim() || "";
+      const hasStudentWork = studentWorkText || fileContent;
+
+      if (hasStudentWork) {
+        // Combine text for PII review
+        const textToReview = [studentWorkText, fileContent].filter(Boolean).join("\n\n");
+        setTextForPIIReview(textToReview);
+        setPendingContext(context);
+        setShowPIIReview(true);
+        setIsEditing(false);
+        return;
+      }
+    }
+
+    // No PII review needed - proceed directly
+    finalizeOnboarding(context, wasEditing);
+  };
+
+  const finalizeOnboarding = (context: OnboardingContext, wasEditing: boolean) => {
     const newState: OnboardingState = { completed: true, context };
     setOnboardingState(newState);
     saveOnboardingState(newState);
@@ -69,6 +132,40 @@ export const App: Component = () => {
 
     setIsEditing(false);
     setPendingAutoSubmit(true);
+  };
+
+  const handlePIIReviewComplete = (anonymizationState: AnonymizationState) => {
+    const context = pendingContext();
+    if (!context) return;
+
+    // Save anonymization state for reference
+    saveAnonymizationState(anonymizationState);
+
+    // Update context with anonymized text
+    const updatedContext: OnboardingContext = {
+      ...context,
+      studentWork: anonymizationState.anonymizedText,
+      // Clear file content if it was anonymized
+      studentWorkFile: context.studentWorkFile
+        ? { ...context.studentWorkFile, content: "" }
+        : null,
+    };
+
+    // Clear PII review state
+    setShowPIIReview(false);
+    setPendingContext(null);
+    setTextForPIIReview("");
+
+    // Finalize onboarding with anonymized context
+    finalizeOnboarding(updatedContext, false);
+  };
+
+  const handlePIIReviewBack = () => {
+    // Go back to onboarding
+    setShowPIIReview(false);
+    setPendingContext(null);
+    setTextForPIIReview("");
+    setIsEditing(true); // Return to editing mode
   };
 
   const handleAutoSubmitComplete = () => {
@@ -112,28 +209,56 @@ export const App: Component = () => {
           when={isAuthenticated()}
           fallback={<PasswordGate onSuccess={() => setIsAuthenticated(true)} />}
         >
+          {/* Model Path Selection Step */}
           <Show
-            when={onboardingState().completed && !isEditing()}
+            when={modelPathState().selected}
             fallback={
-              <OnboardingFlow
-                onComplete={handleOnboardingComplete}
-                onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
-                initialContext={onboardingState().context}
-                isEditing={isEditing()}
-              />
+              <div class="flex min-h-screen items-center justify-center p-4">
+                <ModelPathStep onContinue={handleModelPathSelect} />
+              </div>
             }
           >
-            <Suspense fallback={<LoadingSpinner />}>
-              <ChatWindow
-                onLogout={handleLogout}
-                onboardingContext={onboardingState().context}
-                onClearOnboarding={handleClearOnboarding}
-                onEditContext={handleEditContext}
-                autoSubmit={pendingAutoSubmit()}
-                onAutoSubmitComplete={handleAutoSubmitComplete}
-                onModelChange={handleModelChange}
-              />
-            </Suspense>
+            {/* PII Review Flow (for commercial models) */}
+            <Show
+              when={showPIIReview()}
+              fallback={
+                /* Onboarding or Chat */
+                <Show
+                  when={onboardingState().completed && !isEditing()}
+                  fallback={
+                    <OnboardingFlow
+                      onComplete={handleOnboardingComplete}
+                      onSkip={isEditing() ? handleCancelEdit : handleOnboardingSkip}
+                      initialContext={onboardingState().context}
+                      isEditing={isEditing()}
+                      modelPath={modelPathState().path}
+                    />
+                  }
+                >
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ChatWindow
+                      onLogout={handleLogout}
+                      onboardingContext={onboardingState().context}
+                      onClearOnboarding={handleClearOnboarding}
+                      onEditContext={handleEditContext}
+                      autoSubmit={pendingAutoSubmit()}
+                      onAutoSubmitComplete={handleAutoSubmitComplete}
+                      onModelChange={handleModelChange}
+                      onChangeModelPath={handleChangeModelPath}
+                      modelPath={modelPathState().path}
+                    />
+                  </Suspense>
+                </Show>
+              }
+            >
+              <div class="flex min-h-screen items-center justify-center p-4">
+                <PIIReviewFlow
+                  text={textForPIIReview()}
+                  onComplete={handlePIIReviewComplete}
+                  onBack={handlePIIReviewBack}
+                />
+              </div>
+            </Show>
           </Show>
         </Show>
       </Show>

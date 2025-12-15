@@ -1,15 +1,19 @@
 import type { Component } from "solid-js";
-import { For } from "solid-js";
+import { For, Show, createMemo } from "solid-js";
 import { t, type TranslationKey } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { PrivacyInfoBox } from "./PrivacyInfoBox";
 import { AIProviderLogo } from "@components/AIProviderLogo";
+import { Alert, AlertDescription } from "@components/ui/alert";
+import type { ModelPath } from "@lib/types";
 import {
   AVAILABLE_MODELS,
   getRecommendedModelForSubject,
   DEFAULT_MODEL_ID,
+  getModelsForPath,
+  getDefaultModelForPath,
   type ModelConfig,
   type SpeedTier,
 } from "@config/models";
@@ -23,6 +27,8 @@ interface ModelSelectionStepProps {
   totalSteps: number;
   /** Subject selected in step 1, used to show recommendation badge */
   subject?: string;
+  /** Selected model path (privacy-first or enhanced-quality) */
+  modelPath?: ModelPath | null;
 }
 
 function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
@@ -51,6 +57,25 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
   const recommendedModelId = () =>
     props.subject ? getRecommendedModelForSubject(props.subject) : null;
 
+  // Get models filtered by path, or all models if no path selected
+  const displayModels = createMemo(() => {
+    if (props.modelPath) {
+      return getModelsForPath(props.modelPath);
+    }
+    return AVAILABLE_MODELS;
+  });
+
+  // Get the default model ID for the current path
+  const defaultModelId = createMemo(() => {
+    if (props.modelPath) {
+      return getDefaultModelForPath(props.modelPath);
+    }
+    return DEFAULT_MODEL_ID;
+  });
+
+  // Check if using commercial path (needs anonymization warning)
+  const isCommercialPath = () => props.modelPath === "enhanced-quality";
+
   return (
     <Card class="w-full max-w-3xl">
       <CardContent class="pt-6">
@@ -63,16 +88,28 @@ export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) =>
           {t("onboarding.steps.modelSelection.description")}
         </p>
 
-        {/* Privacy/Security Info Banner */}
-        <PrivacyInfoBox />
+        {/* Privacy/Security Info Banner for TEE path */}
+        <Show when={!isCommercialPath()}>
+          <PrivacyInfoBox />
+        </Show>
+
+        {/* Anonymization warning for commercial path */}
+        <Show when={isCommercialPath()}>
+          <Alert variant="warning" class="mb-6">
+            <span class="i-carbon-warning-alt text-lg" />
+            <AlertDescription>
+              {t("onboarding.steps.modelSelection.commercialWarning")}
+            </AlertDescription>
+          </Alert>
+        </Show>
 
         {/* Model Cards */}
-        <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <For each={AVAILABLE_MODELS}>
+        <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <For each={displayModels()}>
             {(model) => {
               const isSelected = () => props.value === model.id;
               const isRecommended = () => recommendedModelId() === model.id;
-              const isDefault = () => model.id === DEFAULT_MODEL_ID;
+              const isDefault = () => model.id === defaultModelId();
 
               return (
                 <button

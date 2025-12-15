@@ -79,3 +79,78 @@ export interface OnboardingState {
   completed: boolean;
   context: OnboardingContext | null;
 }
+
+// ============================================================================
+// GDPR Anonymization Feature Types
+// ============================================================================
+
+/** Model path selection for privacy vs quality trade-off */
+export type ModelPath = "privacy-first" | "enhanced-quality";
+
+/** Persisted model path state */
+export interface ModelPathState {
+  selected: boolean;
+  path: ModelPath | null;
+}
+
+/** PII category types for classification */
+export type PIICategory = "name" | "place" | "institution" | "contact" | "other";
+
+/** Confidence level for PII detection */
+export type PIIConfidence = "high" | "medium" | "low";
+
+/** A single detected PII item */
+export interface PIIFinding {
+  /** Unique identifier for UI tracking */
+  id: string;
+  /** The detected PII text */
+  original: string;
+  /** Proposed anonymized replacement */
+  replacement: string;
+  /** Category of PII */
+  category: PIICategory;
+  /** Detection confidence level */
+  confidence: PIIConfidence;
+  /** Explanation for why this was flagged */
+  reasoning: string;
+  /** User chose to keep this item (not anonymize) */
+  kept: boolean;
+}
+
+/** PII detection result from the API */
+export interface PIIDetectionResult {
+  /** List of detected PII items */
+  findings: PIIFinding[];
+  /** Notes about the text context (e.g., fiction vs personal) */
+  contextNotes: string;
+  /** Text with all proposed replacements applied */
+  anonymizedText: string;
+  /** True if no PII was found */
+  isClean: boolean;
+}
+
+/** Persisted anonymization state */
+export interface AnonymizationState {
+  /** Original text before anonymization */
+  originalText: string;
+  /** Text after anonymization applied */
+  anonymizedText: string;
+  /** PII items that were anonymized */
+  appliedReplacements: PIIFinding[];
+  /** PII items the user chose to keep */
+  skippedItems: PIIFinding[];
+}
+
+/** PII detection API request */
+export interface PIIDetectionRequest {
+  /** Text to analyze for PII */
+  text: string;
+  /** Optional user context for false positive handling */
+  context?: string;
+}
+
+/** User's reason for declining PII anonymization */
+export type PIIDeclineReason =
+  | "already_removed"  // "I've already removed personal info"
+  | "false_positive"   // "Something was flagged incorrectly"
+  | "selective_keep";  // "Keep specific items"

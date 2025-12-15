@@ -17,11 +17,17 @@ export const USD_TO_DKK = 7.0;
  * These are estimates based on NanoGPT pricing - may need adjustment.
  */
 export const MODEL_PRICING: Record<string, ModelPricing> = {
+  // TEE Models (Privacy-First)
   "TEE/DeepSeek-v3.2": { input: 0.27, output: 1.1 },
   "TEE/gpt-oss-120b": { input: 1.5, output: 2.0 },
   "TEE/glm-4.6": { input: 0.5, output: 1.5 },
   "TEE/qwen3-coder": { input: 1.5, output: 2.0 },
   "TEE/gemma-3-27b-it": { input: 0.2, output: 0.8 },
+  // Commercial Models (Enhanced Quality)
+  "gpt-5.1": { input: 1.25, output: 10.0 },
+  "x-ai/grok-4.1-fast": { input: 0.2, output: 0.5 },
+  "gemini-3-pro-preview": { input: 2.0, output: 12.0 },
+  "claude-sonnet-4-5-20250929": { input: 2.992, output: 14.994 },
 };
 
 /** Default pricing if model not found */

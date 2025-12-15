@@ -1,18 +1,20 @@
 import { createSignal, Switch, Match, type Component } from "solid-js";
-import type { OnboardingContext, AttachedFile } from "@lib/types";
+import type { OnboardingContext, AttachedFile, ModelPath } from "@lib/types";
 import { WelcomeStep } from "./WelcomeStep";
 import { SubjectGradeStep } from "./SubjectGradeStep";
 import { AssignmentStep } from "./AssignmentStep";
 import { StudentWorkStep } from "./StudentWorkStep";
 import { GradePreferenceStep } from "./GradePreferenceStep";
 import { ModelSelectionStep } from "./ModelSelectionStep";
-import { DEFAULT_MODEL_ID } from "@config/models";
+import { DEFAULT_MODEL_ID, getDefaultModelForPath } from "@config/models";
 
 interface OnboardingFlowProps {
   onComplete: (context: OnboardingContext) => void;
   onSkip: () => void;
   initialContext?: OnboardingContext | null;
   isEditing?: boolean;
+  /** Selected model path (privacy-first or enhanced-quality) */
+  modelPath?: ModelPath | null;
 }
 
 const TOTAL_STEPS = 5;
@@ -34,7 +36,13 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     props.initialContext?.studentWorkFile ?? null
   );
   const [wantsGrade, setWantsGrade] = createSignal(props.initialContext?.wantsGrade ?? false);
-  const [model, setModel] = createSignal(props.initialContext?.model ?? DEFAULT_MODEL_ID);
+  // Use initial context model, or default model for the selected path, or global default
+  const getInitialModel = () => {
+    if (props.initialContext?.model) return props.initialContext.model;
+    if (props.modelPath) return getDefaultModelForPath(props.modelPath);
+    return DEFAULT_MODEL_ID;
+  };
+  const [model, setModel] = createSignal(getInitialModel());
 
   const handleStart = () => {
     setCurrentStep(1);
@@ -137,6 +145,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             currentStep={4}
             totalSteps={TOTAL_STEPS}
             subject={subject()}
+            modelPath={props.modelPath}
           />
         </Match>
       </Switch>
