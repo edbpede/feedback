@@ -46,13 +46,11 @@ export const PIIDeclineMenu: Component<PIIDeclineMenuProps> = (props) => {
           <button
             type="button"
             onClick={() => props.onSelect(option.reason)}
-            class="hover:border-primary hover:bg-accent/50 flex w-full items-center gap-3 rounded-lg border border-border p-4 text-left transition-all"
+            class="hover:border-primary hover:bg-accent/50 border-border flex w-full items-center gap-3 rounded-lg border p-4 text-left transition-all"
           >
-            <span class={`${option.icon} text-xl text-muted-foreground`} />
-            <span class="font-medium">
-              {t(option.labelKey as Parameters<typeof t>[0])}
-            </span>
-            <span class="i-carbon-chevron-right ml-auto text-muted-foreground" />
+            <span class={`${option.icon} text-muted-foreground text-xl`} />
+            <span class="font-medium">{t(option.labelKey as Parameters<typeof t>[0])}</span>
+            <span class="i-carbon-chevron-right text-muted-foreground ml-auto" />
           </button>
         ))}
       </div>

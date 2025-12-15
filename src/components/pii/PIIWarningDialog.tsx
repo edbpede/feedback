@@ -21,12 +21,8 @@ export const PIIWarningDialog: Component<PIIWarningDialogProps> = (props) => {
       <div class="flex items-center gap-3 rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-900/20">
         <span class="i-carbon-warning-filled text-2xl text-amber-500" />
         <div>
-          <h3 class="font-semibold text-amber-800 dark:text-amber-300">
-            {t("pii.warning.title")}
-          </h3>
-          <p class="text-sm text-amber-700 dark:text-amber-400">
-            {t("pii.warning.description")}
-          </p>
+          <h3 class="font-semibold text-amber-800 dark:text-amber-300">{t("pii.warning.title")}</h3>
+          <p class="text-sm text-amber-700 dark:text-amber-400">{t("pii.warning.description")}</p>
         </div>
       </div>
 
@@ -36,7 +32,7 @@ export const PIIWarningDialog: Component<PIIWarningDialogProps> = (props) => {
         <ul class="space-y-2">
           <For each={props.keptItems}>
             {(item) => (
-              <li class="flex items-center gap-2 rounded-md border border-border bg-muted/50 p-2 text-sm">
+              <li class="border-border bg-muted/50 flex items-center gap-2 rounded-md border p-2 text-sm">
                 <span class="i-carbon-warning text-amber-500" />
                 <span class="font-mono">{item.original}</span>
                 <span class="text-muted-foreground">

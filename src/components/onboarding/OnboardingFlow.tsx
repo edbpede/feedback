@@ -71,9 +71,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   );
 
   // Internal step number for model selection (last step)
-  const modelSelectionInternalStep = createMemo(() =>
-    shouldShowAnonymization() ? 7 : 6
-  );
+  const modelSelectionInternalStep = createMemo(() => (shouldShowAnonymization() ? 7 : 6));
 
   // Combine student work text for PII analysis
   const getTextForAnonymization = () => {

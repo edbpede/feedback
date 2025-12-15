@@ -30,11 +30,7 @@ export const AnonymizationStep: Component<AnonymizationStepProps> = (props) => {
       </div>
 
       {/* PIIReviewFlow handles its own Card wrapper */}
-      <PIIReviewFlow
-        text={props.text}
-        onComplete={props.onComplete}
-        onBack={props.onBack}
-      />
+      <PIIReviewFlow text={props.text} onComplete={props.onComplete} onBack={props.onBack} />
     </div>
   );
 };

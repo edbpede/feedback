@@ -155,6 +155,6 @@ export interface PIIDetectionRequest {
 
 /** User's reason for declining PII anonymization */
 export type PIIDeclineReason =
-  | "already_removed"  // "I've already removed personal info"
-  | "false_positive"   // "Something was flagged incorrectly"
-  | "selective_keep";  // "Keep specific items"
+  | "already_removed" // "I've already removed personal info"
+  | "false_positive" // "Something was flagged incorrectly"
+  | "selective_keep"; // "Keep specific items"
