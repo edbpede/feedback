@@ -13,7 +13,7 @@ export const PIIDetectionLoading: Component = () => {
         <div class="flex flex-col items-center justify-center gap-6">
           {/* Spinner with shield icon */}
           <div class="relative">
-            <div class="h-16 w-16 animate-spin rounded-full border-4 border-muted border-t-primary" />
+            <div class="border-muted border-t-primary h-16 w-16 animate-spin rounded-full border-4" />
             <div class="absolute inset-0 flex items-center justify-center">
               <span class="i-carbon-security text-primary text-2xl" />
             </div>
@@ -23,9 +23,7 @@ export const PIIDetectionLoading: Component = () => {
           <h2 class="text-xl font-semibold">{t("pii.detecting.title")}</h2>
 
           {/* Description */}
-          <p class="text-muted-foreground max-w-md text-center">
-            {t("pii.detecting.description")}
-          </p>
+          <p class="text-muted-foreground max-w-md text-center">{t("pii.detecting.description")}</p>
         </div>
       </CardContent>
     </Card>

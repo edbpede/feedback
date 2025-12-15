@@ -147,132 +147,132 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
   }
 
   return (
-    <Show when={state() === "detecting" || state() === "verification"} fallback={
-      <Card class="w-full max-w-2xl">
-        <CardContent class="pt-6">
-          {/* Error State */}
-          <Show when={state() === "error"}>
-            <div class="flex flex-col items-center gap-4 py-8">
-              <span class="i-carbon-warning-filled text-4xl text-red-500" />
-              <h2 class="text-xl font-semibold">{t("pii.error.title")}</h2>
-              <p class="text-muted-foreground text-center">{t("pii.error.description")}</p>
-              {error() && (
-                <Alert variant="destructive" class="max-w-md">
-                  <AlertDescription>{error()}</AlertDescription>
-                </Alert>
-              )}
-              <Button onClick={handleRetry}>
-                <span class="i-carbon-renew mr-1" />
-                {t("pii.error.retryButton")}
-              </Button>
-            </div>
-          </Show>
+    <Show
+      when={state() === "detecting" || state() === "verification"}
+      fallback={
+        <Card class="w-full max-w-2xl">
+          <CardContent class="pt-6">
+            {/* Error State */}
+            <Show when={state() === "error"}>
+              <div class="flex flex-col items-center gap-4 py-8">
+                <span class="i-carbon-warning-filled text-4xl text-red-500" />
+                <h2 class="text-xl font-semibold">{t("pii.error.title")}</h2>
+                <p class="text-muted-foreground text-center">{t("pii.error.description")}</p>
+                {error() && (
+                  <Alert variant="destructive" class="max-w-md">
+                    <AlertDescription>{error()}</AlertDescription>
+                  </Alert>
+                )}
+                <Button onClick={handleRetry}>
+                  <span class="i-carbon-renew mr-1" />
+                  {t("pii.error.retryButton")}
+                </Button>
+              </div>
+            </Show>
 
-          {/* Review State */}
-          <Show when={state() === "review"}>
-            <h2 class="mb-2 text-center text-xl font-bold">{t("pii.review.title")}</h2>
-            <p class="text-muted-foreground mb-6 text-center">{t("pii.review.description")}</p>
+            {/* Review State */}
+            <Show when={state() === "review"}>
+              <h2 class="mb-2 text-center text-xl font-bold">{t("pii.review.title")}</h2>
+              <p class="text-muted-foreground mb-6 text-center">{t("pii.review.description")}</p>
 
-            <PIIFindingsList findings={findings()} />
+              <PIIFindingsList findings={findings()} />
 
-            <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
-              <div class="flex gap-2">
-                <Button variant="ghost" onClick={props.onBack}>
+              <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
+                <div class="flex gap-2">
+                  <Button variant="ghost" onClick={props.onBack}>
+                    <span class="i-carbon-arrow-left mr-1" />
+                    {t("onboarding.navigation.back")}
+                  </Button>
+                  <Button variant="secondary" onClick={() => setState("decline")}>
+                    {t("pii.review.declineButton")}
+                  </Button>
+                </div>
+                <Button onClick={handleAcceptAll}>
+                  <span class="i-carbon-checkmark mr-1" />
+                  {t("pii.review.acceptButton")}
+                </Button>
+              </div>
+            </Show>
+
+            {/* Decline Menu State */}
+            <Show when={state() === "decline"}>
+              <PIIDeclineMenu onSelect={handleDeclineSelect} onCancel={() => setState("review")} />
+            </Show>
+
+            {/* Context Input State */}
+            <Show when={state() === "context-input"}>
+              <h2 class="mb-2 text-center text-xl font-bold">{t("pii.falsePositive.title")}</h2>
+
+              <div class="mb-6">
+                <textarea
+                  value={falsePositiveContext()}
+                  onInput={(e) => setFalsePositiveContext(e.currentTarget.value)}
+                  placeholder={t("pii.falsePositive.placeholder")}
+                  class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring min-h-[120px] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                />
+              </div>
+
+              <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
+                <Button variant="secondary" onClick={() => setState("review")}>
                   <span class="i-carbon-arrow-left mr-1" />
                   {t("onboarding.navigation.back")}
                 </Button>
-                <Button variant="secondary" onClick={() => setState("decline")}>
-                  {t("pii.review.declineButton")}
+                <Button onClick={handleRetryWithContext} disabled={!falsePositiveContext().trim()}>
+                  {t("pii.falsePositive.retryButton")}
+                  <span class="i-carbon-arrow-right ml-1" />
                 </Button>
               </div>
-              <Button onClick={handleAcceptAll}>
-                <span class="i-carbon-checkmark mr-1" />
-                {t("pii.review.acceptButton")}
-              </Button>
-            </div>
-          </Show>
+            </Show>
 
-          {/* Decline Menu State */}
-          <Show when={state() === "decline"}>
-            <PIIDeclineMenu
-              onSelect={handleDeclineSelect}
-              onCancel={() => setState("review")}
-            />
-          </Show>
+            {/* Selective Keep State */}
+            <Show when={state() === "selective-keep"}>
+              <h2 class="mb-2 text-center text-xl font-bold">{t("pii.selectiveKeep.title")}</h2>
+              <p class="text-muted-foreground mb-6 text-center">
+                {t("pii.selectiveKeep.description")}
+              </p>
 
-          {/* Context Input State */}
-          <Show when={state() === "context-input"}>
-            <h2 class="mb-2 text-center text-xl font-bold">{t("pii.falsePositive.title")}</h2>
-
-            <div class="mb-6">
-              <textarea
-                value={falsePositiveContext()}
-                onInput={(e) => setFalsePositiveContext(e.currentTarget.value)}
-                placeholder={t("pii.falsePositive.placeholder")}
-                class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring min-h-[120px] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              <PIIFindingsList
+                findings={findings()}
+                showKeepToggles
+                onKeepToggle={handleKeepToggle}
               />
-            </div>
 
-            <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
-              <Button variant="secondary" onClick={() => setState("review")}>
-                <span class="i-carbon-arrow-left mr-1" />
-                {t("onboarding.navigation.back")}
-              </Button>
-              <Button onClick={handleRetryWithContext} disabled={!falsePositiveContext().trim()}>
-                {t("pii.falsePositive.retryButton")}
-                <span class="i-carbon-arrow-right ml-1" />
-              </Button>
-            </div>
-          </Show>
+              <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
+                <Button variant="secondary" onClick={() => setState("review")}>
+                  <span class="i-carbon-arrow-left mr-1" />
+                  {t("onboarding.navigation.back")}
+                </Button>
+                <Button onClick={handleConfirmSelection}>
+                  {t("pii.selectiveKeep.confirmButton")}
+                  <span class="i-carbon-arrow-right ml-1" />
+                </Button>
+              </div>
+            </Show>
 
-          {/* Selective Keep State */}
-          <Show when={state() === "selective-keep"}>
-            <h2 class="mb-2 text-center text-xl font-bold">{t("pii.selectiveKeep.title")}</h2>
-            <p class="text-muted-foreground mb-6 text-center">
-              {t("pii.selectiveKeep.description")}
-            </p>
+            {/* Warning State */}
+            <Show when={state() === "warning"}>
+              <PIIWarningDialog
+                keptItems={findings().filter((f) => f.kept)}
+                onConfirm={handleConfirmKeeping}
+                onCancel={() => setState("selective-keep")}
+              />
+            </Show>
 
-            <PIIFindingsList
-              findings={findings()}
-              showKeepToggles
-              onKeepToggle={handleKeepToggle}
-            />
-
-            <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
-              <Button variant="secondary" onClick={() => setState("review")}>
-                <span class="i-carbon-arrow-left mr-1" />
-                {t("onboarding.navigation.back")}
-              </Button>
-              <Button onClick={handleConfirmSelection}>
-                {t("pii.selectiveKeep.confirmButton")}
-                <span class="i-carbon-arrow-right ml-1" />
-              </Button>
-            </div>
-          </Show>
-
-          {/* Warning State */}
-          <Show when={state() === "warning"}>
-            <PIIWarningDialog
-              keptItems={findings().filter((f) => f.kept)}
-              onConfirm={handleConfirmKeeping}
-              onCancel={() => setState("selective-keep")}
-            />
-          </Show>
-
-          {/* Clean State (no PII found) */}
-          <Show when={detectionResult()?.isClean && state() === "review"}>
-            <div class="flex flex-col items-center gap-4 py-8">
-              <span class="i-carbon-checkmark-filled text-4xl text-emerald-500" />
-              <h2 class="text-xl font-semibold">{t("pii.review.noDetections")}</h2>
-              <Button onClick={handleAcceptAll}>
-                {t("pii.review.proceedButton")}
-                <span class="i-carbon-arrow-right ml-1" />
-              </Button>
-            </div>
-          </Show>
-        </CardContent>
-      </Card>
-    }>
+            {/* Clean State (no PII found) */}
+            <Show when={detectionResult()?.isClean && state() === "review"}>
+              <div class="flex flex-col items-center gap-4 py-8">
+                <span class="i-carbon-checkmark-filled text-4xl text-emerald-500" />
+                <h2 class="text-xl font-semibold">{t("pii.review.noDetections")}</h2>
+                <Button onClick={handleAcceptAll}>
+                  {t("pii.review.proceedButton")}
+                  <span class="i-carbon-arrow-right ml-1" />
+                </Button>
+              </div>
+            </Show>
+          </CardContent>
+        </Card>
+      }
+    >
       <PIIDetectionLoading />
     </Show>
   );

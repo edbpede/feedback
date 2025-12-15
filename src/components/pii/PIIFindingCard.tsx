@@ -56,9 +56,7 @@ export const PIIFindingCard: Component<PIIFindingCardProps> = (props) => {
       {/* Header with category and confidence */}
       <div class="mb-3 flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <span
-            class={`${CATEGORY_ICONS[props.finding.category]} text-muted-foreground text-lg`}
-          />
+          <span class={`${CATEGORY_ICONS[props.finding.category]} text-muted-foreground text-lg`} />
           <span class="text-sm font-medium">
             {t(`pii.categories.${props.finding.category}` as Parameters<typeof t>[0])}
           </span>
@@ -94,12 +92,12 @@ export const PIIFindingCard: Component<PIIFindingCardProps> = (props) => {
 
       {/* Keep toggle (when in selective keep mode) */}
       {props.showKeepToggle && (
-        <label class="flex cursor-pointer items-center gap-2 rounded-md border border-border bg-muted/50 p-2">
+        <label class="border-border bg-muted/50 flex cursor-pointer items-center gap-2 rounded-md border p-2">
           <input
             type="checkbox"
             checked={props.finding.kept}
             onChange={(e) => props.onKeepToggle?.(props.finding.id, e.currentTarget.checked)}
-            class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            class="text-primary focus:ring-primary h-4 w-4 rounded border-gray-300"
           />
           <span class="text-sm">{t("pii.selectiveKeep.keepLabel")}</span>
         </label>

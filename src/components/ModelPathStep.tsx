@@ -58,7 +58,9 @@ const PATH_OPTIONS: PathOption[] = [
 ];
 
 export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
-  const [selectedPath, setSelectedPath] = createSignal<ModelPath>(props.initialPath ?? "privacy-first");
+  const [selectedPath, setSelectedPath] = createSignal<ModelPath>(
+    props.initialPath ?? "privacy-first"
+  );
   const theme = () => getTheme();
 
   const handleContinue = () => {
@@ -82,7 +84,11 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
 
         {/* Step indicator */}
         <Show when={props.currentStep !== undefined && props.totalSteps !== undefined}>
-          <StepIndicator currentStep={props.currentStep!} totalSteps={props.totalSteps!} class="mb-6" />
+          <StepIndicator
+            currentStep={props.currentStep!}
+            totalSteps={props.totalSteps!}
+            class="mb-6"
+          />
         </Show>
 
         {/* Title and description */}
@@ -102,7 +108,7 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                   onClick={() => setSelectedPath(option.id)}
                   class={`relative flex flex-col rounded-xl border-2 p-5 text-left transition-all ${
                     isSelected()
-                      ? "border-primary bg-accent/20 ring-2 ring-primary/20"
+                      ? "border-primary bg-accent/20 ring-primary/20 ring-2"
                       : "border-border hover:border-muted-foreground"
                   }`}
                 >
@@ -120,7 +126,9 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                         isSelected() ? "bg-primary/10" : "bg-muted"
                       }`}
                     >
-                      <span class={`${option.icon} text-2xl ${isSelected() ? "text-primary" : "text-muted-foreground"}`} />
+                      <span
+                        class={`${option.icon} text-2xl ${isSelected() ? "text-primary" : "text-muted-foreground"}`}
+                      />
                     </div>
                   </div>
 
@@ -151,7 +159,7 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                   </ul>
 
                   {/* Provider logos */}
-                  <div class="mt-auto flex flex-wrap items-center justify-center gap-2 border-t border-border/50 pt-4">
+                  <div class="border-border/50 mt-auto flex flex-wrap items-center justify-center gap-2 border-t pt-4">
                     <For each={option.providers.slice(0, 4)}>
                       {(provider) => (
                         <img
