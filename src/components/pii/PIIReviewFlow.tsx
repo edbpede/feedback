@@ -1,6 +1,6 @@
 import { createSignal, type Component, Show, createEffect } from "solid-js";
 import { t } from "@lib/i18n";
-import { detectPII } from "@lib/api";
+import { detectPIIWithFallback } from "@lib/api";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
 import { Alert, AlertDescription } from "@components/ui/alert";
@@ -9,6 +9,7 @@ import type {
   PIIDetectionResult,
   PIIDeclineReason,
   AnonymizationState,
+  PIIDetectionStatus,
 } from "@lib/types";
 import { PIIDetectionLoading } from "./PIIDetectionLoading";
 import { PIIFindingsList } from "./PIIFindingsList";
@@ -45,6 +46,7 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
   const [findings, setFindings] = createSignal<PIIFinding[]>([]);
   const [error, setError] = createSignal<string | null>(null);
   const [falsePositiveContext, setFalsePositiveContext] = createSignal("");
+  const [detectionStatus, setDetectionStatus] = createSignal<PIIDetectionStatus | null>(null);
 
   // Run initial detection
   createEffect(() => {
@@ -56,8 +58,18 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
   async function runDetection() {
     try {
       setError(null);
+      setDetectionStatus(null);
+
       const context = state() === "verification" ? falsePositiveContext() : undefined;
-      const result = await detectPII(props.text, context);
+
+      const result = await detectPIIWithFallback({
+        text: props.text,
+        context,
+        onStatusUpdate: (status) => {
+          setDetectionStatus(status);
+        },
+      });
+
       setDetectionResult(result);
       setFindings(result.findings.map((f) => ({ ...f, kept: false })));
 
@@ -273,7 +285,7 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
         </Card>
       }
     >
-      <PIIDetectionLoading />
+      <PIIDetectionLoading status={detectionStatus()} />
     </Show>
   );
 };

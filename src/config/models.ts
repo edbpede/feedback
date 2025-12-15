@@ -305,6 +305,21 @@ export function requiresStrictAlternation(modelId: string): boolean {
 export const PII_DETECTION_MODEL = "TEE/DeepSeek-v3.2";
 
 /**
+ * Ordered list of TEE models for PII detection fallback.
+ * All models are TEE (privacy-first) to ensure data never leaves secure environment.
+ * Order: Primary -> Fallbacks by reliability/capability
+ */
+export const PII_DETECTION_FALLBACK_MODELS = [
+  "TEE/DeepSeek-v3.2", // Primary - best reasoning
+  "TEE/qwen3-coder", // Good general capability
+  "TEE/gpt-oss-120b", // Strong fallback
+  "TEE/gemma-3-27b-it", // Fast, good for simple detection
+  "TEE/glm-4.6", // Final fallback - very fast
+] as const;
+
+export type PIIDetectionModel = (typeof PII_DETECTION_FALLBACK_MODELS)[number];
+
+/**
  * Default TEE model for privacy-first path.
  */
 export const DEFAULT_TEE_MODEL_ID = "TEE/DeepSeek-v3.2";

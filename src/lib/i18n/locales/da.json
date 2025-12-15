@@ -282,7 +282,10 @@
   "pii": {
     "detecting": {
       "title": "Tjekker for personlige oplysninger...",
-      "description": "Vi scanner din tekst for at beskytte dit privatliv"
+      "description": "Vi scanner din tekst for at beskytte dit privatliv",
+      "retrying": "Forsøger igen ({{attempt}}/{{max}})...",
+      "tryingModel": "Prøver alternativ model ({{current}}/{{total}})...",
+      "lastError": "Sidste fejl"
     },
     "review": {
       "title": "Vi fandt personlige oplysninger",

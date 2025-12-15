@@ -282,7 +282,10 @@
   "pii": {
     "detecting": {
       "title": "Checking for personal information...",
-      "description": "We're scanning your text to protect your privacy"
+      "description": "We're scanning your text to protect your privacy",
+      "retrying": "Retrying ({{attempt}}/{{max}})...",
+      "tryingModel": "Trying alternative model ({{current}}/{{total}})...",
+      "lastError": "Last error"
     },
     "review": {
       "title": "We found personal information",

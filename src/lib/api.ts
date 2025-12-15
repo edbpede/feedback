@@ -7,8 +7,10 @@ import type {
   TokenUsage,
   PIIDetectionResult,
   PIIDetectionRequest,
+  PIIDetectionStatus,
 } from "@lib/types";
 import { ApiError } from "@lib/errorUtils";
+import { PII_DETECTION_FALLBACK_MODELS } from "@config/models";
 
 /** Retry configuration - progressive strategy */
 const MAX_RETRIES = 10;
@@ -228,4 +230,102 @@ export async function detectPII(text: string, context?: string): Promise<PIIDete
   }
 
   return data.data;
+}
+
+/** Retry configuration for PII detection - faster than chat since models are more reliable */
+const PII_MAX_RETRIES_PER_MODEL = 2;
+const PII_RETRY_DELAY = 1500; // 1.5 seconds between retries
+
+export interface DetectPIIWithFallbackOptions {
+  text: string;
+  context?: string;
+  /** Callback for status updates during detection */
+  onStatusUpdate?: (status: PIIDetectionStatus) => void;
+}
+
+/**
+ * Detect PII with automatic model fallback.
+ * Tries each TEE model in order until one succeeds.
+ *
+ * @throws ApiError only when ALL models have been exhausted
+ */
+export async function detectPIIWithFallback(
+  options: DetectPIIWithFallbackOptions
+): Promise<PIIDetectionResult> {
+  const { text, context, onStatusUpdate } = options;
+  const models = PII_DETECTION_FALLBACK_MODELS;
+  let lastError: ApiError | null = null;
+
+  for (let modelIndex = 0; modelIndex < models.length; modelIndex++) {
+    const model = models[modelIndex];
+
+    for (let retryAttempt = 1; retryAttempt <= PII_MAX_RETRIES_PER_MODEL; retryAttempt++) {
+      // Update status
+      onStatusUpdate?.({
+        currentModel: model,
+        modelIndex: modelIndex + 1,
+        totalModels: models.length,
+        retryAttempt,
+        maxRetries: PII_MAX_RETRIES_PER_MODEL,
+        lastError: lastError?.message,
+      });
+
+      try {
+        const requestBody: PIIDetectionRequest = { text, context, model };
+        const response = await fetch("/api/pii-detect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        });
+
+        const data = (await response.json()) as ApiResponse<PIIDetectionResult>;
+
+        if (response.ok && data.success) {
+          return data.data;
+        }
+
+        // Handle error
+        const errorDetails = data.errorDetails;
+        lastError = new ApiError(
+          errorDetails?.status ?? response.status,
+          data.error || "PII detection failed",
+          errorDetails?.retryable ?? false
+        );
+
+        console.error(`[PII Detection] Model ${model} attempt ${retryAttempt} failed:`, {
+          status: lastError.status,
+          message: lastError.message,
+          retryable: lastError.retryable,
+        });
+
+        // If not retryable, move to next model immediately
+        if (!lastError.retryable) {
+          break;
+        }
+
+        // If retryable and not last retry, wait then retry same model
+        if (retryAttempt < PII_MAX_RETRIES_PER_MODEL) {
+          await delay(PII_RETRY_DELAY);
+        }
+      } catch (error) {
+        // Network error
+        lastError = new ApiError(0, "Network error during PII detection", true);
+        console.error(`[PII Detection] Network error on model ${model}:`, error);
+
+        if (retryAttempt < PII_MAX_RETRIES_PER_MODEL) {
+          await delay(PII_RETRY_DELAY);
+        }
+      }
+    }
+
+    // Model exhausted retries, try next model
+    console.warn(`[PII Detection] Model ${model} exhausted, trying next...`);
+  }
+
+  // All models exhausted
+  throw new ApiError(
+    lastError?.status ?? 500,
+    "All PII detection models failed. Please try again later.",
+    false // Not retryable - all options exhausted
+  );
 }
