@@ -43,6 +43,8 @@ export type RetryPhase = "quick" | "backoff";
 export interface SendMessageOptions {
   messages: Message[];
   model?: string;
+  /** Subject for subject-specific system prompts */
+  subject?: string;
   onChunk: (chunk: string) => void;
   /** Callback with attempt number, max attempts, phase, and delay until next retry */
   onRetry?: (attempt: number, maxAttempts: number, phase: RetryPhase, delayMs: number) => void;
@@ -51,7 +53,7 @@ export interface SendMessageOptions {
 }
 
 export async function sendMessage(options: SendMessageOptions): Promise<void> {
-  const { messages, model, onChunk, onRetry, onUsage } = options;
+  const { messages, model, subject, onChunk, onRetry, onUsage } = options;
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -59,7 +61,7 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, model }),
+        body: JSON.stringify({ messages, model, subject }),
       });
 
       if (!response.ok) {

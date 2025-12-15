@@ -26,6 +26,8 @@ export interface ChatRequest {
   messages: Message[];
   /** Optional model ID to use for this request */
   model?: string;
+  /** Optional subject for subject-specific system prompts */
+  subject?: string;
 }
 
 export interface StreamChunk {

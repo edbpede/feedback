@@ -164,6 +164,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       await sendMessage({
         messages: [...messages(), userMessage],
         model: props.onboardingContext?.model,
+        subject: props.onboardingContext?.subject,
         onChunk: (chunk) => {
           assistantContent += chunk;
           setStreamingContent(assistantContent);
@@ -243,6 +244,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       await sendMessage({
         messages: existingMessages,
         model: props.onboardingContext?.model,
+        subject: props.onboardingContext?.subject,
         onChunk: (chunk) => {
           assistantContent += chunk;
           setStreamingContent(assistantContent);
@@ -323,6 +325,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
       await sendMessage({
         messages: existingMessages,
         model: modelOverride,
+        subject: props.onboardingContext?.subject,
         onChunk: (chunk) => {
           assistantContent += chunk;
           setStreamingContent(assistantContent);

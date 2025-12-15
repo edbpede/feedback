@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { createHmac } from "node:crypto";
 import { SESSION_SECRET, NANO_GPT_API_KEY, NANO_GPT_MODEL, API_BASE_URL } from "astro:env/server";
-import { SYSTEM_PROMPT } from "@config/systemPrompt";
+import { loadSystemPrompt } from "@lib/promptLoader";
 import { isValidModel, requiresStrictAlternation } from "@config/models";
 import type { ApiResponse, ChatRequest, ErrorDetails, Message } from "@lib/types";
 
@@ -84,8 +84,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       }
     }
 
+    // Load subject-specific or fallback system prompt
+    const systemPrompt = await loadSystemPrompt(body.subject);
+
     const messages = formatMessagesForModel(
-      SYSTEM_PROMPT,
+      systemPrompt,
       body.messages,
       requiresStrictAlternation(selectedModel)
     );
