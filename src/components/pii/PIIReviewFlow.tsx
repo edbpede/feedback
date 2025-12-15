@@ -176,9 +176,15 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
             <PIIFindingsList findings={findings()} />
 
             <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
-              <Button variant="secondary" onClick={() => setState("decline")}>
-                {t("pii.review.declineButton")}
-              </Button>
+              <div class="flex gap-2">
+                <Button variant="ghost" onClick={props.onBack}>
+                  <span class="i-carbon-arrow-left mr-1" />
+                  {t("onboarding.navigation.back")}
+                </Button>
+                <Button variant="secondary" onClick={() => setState("decline")}>
+                  {t("pii.review.declineButton")}
+                </Button>
+              </div>
               <Button onClick={handleAcceptAll}>
                 <span class="i-carbon-checkmark mr-1" />
                 {t("pii.review.acceptButton")}

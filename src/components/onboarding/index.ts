@@ -4,6 +4,7 @@ export { SubjectGradeStep } from "./SubjectGradeStep";
 export { AssignmentStep } from "./AssignmentStep";
 export { StudentWorkStep } from "./StudentWorkStep";
 export { GradePreferenceStep } from "./GradePreferenceStep";
+export { AnonymizationStep } from "./AnonymizationStep";
 export { ModelSelectionStep } from "./ModelSelectionStep";
 export { PrivacyWarning } from "./PrivacyWarning";
 export { StepIndicator } from "./StepIndicator";

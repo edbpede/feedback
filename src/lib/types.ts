@@ -74,6 +74,8 @@ export interface OnboardingContext {
   model: string;
   /** Selected model path (privacy-first or enhanced-quality) */
   modelPath: ModelPath;
+  /** Anonymization result if PII review was performed (enhanced-quality path only) */
+  anonymizationState?: AnonymizationState | null;
 }
 
 /** Persisted onboarding state */
