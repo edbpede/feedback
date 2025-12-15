@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { createHmac } from "node:crypto";
 import { SESSION_SECRET, NANO_GPT_API_KEY, API_BASE_URL } from "astro:env/server";
-import { PII_DETECTION_MODEL } from "@config/models";
+import { PII_DETECTION_MODEL, PII_DETECTION_FALLBACK_MODELS } from "@config/models";
 import {
   PII_DETECTION_SYSTEM_PROMPT,
   generatePIIDetectionPrompt,
@@ -119,6 +119,27 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = (await request.json()) as PIIDetectionRequest;
 
+    // Validate model if provided, default to primary
+    const requestedModel = body.model || PII_DETECTION_MODEL;
+    const isValidPIIModel = PII_DETECTION_FALLBACK_MODELS.includes(
+      requestedModel as (typeof PII_DETECTION_FALLBACK_MODELS)[number]
+    );
+    if (!isValidPIIModel) {
+      const response: ApiResponse<never> = {
+        success: false,
+        error: `Invalid PII detection model: ${requestedModel}`,
+        errorDetails: {
+          status: 400,
+          message: `Model must be one of: ${PII_DETECTION_FALLBACK_MODELS.join(", ")}`,
+          retryable: false,
+        },
+      };
+      return new Response(JSON.stringify(response), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     if (!body.text || body.text.trim().length === 0) {
       const response: ApiResponse<PIIDetectionResult> = {
         success: true,
@@ -144,7 +165,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: PII_DETECTION_MODEL,
+        model: requestedModel,
         messages: [
           { role: "system", content: PII_DETECTION_SYSTEM_PROMPT },
           { role: "user", content: userPrompt },
@@ -249,6 +270,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       contextNotes,
       anonymizedText,
       isClean: findings.length === 0,
+      modelUsed: requestedModel,
     };
 
     const response: ApiResponse<PIIDetectionResult> = {

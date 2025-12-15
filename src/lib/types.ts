@@ -131,6 +131,8 @@ export interface PIIDetectionResult {
   anonymizedText: string;
   /** True if no PII was found */
   isClean: boolean;
+  /** Model ID that performed the detection */
+  modelUsed?: string;
 }
 
 /** Persisted anonymization state */
@@ -151,6 +153,24 @@ export interface PIIDetectionRequest {
   text: string;
   /** Optional user context for false positive handling */
   context?: string;
+  /** Optional model ID override (defaults to primary PII model) */
+  model?: string;
+}
+
+/** Status update during PII detection with fallback */
+export interface PIIDetectionStatus {
+  /** Current model being tried */
+  currentModel: string;
+  /** Model index (1-based) */
+  modelIndex: number;
+  /** Total number of models to try */
+  totalModels: number;
+  /** Retry attempt for current model (1-based) */
+  retryAttempt: number;
+  /** Max retries per model */
+  maxRetries: number;
+  /** Error message if current attempt failed */
+  lastError?: string;
 }
 
 /** User's reason for declining PII anonymization */
