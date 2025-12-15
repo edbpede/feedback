@@ -1,4 +1,4 @@
-import { createSignal, type Component, For } from "solid-js";
+import { createSignal, type Component, For, Show } from "solid-js";
 import { t } from "@lib/i18n";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
@@ -6,12 +6,17 @@ import { CardExternalLinks } from "@components/CardExternalLinks";
 import { Logo } from "@components/Logo";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
+import { StepIndicator } from "@components/onboarding/StepIndicator";
 import type { ModelPath } from "@lib/types";
 import { getTheme } from "@lib/theme";
 import { getModelsForPath, getProviderLogoPath, type AIProvider } from "@config/models";
 
 interface ModelPathStepProps {
   onContinue: (path: ModelPath) => void;
+  onBack?: () => void;
+  currentStep?: number;
+  totalSteps?: number;
+  initialPath?: ModelPath;
 }
 
 interface PathOption {
@@ -53,7 +58,7 @@ const PATH_OPTIONS: PathOption[] = [
 ];
 
 export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
-  const [selectedPath, setSelectedPath] = createSignal<ModelPath>("privacy-first");
+  const [selectedPath, setSelectedPath] = createSignal<ModelPath>(props.initialPath ?? "privacy-first");
   const theme = () => getTheme();
 
   const handleContinue = () => {
@@ -74,6 +79,11 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
 
         {/* Logo */}
         <Logo size="lg" class="mx-auto mb-6" />
+
+        {/* Step indicator */}
+        <Show when={props.currentStep !== undefined && props.totalSteps !== undefined}>
+          <StepIndicator currentStep={props.currentStep!} totalSteps={props.totalSteps!} class="mb-6" />
+        </Show>
 
         {/* Title and description */}
         <h1 class="mb-2 text-center text-2xl font-bold">{t("modelPath.title")}</h1>
@@ -166,8 +176,14 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
           </For>
         </div>
 
-        {/* Continue button */}
-        <div class="flex justify-center">
+        {/* Navigation buttons */}
+        <div class="flex justify-center gap-4">
+          <Show when={props.onBack}>
+            <Button onClick={props.onBack} variant="outline" size="lg">
+              <span class="i-carbon-arrow-left mr-2" />
+              {t("common.back")}
+            </Button>
+          </Show>
           <Button onClick={handleContinue} size="lg" class="min-w-[200px]">
             {t("modelPath.continueButton")}
             <span class="i-carbon-arrow-right ml-2" />
