@@ -85,7 +85,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
 
     // Load subject-specific or fallback system prompt
-    const systemPrompt = await loadSystemPrompt(body.subject);
+    const systemPrompt = loadSystemPrompt(body.subject);
 
     const messages = formatMessagesForModel(
       systemPrompt,
