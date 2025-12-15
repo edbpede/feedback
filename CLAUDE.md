@@ -37,6 +37,7 @@ Package manager: **Bun** (uses `bun.lock`)
 ## Architecture
 
 ### Tech Stack
+
 - **Framework:** Astro 5.x with SolidJS for reactive components
 - **UI Library:** Kobalte (headless components)
 - **Styling:** UnoCSS with Tailwind presets
@@ -44,12 +45,14 @@ Package manager: **Bun** (uses `bun.lock`)
 - **AI Provider:** NanoGPT API with streaming responses
 
 ### Key Directories
+
 - `/src/components/` - SolidJS components (onboarding flow, chat, UI primitives)
 - `/src/config/` - Model definitions, system prompt, pricing
 - `/src/lib/` - Utilities, i18n, file parsing, storage
 - `/src/pages/api/` - Server endpoints (auth, chat, balance)
 
 ### Data Flow
+
 1. Password authentication → session cookie
 2. 6-step onboarding: subject, grade, assignment, student work, grade preference, model selection
 3. Streaming chat with NanoGPT API
@@ -58,31 +61,37 @@ Package manager: **Bun** (uses `bun.lock`)
 ## Key Patterns
 
 ### State Management
+
 - SolidJS reactive signals (`createSignal`, `createEffect`, `createMemo`)
 - localStorage persistence for messages, onboarding state, costs, theme, language
 
 ### API Design
+
 - Typed responses: `ApiResponse<T>` (success/error discriminated union)
 - Session: HMAC-SHA256 signed tokens, HttpOnly cookies
 - Streaming: Server-Sent Events for LLM responses
 - Retry logic: 10 attempts with progressive backoff
 
 ### Error Handling
+
 - 8 categories: network, timeout, rateLimit, serverError, authError, modelUnavailable, badRequest, unknown
 - Structured `ErrorDetails` with status, message, type, code, retryable flag
 - i18n-aware error messages
 
 ### File Processing
+
 - PDF: pdfjs-dist (lazy-loaded)
 - DOCX: mammoth (lazy-loaded)
 - Dynamic imports optimize bundle size
 
 ### Model Selection
+
 - 5 available models with subject-to-model recommendations
 - Fallback selection when primary model fails
 - Some models require strict user/assistant alternation (no system role)
 
 ### i18n
+
 - Signal-based locale management (Danish/English)
 - Translations in `/src/lib/i18n/locales/{da,en}.json`
 - Template interpolation with `{{key}}` patterns
