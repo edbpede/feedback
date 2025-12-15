@@ -285,7 +285,11 @@
       "description": "Vi scanner din tekst for at beskytte dit privatliv",
       "retrying": "Forsøger igen ({{attempt}}/{{max}})...",
       "tryingModel": "Prøver alternativ model ({{current}}/{{total}})...",
-      "lastError": "Sidste fejl"
+      "lastError": "Sidste fejl",
+      "teeBadge": {
+        "label": "TEE-beskyttet",
+        "tooltip": "Din tekst behandles i et Trusted Execution Environment (TEE) - data forbliver krypteret selv under AI-behandling, og overholder GDPR."
+      }
     },
     "review": {
       "title": "Vi fandt personlige oplysninger",
