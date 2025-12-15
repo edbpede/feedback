@@ -1,13 +1,14 @@
-import { createSignal, Switch, Match, type Component } from "solid-js";
-import type { OnboardingContext, AttachedFile, ModelPath } from "@lib/types";
+import { createSignal, createMemo, Switch, Match, type Component } from "solid-js";
+import type { OnboardingContext, AttachedFile, ModelPath, AnonymizationState } from "@lib/types";
 import { WelcomeStep } from "./WelcomeStep";
 import { ModelPathStep } from "../ModelPathStep";
 import { SubjectGradeStep } from "./SubjectGradeStep";
 import { AssignmentStep } from "./AssignmentStep";
 import { StudentWorkStep } from "./StudentWorkStep";
 import { GradePreferenceStep } from "./GradePreferenceStep";
+import { AnonymizationStep } from "./AnonymizationStep";
 import { ModelSelectionStep } from "./ModelSelectionStep";
-import { DEFAULT_MODEL_ID, getDefaultModelForPath } from "@config/models";
+import { getDefaultModelForPath } from "@config/models";
 
 interface OnboardingFlowProps {
   onComplete: (context: OnboardingContext) => void;
@@ -16,7 +17,8 @@ interface OnboardingFlowProps {
   isEditing?: boolean;
 }
 
-const TOTAL_STEPS = 6;
+/** Base number of displayed steps (without anonymization) */
+const BASE_STEPS = 6;
 
 export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   // Start at step 2 (SubjectGradeStep) when editing, step 0 (WelcomeStep) otherwise
@@ -40,6 +42,12 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     props.initialContext?.studentWorkFile ?? null
   );
   const [wantsGrade, setWantsGrade] = createSignal(props.initialContext?.wantsGrade ?? false);
+
+  // Anonymization state for PII review (enhanced-quality path only)
+  const [anonymizationState, setAnonymizationState] = createSignal<AnonymizationState | null>(
+    props.initialContext?.anonymizationState ?? null
+  );
+
   // Use initial context model, or default model for the selected path, or global default
   const getInitialModel = () => {
     if (props.initialContext?.model) return props.initialContext.model;
@@ -47,6 +55,32 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
     return getDefaultModelForPath(path);
   };
   const [model, setModel] = createSignal(getInitialModel());
+
+  // Check if anonymization step should be shown
+  // Only for enhanced-quality (commercial) path AND when there's student work content
+  const shouldShowAnonymization = createMemo(() => {
+    if (modelPath() !== "enhanced-quality") return false;
+    const hasTextContent = (studentWork()?.trim() || "").length > 0;
+    const hasFileContent = (studentWorkFile()?.content?.trim() || "").length > 0;
+    return hasTextContent || hasFileContent;
+  });
+
+  // Dynamic total steps: 7 if showing anonymization, 6 otherwise
+  const totalDisplayedSteps = createMemo(() =>
+    shouldShowAnonymization() ? BASE_STEPS + 1 : BASE_STEPS
+  );
+
+  // Internal step number for model selection (last step)
+  const modelSelectionInternalStep = createMemo(() =>
+    shouldShowAnonymization() ? 7 : 6
+  );
+
+  // Combine student work text for PII analysis
+  const getTextForAnonymization = () => {
+    const text = studentWork()?.trim() || "";
+    const fileContent = studentWorkFile()?.content?.trim() || "";
+    return [text, fileContent].filter(Boolean).join("\n\n");
+  };
 
   const handleStart = () => {
     setCurrentStep(1);
@@ -60,13 +94,42 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   };
 
   const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, TOTAL_STEPS));
+    const current = currentStep();
+
+    // From GradePreference (step 5), go to Anonymization if needed, else ModelSelection
+    if (current === 5) {
+      setCurrentStep(shouldShowAnonymization() ? 6 : modelSelectionInternalStep());
+      return;
+    }
+
+    setCurrentStep((prev) => Math.min(prev + 1, modelSelectionInternalStep()));
   };
 
   const handleBack = () => {
     // When editing, don't go back to welcome or model path selection (step 0 or 1)
     const minStep = props.isEditing ? 2 : 0;
+    const current = currentStep();
+
+    // From ModelSelection, go to Anonymization if it was shown, else GradePreference
+    if (current === modelSelectionInternalStep()) {
+      setCurrentStep(shouldShowAnonymization() ? 6 : 5);
+      return;
+    }
+
     setCurrentStep((prev) => Math.max(prev - 1, minStep));
+  };
+
+  // Handle anonymization completion
+  const handleAnonymizationComplete = (result: AnonymizationState) => {
+    setAnonymizationState(result);
+    // Update student work with anonymized text
+    setStudentWork(result.anonymizedText);
+    // Clear file content if present (was included in anonymization)
+    if (studentWorkFile()) {
+      setStudentWorkFile({ ...studentWorkFile()!, content: "" });
+    }
+    // Proceed to model selection
+    setCurrentStep(modelSelectionInternalStep());
   };
 
   const handleSubmit = () => {
@@ -79,6 +142,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
       wantsGrade: wantsGrade(),
       model: model(),
       modelPath: modelPath(),
+      anonymizationState: anonymizationState(),
     };
     props.onComplete(context);
   };
@@ -103,7 +167,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onContinue={handleModelPathSelect}
             onBack={() => setCurrentStep(0)}
             currentStep={0}
-            totalSteps={TOTAL_STEPS}
+            totalSteps={totalDisplayedSteps()}
             initialPath={modelPath()}
           />
         </Match>
@@ -117,7 +181,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onNext={handleNext}
             onBack={handleBack}
             currentStep={1}
-            totalSteps={TOTAL_STEPS}
+            totalSteps={totalDisplayedSteps()}
           />
         </Match>
 
@@ -129,7 +193,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onBack={handleBack}
             onSkip={handleSkipStep}
             currentStep={2}
-            totalSteps={TOTAL_STEPS}
+            totalSteps={totalDisplayedSteps()}
           />
         </Match>
 
@@ -143,7 +207,7 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onBack={handleBack}
             onSkip={handleSkipStep}
             currentStep={3}
-            totalSteps={TOTAL_STEPS}
+            totalSteps={totalDisplayedSteps()}
           />
         </Match>
 
@@ -154,18 +218,29 @@ export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
             onNext={handleNext}
             onBack={handleBack}
             currentStep={4}
-            totalSteps={TOTAL_STEPS}
+            totalSteps={totalDisplayedSteps()}
           />
         </Match>
 
-        <Match when={currentStep() === 6}>
+        {/* Anonymization step - only shown for enhanced-quality path with student work */}
+        <Match when={currentStep() === 6 && shouldShowAnonymization()}>
+          <AnonymizationStep
+            text={getTextForAnonymization()}
+            onComplete={handleAnonymizationComplete}
+            onBack={() => setCurrentStep(5)}
+            currentStep={5}
+            totalSteps={totalDisplayedSteps()}
+          />
+        </Match>
+
+        <Match when={currentStep() === modelSelectionInternalStep()}>
           <ModelSelectionStep
             value={model()}
             onChange={setModel}
             onSubmit={handleSubmit}
             onBack={handleBack}
-            currentStep={5}
-            totalSteps={TOTAL_STEPS}
+            currentStep={shouldShowAnonymization() ? 6 : 5}
+            totalSteps={totalDisplayedSteps()}
             subject={subject()}
             modelPath={modelPath()}
           />
