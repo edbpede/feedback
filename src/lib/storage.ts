@@ -1,8 +1,10 @@
-import type { Message, OnboardingState } from "@lib/types";
+import type { Message, OnboardingState, ModelPathState, AnonymizationState } from "@lib/types";
 
 const STORAGE_KEY = "feedback-bot-messages";
 const ONBOARDING_KEY = "feedback-bot-onboarding";
 const COSTS_KEY = "feedback-bot-costs";
+const MODEL_PATH_KEY = "feedback-bot-model-path";
+const ANONYMIZATION_KEY = "feedback-bot-anonymization";
 
 export function saveMessages(messages: Message[]): void {
   try {
@@ -87,4 +89,78 @@ export function clearOnboardingState(): void {
   } catch {
     console.warn("Failed to clear onboarding state from localStorage");
   }
+}
+
+// ============================================================================
+// Model Path Storage (GDPR Anonymization Feature)
+// ============================================================================
+
+const DEFAULT_MODEL_PATH_STATE: ModelPathState = {
+  selected: false,
+  path: null,
+};
+
+export function saveModelPath(state: ModelPathState): void {
+  try {
+    localStorage.setItem(MODEL_PATH_KEY, JSON.stringify(state));
+  } catch {
+    console.warn("Failed to save model path to localStorage");
+  }
+}
+
+export function loadModelPath(): ModelPathState {
+  try {
+    const stored = localStorage.getItem(MODEL_PATH_KEY);
+    if (!stored) return DEFAULT_MODEL_PATH_STATE;
+    return JSON.parse(stored) as ModelPathState;
+  } catch {
+    return DEFAULT_MODEL_PATH_STATE;
+  }
+}
+
+export function clearModelPath(): void {
+  try {
+    localStorage.removeItem(MODEL_PATH_KEY);
+  } catch {
+    console.warn("Failed to clear model path from localStorage");
+  }
+}
+
+// ============================================================================
+// Anonymization State Storage (GDPR Anonymization Feature)
+// ============================================================================
+
+export function saveAnonymizationState(state: AnonymizationState): void {
+  try {
+    localStorage.setItem(ANONYMIZATION_KEY, JSON.stringify(state));
+  } catch {
+    console.warn("Failed to save anonymization state to localStorage");
+  }
+}
+
+export function loadAnonymizationState(): AnonymizationState | null {
+  try {
+    const stored = localStorage.getItem(ANONYMIZATION_KEY);
+    if (!stored) return null;
+    return JSON.parse(stored) as AnonymizationState;
+  } catch {
+    return null;
+  }
+}
+
+export function clearAnonymizationState(): void {
+  try {
+    localStorage.removeItem(ANONYMIZATION_KEY);
+  } catch {
+    console.warn("Failed to clear anonymization state from localStorage");
+  }
+}
+
+/**
+ * Clear all GDPR-related state (model path + anonymization).
+ * Useful when user wants to reset their model path choice.
+ */
+export function clearGDPRState(): void {
+  clearModelPath();
+  clearAnonymizationState();
 }

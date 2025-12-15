@@ -181,7 +181,8 @@
         },
         "bestForLabel": "God til",
         "recommendedFor": "Anbefalet til {{subject}}",
-        "alsoGoodFor": "Kan også bruges til {{subject}}"
+        "alsoGoodFor": "Kan også bruges til {{subject}}",
+        "commercialWarning": "Du har valgt kommercielle AI-modeller. Efter denne opsætning vil vi tjekke din tekst for personlige oplysninger og anonymisere dem før de sendes til AI-modellen."
       }
     },
     "models": {
@@ -209,6 +210,26 @@
         "name": "Gemma 3 27B",
         "description": "Googles flersprogede model med fremragende sprogforståelse. Understøtter over 140 sprog og lange tekster.",
         "bestFor": "Sprog og sprogfag"
+      },
+      "gpt5": {
+        "name": "GPT-5.1",
+        "description": "OpenAIs nyeste og mest avancerede model. Exceptionel til komplekse opgaver og nuanceret feedback.",
+        "bestFor": "Alle fag (premium)"
+      },
+      "grok": {
+        "name": "Grok 4.1 Fast",
+        "description": "xAIs hurtige model med 2M kontekst. Perfekt til lange tekster og hurtige svar.",
+        "bestFor": "Lange tekster"
+      },
+      "gemini3": {
+        "name": "Gemini 3 Pro",
+        "description": "Googles seneste Pro-model med multimodal forståelse. Stærk til analyse og kreativ skrivning.",
+        "bestFor": "Analyse og kreativ skrivning"
+      },
+      "claude": {
+        "name": "Claude Sonnet 4.5",
+        "description": "Anthropics topmodel med exceptionel dansk forståelse. Fremragende til nuanceret feedback og dialog.",
+        "bestFor": "Dansk og nuanceret feedback"
       }
     },
     "subjects": {
@@ -231,6 +252,89 @@
       "next": "Næste",
       "submit": "Start chat",
       "cancel": "Annuller"
+    }
+  },
+  "modelPath": {
+    "title": "Vælg din AI-oplevelse",
+    "description": "Vælg mellem privatliv og kvalitet baseret på dine behov",
+    "continueButton": "Fortsæt",
+    "privacyFirst": {
+      "title": "Privatliv først",
+      "description": "Hardware-krypterede open source-modeller",
+      "badge": "Standard",
+      "features": {
+        "tee": "TEE-beskyttelse (Trusted Execution Environment)",
+        "fast": "Hurtig og direkte behandling",
+        "gdpr": "GDPR-kompatibel uden anonymisering"
+      }
+    },
+    "enhancedQuality": {
+      "title": "Forbedret kvalitet",
+      "description": "Kommercielle topmodeller med anonymisering",
+      "features": {
+        "quality": "Højeste kvalitet feedback",
+        "models": "Claude, GPT-5, Grok, Gemini",
+        "anonymization": "Kræver anonymisering af personlige oplysninger"
+      }
+    }
+  },
+  "pii": {
+    "detecting": {
+      "title": "Tjekker for personlige oplysninger...",
+      "description": "Vi scanner din tekst for at beskytte dit privatliv"
+    },
+    "review": {
+      "title": "Vi fandt personlige oplysninger",
+      "description": "Følgende oplysninger vil blive anonymiseret før afsendelse til AI-modellen",
+      "acceptButton": "Godkend ændringer",
+      "declineButton": "Jeg er ikke enig",
+      "noDetections": "Ingen personlige oplysninger fundet",
+      "proceedButton": "Fortsæt til chat"
+    },
+    "categories": {
+      "name": "Navn",
+      "place": "Sted",
+      "institution": "Institution",
+      "contact": "Kontaktoplysninger",
+      "other": "Andet"
+    },
+    "confidence": {
+      "high": "Høj sikkerhed",
+      "medium": "Medium sikkerhed",
+      "low": "Lav sikkerhed"
+    },
+    "decline": {
+      "title": "Hvorfor er du ikke enig?",
+      "alreadyRemoved": "Jeg har allerede fjernet personlige oplysninger",
+      "falsePositive": "Noget er markeret forkert",
+      "selectiveKeep": "Behold specifikke elementer"
+    },
+    "verification": {
+      "title": "Bekræfter din tekst...",
+      "description": "Vi verificerer at personlige oplysninger er fjernet"
+    },
+    "falsePositive": {
+      "title": "Fortæl os mere",
+      "placeholder": "Forklar hvorfor denne markering er forkert...",
+      "retryButton": "Prøv igen med kontekst"
+    },
+    "selectiveKeep": {
+      "title": "Vælg hvad du vil beholde",
+      "description": "Markér de elementer du vil beholde i din tekst",
+      "keepLabel": "Behold",
+      "confirmButton": "Bekræft valg"
+    },
+    "warning": {
+      "title": "Advarsel: Personlige oplysninger",
+      "description": "Du har valgt at beholde personlige oplysninger i din tekst. Dette kan udgøre en risiko for dit privatliv.",
+      "items": "Oplysninger du beholder:",
+      "confirmButton": "Jeg forstår risikoen",
+      "cancelButton": "Gå tilbage"
+    },
+    "error": {
+      "title": "Der opstod en fejl",
+      "description": "Kunne ikke tjekke for personlige oplysninger. Prøv igen.",
+      "retryButton": "Prøv igen"
     }
   }
 }

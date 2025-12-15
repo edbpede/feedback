@@ -1,0 +1,179 @@
+import { createSignal, type Component, For } from "solid-js";
+import { t } from "@lib/i18n";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { LanguageSwitcher } from "@components/LanguageSwitcher";
+import { CardExternalLinks } from "@components/CardExternalLinks";
+import { Logo } from "@components/Logo";
+import { Card, CardContent } from "@components/ui/card";
+import { Button } from "@components/ui/button";
+import type { ModelPath } from "@lib/types";
+import { getTheme } from "@lib/theme";
+import { getModelsForPath, getProviderLogoPath, type AIProvider } from "@config/models";
+
+interface ModelPathStepProps {
+  onContinue: (path: ModelPath) => void;
+}
+
+interface PathOption {
+  id: ModelPath;
+  titleKey: string;
+  descriptionKey: string;
+  icon: string;
+  features: { key: string; warning?: boolean }[];
+  providers: AIProvider[];
+  badge?: string;
+}
+
+const PATH_OPTIONS: PathOption[] = [
+  {
+    id: "privacy-first",
+    titleKey: "modelPath.privacyFirst.title",
+    descriptionKey: "modelPath.privacyFirst.description",
+    icon: "i-carbon-security",
+    badge: "modelPath.privacyFirst.badge",
+    features: [
+      { key: "modelPath.privacyFirst.features.tee" },
+      { key: "modelPath.privacyFirst.features.fast" },
+      { key: "modelPath.privacyFirst.features.gdpr" },
+    ],
+    providers: ["DeepSeek", "Alibaba", "Zhipu AI", "Google"],
+  },
+  {
+    id: "enhanced-quality",
+    titleKey: "modelPath.enhancedQuality.title",
+    descriptionKey: "modelPath.enhancedQuality.description",
+    icon: "i-carbon-ibm-watsonx-assistant",
+    features: [
+      { key: "modelPath.enhancedQuality.features.quality" },
+      { key: "modelPath.enhancedQuality.features.models" },
+      { key: "modelPath.enhancedQuality.features.anonymization", warning: true },
+    ],
+    providers: ["OpenAI", "Anthropic", "xAI", "Google"],
+  },
+];
+
+export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
+  const [selectedPath, setSelectedPath] = createSignal<ModelPath>("privacy-first");
+  const theme = () => getTheme();
+
+  const handleContinue = () => {
+    props.onContinue(selectedPath());
+  };
+
+  return (
+    <Card class="w-full max-w-3xl">
+      <CardContent class="pt-6">
+        {/* Header with controls */}
+        <div class="mb-4 flex items-center justify-between">
+          <CardExternalLinks />
+          <div class="flex gap-1">
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+          </div>
+        </div>
+
+        {/* Logo */}
+        <Logo size="lg" class="mx-auto mb-6" />
+
+        {/* Title and description */}
+        <h1 class="mb-2 text-center text-2xl font-bold">{t("modelPath.title")}</h1>
+        <p class="text-muted-foreground mb-8 text-center">{t("modelPath.description")}</p>
+
+        {/* Path selection cards */}
+        <div class="mb-8 grid gap-4 sm:grid-cols-2">
+          <For each={PATH_OPTIONS}>
+            {(option) => {
+              const isSelected = () => selectedPath() === option.id;
+              const models = () => getModelsForPath(option.id);
+
+              return (
+                <button
+                  type="button"
+                  onClick={() => setSelectedPath(option.id)}
+                  class={`relative flex flex-col rounded-xl border-2 p-5 text-left transition-all ${
+                    isSelected()
+                      ? "border-primary bg-accent/20 ring-2 ring-primary/20"
+                      : "border-border hover:border-muted-foreground"
+                  }`}
+                >
+                  {/* Badge */}
+                  {option.badge && (
+                    <span class="bg-primary text-primary-foreground absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-xs font-medium">
+                      {t(option.badge as Parameters<typeof t>[0])}
+                    </span>
+                  )}
+
+                  {/* Icon */}
+                  <div class="mb-4 flex items-center justify-center">
+                    <div
+                      class={`flex h-14 w-14 items-center justify-center rounded-full ${
+                        isSelected() ? "bg-primary/10" : "bg-muted"
+                      }`}
+                    >
+                      <span class={`${option.icon} text-2xl ${isSelected() ? "text-primary" : "text-muted-foreground"}`} />
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 class="mb-2 text-center text-lg font-semibold">
+                    {t(option.titleKey as Parameters<typeof t>[0])}
+                  </h3>
+
+                  {/* Description */}
+                  <p class="text-muted-foreground mb-4 text-center text-sm">
+                    {t(option.descriptionKey as Parameters<typeof t>[0])}
+                  </p>
+
+                  {/* Features */}
+                  <ul class="mb-4 space-y-2">
+                    <For each={option.features}>
+                      {(feature) => (
+                        <li class="flex items-center gap-2 text-sm">
+                          <span
+                            class={`${feature.warning ? "i-carbon-warning text-amber-500" : "i-carbon-checkmark-filled text-emerald-500"}`}
+                          />
+                          <span class={feature.warning ? "text-amber-600 dark:text-amber-400" : ""}>
+                            {t(feature.key as Parameters<typeof t>[0])}
+                          </span>
+                        </li>
+                      )}
+                    </For>
+                  </ul>
+
+                  {/* Provider logos */}
+                  <div class="mt-auto flex flex-wrap items-center justify-center gap-2 border-t border-border/50 pt-4">
+                    <For each={option.providers.slice(0, 4)}>
+                      {(provider) => (
+                        <img
+                          src={getProviderLogoPath(provider, theme())}
+                          alt={provider}
+                          class="h-5 w-5 object-contain opacity-60"
+                          title={provider}
+                        />
+                      )}
+                    </For>
+                  </div>
+
+                  {/* Selection indicator */}
+                  {isSelected() && (
+                    <div class="bg-primary absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full">
+                      <span class="i-carbon-checkmark text-primary-foreground text-sm" />
+                    </div>
+                  )}
+                </button>
+              );
+            }}
+          </For>
+        </div>
+
+        {/* Continue button */}
+        <div class="flex justify-center">
+          <Button onClick={handleContinue} size="lg" class="min-w-[200px]">
+            {t("modelPath.continueButton")}
+            <span class="i-carbon-arrow-right ml-2" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
