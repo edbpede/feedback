@@ -31,6 +31,11 @@ export default defineConfig({
         access: "secret",
         default: "https://nano-gpt.com/api/v1",
       }),
+      ENHANCED_QUALITY_PASSWORD_HASH: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
     },
     validateSecrets: true,
   },

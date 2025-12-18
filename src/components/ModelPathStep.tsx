@@ -1,4 +1,4 @@
-import { createSignal, type Component, For, Show } from "solid-js";
+import { createSignal, onMount, type Component, For, Show } from "solid-js";
 import { t } from "@lib/i18n";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
@@ -6,8 +6,10 @@ import { CardExternalLinks } from "@components/CardExternalLinks";
 import { Logo } from "@components/Logo";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
 import { StepIndicator } from "@components/onboarding/StepIndicator";
-import type { ModelPath } from "@lib/types";
+import { EnhancedQualityPasswordDialog } from "@components/EnhancedQualityPasswordDialog";
+import type { ModelPath, ApiResponse, EnhancedConfigResponse } from "@lib/types";
 import { getTheme } from "@lib/theme";
 import { getModelsForPath, getProviderLogoPath, type AIProvider } from "@config/models";
 
@@ -63,9 +65,54 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
   );
   const theme = () => getTheme();
 
+  // Enhanced quality config state
+  const [enhancedConfigured, setEnhancedConfigured] = createSignal(true); // Default true to avoid flash
+  const [enhancedAuthenticated, setEnhancedAuthenticated] = createSignal(false);
+  const [showPasswordDialog, setShowPasswordDialog] = createSignal(false);
+  const [isCheckingConfig, setIsCheckingConfig] = createSignal(true);
+
+  // Check enhanced quality config on mount
+  onMount(async () => {
+    try {
+      const response = await fetch("/api/check-enhanced");
+      const result = (await response.json()) as ApiResponse<EnhancedConfigResponse>;
+      if (result.success) {
+        setEnhancedConfigured(result.data.configured);
+        setEnhancedAuthenticated(result.data.authenticated);
+      }
+    } catch {
+      // On error, assume not configured for safety
+      setEnhancedConfigured(false);
+    } finally {
+      setIsCheckingConfig(false);
+    }
+  });
+
   const handleContinue = () => {
+    // If privacy-first is selected, proceed directly
+    if (selectedPath() === "privacy-first") {
+      props.onContinue(selectedPath());
+      return;
+    }
+
+    // Enhanced quality selected - check if already authenticated
+    if (enhancedAuthenticated()) {
+      props.onContinue(selectedPath());
+      return;
+    }
+
+    // Need to authenticate - show password dialog
+    setShowPasswordDialog(true);
+  };
+
+  const handlePasswordSuccess = () => {
+    setEnhancedAuthenticated(true);
+    setShowPasswordDialog(false);
     props.onContinue(selectedPath());
   };
+
+  // Check if enhanced quality option should be disabled
+  const isEnhancedDisabled = () => !enhancedConfigured() && !isCheckingConfig();
 
   return (
     <Card class="w-full max-w-3xl">
@@ -101,15 +148,20 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
             {(option) => {
               const isSelected = () => selectedPath() === option.id;
               const models = () => getModelsForPath(option.id);
+              const isDisabled = () => option.id === "enhanced-quality" && isEnhancedDisabled();
 
-              return (
+              // Wrap in tooltip if disabled
+              const cardContent = () => (
                 <button
                   type="button"
-                  onClick={() => setSelectedPath(option.id)}
-                  class={`relative flex flex-col rounded-xl border-2 p-5 text-left transition-all ${
-                    isSelected()
-                      ? "border-primary bg-accent/20 ring-primary/20 ring-2"
-                      : "border-border hover:border-muted-foreground"
+                  onClick={() => !isDisabled() && setSelectedPath(option.id)}
+                  disabled={isDisabled()}
+                  class={`relative flex w-full flex-col rounded-xl border-2 p-5 text-left transition-all ${
+                    isDisabled()
+                      ? "cursor-not-allowed border-border/50 opacity-50"
+                      : isSelected()
+                        ? "border-primary bg-accent/20 ring-primary/20 ring-2"
+                        : "border-border hover:border-muted-foreground"
                   }`}
                 >
                   {/* Badge */}
@@ -173,12 +225,35 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                   </div>
 
                   {/* Selection indicator */}
-                  {isSelected() && (
+                  <Show when={isSelected() && !isDisabled()}>
                     <div class="bg-primary absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full">
                       <span class="i-carbon-checkmark text-primary-foreground text-sm" />
                     </div>
-                  )}
+                  </Show>
+
+                  {/* Disabled badge */}
+                  <Show when={isDisabled()}>
+                    <div class="bg-muted text-muted-foreground absolute -right-2 -top-2 rounded-full px-2 py-0.5 text-xs font-medium">
+                      {t("enhancedAuth.notConfigured")}
+                    </div>
+                  </Show>
                 </button>
+              );
+
+              return (
+                <Show
+                  when={isDisabled()}
+                  fallback={cardContent()}
+                >
+                  <Tooltip>
+                    <TooltipTrigger as="div" class="w-full">
+                      {cardContent()}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {t("enhancedAuth.notConfiguredTooltip")}
+                    </TooltipContent>
+                  </Tooltip>
+                </Show>
               );
             }}
           </For>
@@ -198,6 +273,13 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
           </Button>
         </div>
       </CardContent>
+
+      {/* Password dialog for enhanced quality */}
+      <EnhancedQualityPasswordDialog
+        open={showPasswordDialog()}
+        onOpenChange={setShowPasswordDialog}
+        onSuccess={handlePasswordSuccess}
+      />
     </Card>
   );
 };
