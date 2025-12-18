@@ -40,12 +40,13 @@ export const App: Component = () => {
 
     // Check if session cookie exists by making a lightweight request
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [] }),
-      });
-      setIsAuthenticated(response.ok);
+      const response = await fetch("/api/verify-session");
+      if (response.ok) {
+        const result = (await response.json()) as { success: boolean; data?: { valid: boolean } };
+        setIsAuthenticated(result.success && result.data?.valid === true);
+      } else {
+        setIsAuthenticated(false);
+      }
     } catch {
       setIsAuthenticated(false);
     } finally {
