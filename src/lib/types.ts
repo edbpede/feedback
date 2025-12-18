@@ -185,8 +185,8 @@ export type PIIDeclineReason =
 
 /** Response from /api/check-enhanced endpoint */
 export interface EnhancedConfigResponse {
-  /** Whether ENHANCED_QUALITY_PASSWORD_HASH env var is set */
+  /** Whether authentication is required (ENHANCED_QUALITY_PASSWORD_HASH is set) */
   configured: boolean;
-  /** Whether user has valid enhanced-session cookie */
+  /** Whether user can access enhanced quality (no auth required OR has valid session) */
   authenticated: boolean;
 }

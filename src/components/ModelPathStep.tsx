@@ -111,8 +111,8 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
     props.onContinue(selectedPath());
   };
 
-  // Check if enhanced quality option should be disabled
-  const isEnhancedDisabled = () => !enhancedConfigured() && !isCheckingConfig();
+  // Enhanced quality is always enabled - auth is handled separately via password dialog
+  const isEnhancedDisabled = () => false;
 
   return (
     <Card class="w-full max-w-3xl">
