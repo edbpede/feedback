@@ -344,5 +344,17 @@
       "description": "Kunne ikke tjekke for personlige oplysninger. Prøv igen.",
       "retryButton": "Prøv igen"
     }
+  },
+  "enhancedAuth": {
+    "title": "Adgangskode påkrævet",
+    "description": "Indtast adgangskoden for at få adgang til forbedret kvalitet.",
+    "passwordPlaceholder": "Adgangskode",
+    "submitButton": "Fortsæt",
+    "cancelButton": "Annuller",
+    "authenticating": "Logger ind...",
+    "invalidPassword": "Forkert adgangskode",
+    "connectionError": "Forbindelsesfejl. Prøv venligst igen.",
+    "notConfigured": "Ikke tilgængelig",
+    "notConfiguredTooltip": "Denne funktion er ikke konfigureret af administratoren"
   }
 }

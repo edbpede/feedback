@@ -344,5 +344,17 @@
       "description": "Could not check for personal information. Please try again.",
       "retryButton": "Try again"
     }
+  },
+  "enhancedAuth": {
+    "title": "Password Required",
+    "description": "Enter the password to access enhanced quality models.",
+    "passwordPlaceholder": "Password",
+    "submitButton": "Continue",
+    "cancelButton": "Cancel",
+    "authenticating": "Logging in...",
+    "invalidPassword": "Invalid password",
+    "connectionError": "Connection error. Please try again.",
+    "notConfigured": "Not available",
+    "notConfiguredTooltip": "This feature is not configured by the administrator"
   }
 }

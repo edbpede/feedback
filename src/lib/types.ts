@@ -178,3 +178,15 @@ export type PIIDeclineReason =
   | "already_removed" // "I've already removed personal info"
   | "false_positive" // "Something was flagged incorrectly"
   | "selective_keep"; // "Keep specific items"
+
+// ============================================================================
+// Enhanced Quality Authentication Types
+// ============================================================================
+
+/** Response from /api/check-enhanced endpoint */
+export interface EnhancedConfigResponse {
+  /** Whether ENHANCED_QUALITY_PASSWORD_HASH env var is set */
+  configured: boolean;
+  /** Whether user has valid enhanced-session cookie */
+  authenticated: boolean;
+}
