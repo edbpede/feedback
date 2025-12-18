@@ -18,7 +18,9 @@ export const GET: APIRoute = async ({ cookies }) => {
   // Check if user is already authenticated for enhanced quality
   const enhancedSessionCookie = cookies.get("enhanced-session")?.value;
   const authenticated =
-    configured && enhancedSessionCookie !== undefined && verifyToken(enhancedSessionCookie, SESSION_SECRET);
+    configured &&
+    enhancedSessionCookie !== undefined &&
+    verifyToken(enhancedSessionCookie, SESSION_SECRET);
 
   const response: ApiResponse<EnhancedConfigResponse> = {
     success: true,

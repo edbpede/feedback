@@ -158,7 +158,7 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                   disabled={isDisabled()}
                   class={`relative flex w-full flex-col rounded-xl border-2 p-5 text-left transition-all ${
                     isDisabled()
-                      ? "cursor-not-allowed border-border/50 opacity-50"
+                      ? "border-border/50 cursor-not-allowed opacity-50"
                       : isSelected()
                         ? "border-primary bg-accent/20 ring-primary/20 ring-2"
                         : "border-border hover:border-muted-foreground"
@@ -241,17 +241,12 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
               );
 
               return (
-                <Show
-                  when={isDisabled()}
-                  fallback={cardContent()}
-                >
+                <Show when={isDisabled()} fallback={cardContent()}>
                   <Tooltip>
                     <TooltipTrigger as="div" class="w-full">
                       {cardContent()}
                     </TooltipTrigger>
-                    <TooltipContent>
-                      {t("enhancedAuth.notConfiguredTooltip")}
-                    </TooltipContent>
+                    <TooltipContent>{t("enhancedAuth.notConfiguredTooltip")}</TooltipContent>
                   </Tooltip>
                 </Show>
               );

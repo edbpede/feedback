@@ -57,9 +57,9 @@ export const EnhancedQualityPasswordDialog: Component<EnhancedQualityPasswordDia
   return (
     <Dialog open={props.open} onOpenChange={handleOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:animate-in data-[expanded]:fade-in-0" />
+        <Dialog.Overlay class="data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:animate-in data-[expanded]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <Dialog.Content class="bg-card border-border w-full max-w-md rounded-xl border p-6 shadow-lg data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95 data-[expanded]:animate-in data-[expanded]:fade-in-0 data-[expanded]:zoom-in-95">
+          <Dialog.Content class="bg-card border-border data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95 data-[expanded]:animate-in data-[expanded]:fade-in-0 data-[expanded]:zoom-in-95 w-full max-w-md rounded-xl border p-6 shadow-lg">
             {/* Header */}
             <div class="mb-6 text-center">
               <div class="bg-primary/10 mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full">
