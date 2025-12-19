@@ -101,12 +101,17 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
   onMount(async () => {
     try {
       const response = await fetch("/api/check-enhanced");
+      if (!response.ok) {
+        console.warn("[ModelPathStep] Failed to check enhanced config:", response.status);
+        return;
+      }
       const result = (await response.json()) as ApiResponse<EnhancedConfigResponse>;
-      if (result.success) {
+      if (result.success && result.data) {
         setEnhancedAuthenticated(result.data.authenticated);
       }
-    } catch {
+    } catch (error) {
       // On error, assume not authenticated for safety
+      console.warn("[ModelPathStep] Error checking enhanced config:", error);
     }
   });
 
@@ -232,6 +237,9 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                           alt={provider}
                           class="h-5 w-5 object-contain opacity-60"
                           title={provider}
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
                         />
                       )}
                     </For>
