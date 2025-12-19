@@ -79,7 +79,7 @@ export const PIIFindingCard: Component<PIIFindingCardProps> = (props) => {
       {/* Original -> Replacement */}
       <div class="mb-3 space-y-2">
         <div class="flex items-start gap-2">
-          <span class="text-muted-foreground mt-0.5 text-xs">Fra:</span>
+          <span class="text-muted-foreground mt-0.5 text-xs">{t("pii.findingCard.from")}</span>
           <span class="rounded bg-red-100 px-2 py-0.5 font-mono text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">
             {props.finding.original}
           </span>
@@ -88,7 +88,7 @@ export const PIIFindingCard: Component<PIIFindingCardProps> = (props) => {
           <span class="i-carbon-arrow-down text-muted-foreground" />
         </div>
         <div class="flex items-start gap-2">
-          <span class="text-muted-foreground mt-0.5 text-xs">Til:</span>
+          <span class="text-muted-foreground mt-0.5 text-xs">{t("pii.findingCard.to")}</span>
           <span class="rounded bg-emerald-100 px-2 py-0.5 font-mono text-sm text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
             {props.finding.replacement}
           </span>

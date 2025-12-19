@@ -280,6 +280,10 @@
     }
   },
   "pii": {
+    "findingCard": {
+      "from": "Fra:",
+      "to": "Til:"
+    },
     "detecting": {
       "title": "Tjekker for personlige oplysninger...",
       "description": "Vi scanner din tekst for at beskytte dit privatliv",
