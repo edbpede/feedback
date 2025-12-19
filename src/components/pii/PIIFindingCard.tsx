@@ -1,8 +1,16 @@
+/**
+ * @fileoverview Card component for displaying a single PII finding.
+ * Shows the detected text, proposed replacement, category, confidence level,
+ * and optionally a toggle to keep the original text.
+ */
+
 import type { Component } from "solid-js";
 import { t } from "@lib/i18n";
 import type { PIIFinding, PIICategory, PIIConfidence } from "@lib/types";
 
+/** Props for the PIIFindingCard component */
 interface PIIFindingCardProps {
+  /** The PII finding to display */
   finding: PIIFinding;
   /** Show checkbox for selective keep mode */
   showKeepToggle?: boolean;

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Final onboarding step for AI model selection.
+ * Displays available models filtered by the selected path (TEE or commercial),
+ * with pricing tiers, speed indicators, and subject-based recommendations.
+ */
+
 import type { Component } from "solid-js";
 import { For, Show, createMemo } from "solid-js";
 import { t, type TranslationKey } from "@lib/i18n";
@@ -18,12 +24,19 @@ import {
   type SpeedTier,
 } from "@config/models";
 
+/** Props for the ModelSelectionStep component */
 interface ModelSelectionStepProps {
+  /** Currently selected model ID */
   value: string;
+  /** Callback when user selects a different model */
   onChange: (model: string) => void;
+  /** Callback when user submits and completes onboarding */
   onSubmit: () => void;
+  /** Callback to go back to previous step */
   onBack: () => void;
+  /** Current step number for progress indicator */
   currentStep: number;
+  /** Total steps for progress indicator */
   totalSteps: number;
   /** Subject selected in step 1, used to show recommendation badge */
   subject?: string;
@@ -31,6 +44,7 @@ interface ModelSelectionStepProps {
   modelPath?: ModelPath | null;
 }
 
+/** Returns CSS classes for pricing tier badge styling */
 function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
   switch (tier) {
     case "budget":
@@ -42,6 +56,7 @@ function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
   }
 }
 
+/** Returns CSS classes for speed tier badge styling */
 function getSpeedBadgeClass(tier: SpeedTier): string {
   switch (tier) {
     case "fast":
@@ -53,6 +68,11 @@ function getSpeedBadgeClass(tier: SpeedTier): string {
   }
 }
 
+/**
+ * Final onboarding step: AI model selection.
+ * Displays model cards filtered by the selected path with pricing,
+ * speed, and subject-based recommendation badges.
+ */
 export const ModelSelectionStep: Component<ModelSelectionStepProps> = (props) => {
   const recommendedModelId = () =>
     props.subject ? getRecommendedModelForSubject(props.subject) : null;

@@ -1,9 +1,17 @@
+/**
+ * @fileoverview List component for displaying all detected PII findings.
+ * Renders a scrollable list of PIIFindingCard components with optional
+ * keep toggles for selective anonymization.
+ */
+
 import { type Component, For, Show } from "solid-js";
 import { t } from "@lib/i18n";
 import type { PIIFinding } from "@lib/types";
 import { PIIFindingCard } from "./PIIFindingCard";
 
+/** Props for the PIIFindingsList component */
 interface PIIFindingsListProps {
+  /** Array of PII findings to display */
   findings: PIIFinding[];
   /** Show checkboxes for selective keep mode */
   showKeepToggles?: boolean;

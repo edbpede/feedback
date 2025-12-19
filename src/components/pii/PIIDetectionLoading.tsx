@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Loading state component for PII detection.
+ * Displays an animated spinner, current model info, TEE security badge,
+ * and retry/fallback status during the detection process.
+ */
+
 import { Show, type Component } from "solid-js";
 import { t } from "@lib/i18n";
 import { Card, CardContent } from "@components/ui/card";
@@ -6,8 +12,9 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip"
 import { getModelById } from "@config/models";
 import type { PIIDetectionStatus } from "@lib/types";
 
+/** Props for the PIIDetectionLoading component */
 interface PIIDetectionLoadingProps {
-  /** Optional status for showing retry/fallback progress */
+  /** Status object for showing retry/fallback progress during detection */
   status?: PIIDetectionStatus | null;
 }
 

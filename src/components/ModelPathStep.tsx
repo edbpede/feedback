@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Model path selection step for choosing between privacy-first (TEE) and
+ * enhanced-quality (commercial) AI models. This is the first step in the onboarding flow
+ * and determines whether PII anonymization is required.
+ *
+ * Privacy-first path: Uses TEE models that process data in secure enclaves
+ * Enhanced-quality path: Uses commercial models with PII anonymization step
+ */
+
 import { createSignal, onMount, type Component, For, Show } from "solid-js";
 import { t } from "@lib/i18n";
 import { ThemeSwitcher } from "@components/ThemeSwitcher";
@@ -13,21 +22,35 @@ import type { ModelPath, ApiResponse, EnhancedConfigResponse } from "@lib/types"
 import { getTheme } from "@lib/theme";
 import { getModelsForPath, getProviderLogoPath, type AIProvider } from "@config/models";
 
+/** Props for the ModelPathStep component */
 interface ModelPathStepProps {
+  /** Callback when user selects a path and continues */
   onContinue: (path: ModelPath) => void;
+  /** Optional callback to go back (not shown on first step) */
   onBack?: () => void;
+  /** Current step number for progress indicator */
   currentStep?: number;
+  /** Total steps for progress indicator */
   totalSteps?: number;
+  /** Pre-selected path (defaults to privacy-first) */
   initialPath?: ModelPath;
 }
 
+/** Configuration for a model path option card */
 interface PathOption {
+  /** Path identifier */
   id: ModelPath;
+  /** i18n key for the title */
   titleKey: string;
+  /** i18n key for the description */
   descriptionKey: string;
+  /** UnoCSS icon class */
   icon: string;
+  /** List of feature items with optional warning flag */
   features: { key: string; warning?: boolean }[];
+  /** AI providers available on this path */
   providers: AIProvider[];
+  /** Optional badge text (e.g., "Recommended") */
   badge?: string;
 }
 
@@ -59,6 +82,12 @@ const PATH_OPTIONS: PathOption[] = [
   },
 ];
 
+/**
+ * First step of onboarding: Model path selection.
+ * Allows users to choose between privacy-first TEE models or enhanced-quality
+ * commercial models. Enhanced-quality requires password authentication and
+ * triggers the PII anonymization flow.
+ */
 export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
   const [selectedPath, setSelectedPath] = createSignal<ModelPath>(
     props.initialPath ?? "privacy-first"

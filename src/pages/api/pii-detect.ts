@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Server endpoint for PII (Personal Identifiable Information) detection.
+ * Uses TEE (Trusted Execution Environment) models to scan student work for personal
+ * information before sending to commercial AI models. Supports fallback models and
+ * provides structured findings with anonymization suggestions.
+ *
+ * @route POST /api/pii-detect
+ */
+
 import type { APIRoute } from "astro";
 import { SESSION_SECRET, NANO_GPT_API_KEY, API_BASE_URL } from "astro:env/server";
 import { PII_DETECTION_MODEL, PII_DETECTION_FALLBACK_MODELS } from "@config/models";
@@ -16,9 +25,10 @@ import type {
 } from "@lib/types";
 import { verifyToken } from "@lib/auth";
 
-/** Status codes that are considered retryable (temporary failures) */
+/** HTTP status codes that indicate temporary failures worth retrying */
 const RETRYABLE_STATUS_CODES = [500, 502, 503, 504];
 
+/** Response structure from NanoGPT chat completions API */
 interface NanoGptResponse {
   choices: Array<{
     message: {
@@ -27,6 +37,7 @@ interface NanoGptResponse {
   }>;
 }
 
+/** Error response structure from NanoGPT API */
 interface NanoGptErrorBody {
   error?: {
     message?: string;
@@ -35,6 +46,7 @@ interface NanoGptErrorBody {
   };
 }
 
+/** Raw PII finding as returned by the detection model (before validation) */
 interface RawPIIFinding {
   original: string;
   replacement: string;
@@ -43,6 +55,7 @@ interface RawPIIFinding {
   reasoning: string;
 }
 
+/** Raw response structure from the PII detection model */
 interface RawPIIResponse {
   findings: RawPIIFinding[];
   context_notes?: string;
@@ -52,7 +65,11 @@ interface RawPIIResponse {
 const PII_DETECTION_TIMEOUT_MS = 60000;
 
 /**
- * Parse the raw JSON response from the model into typed PIIFindings.
+ * Parse and validate the raw JSON response from the model into typed PIIFindings.
+ * Filters out invalid entries (empty originals) and normalizes categories/confidence levels.
+ *
+ * @param rawResponse - The raw response from the PII detection model
+ * @returns Validated findings array and context notes
  */
 function parseFindings(rawResponse: RawPIIResponse): {
   findings: PIIFinding[];
@@ -86,7 +103,13 @@ function parseFindings(rawResponse: RawPIIResponse): {
 }
 
 /**
- * Apply anonymizations to the original text.
+ * Apply anonymizations to the original text by replacing PII with placeholders.
+ * Processes findings longest-first to avoid substring replacement issues.
+ * Respects the `kept` flag on findings to preserve user-selected items.
+ *
+ * @param text - The original text containing PII
+ * @param findings - Array of PII findings with replacement values
+ * @returns Text with PII replaced by anonymized placeholders
  */
 function applyAnonymizations(text: string, findings: PIIFinding[]): string {
   let result = text;
@@ -104,6 +127,16 @@ function applyAnonymizations(text: string, findings: PIIFinding[]): string {
   return result;
 }
 
+/**
+ * Detects PII in student work using a TEE model.
+ * Requires valid session authentication.
+ *
+ * @returns 200 with PIIDetectionResult on success
+ * @returns 401 if not authenticated
+ * @returns 400 for invalid model or request
+ * @returns 408 on timeout
+ * @returns 500 on internal/parsing errors
+ */
 export const POST: APIRoute = async ({ request, cookies }) => {
   // Verify session
   const sessionCookie = cookies.get("session")?.value;

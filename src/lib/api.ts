@@ -232,21 +232,32 @@ export async function detectPII(text: string, context?: string): Promise<PIIDete
   return data.data;
 }
 
-/** Retry configuration for PII detection - faster than chat since models are more reliable */
+/**
+ * Retry configuration for PII detection.
+ * Uses fewer retries and shorter delays than chat since TEE models are more reliable.
+ */
 const PII_MAX_RETRIES_PER_MODEL = 2;
 const PII_RETRY_DELAY = 1500; // 1.5 seconds between retries
 
+/**
+ * Options for PII detection with automatic model fallback.
+ */
 export interface DetectPIIWithFallbackOptions {
+  /** The text to analyze for PII */
   text: string;
+  /** Optional user-provided context about the text (e.g., "This is a Danish essay") */
   context?: string;
-  /** Callback for status updates during detection */
+  /** Callback for status updates during detection (retry attempts, model switches) */
   onStatusUpdate?: (status: PIIDetectionStatus) => void;
 }
 
 /**
- * Detect PII with automatic model fallback.
- * Tries each TEE model in order until one succeeds.
+ * Detect PII with automatic model fallback and retry logic.
+ * Tries each TEE model in the fallback chain until one succeeds.
+ * Provides status updates via callback for UI feedback.
  *
+ * @param options - Detection options including text, context, and status callback
+ * @returns PIIDetectionResult with findings and anonymized text
  * @throws ApiError only when ALL models have been exhausted
  */
 export async function detectPIIWithFallback(
