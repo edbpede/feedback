@@ -29,7 +29,8 @@
 
 1. **Authentication** → Password-protected session
 2. **Onboarding** → Student selects subject, grade level, and uploads assignment/work
-3. **Chat** → Streaming AI feedback via configurable LLM backend
+3. **Anonymization** → Personal information is detected and anonymized via a private TEE model before sending to AI
+4. **Chat** → Streaming AI feedback via configurable LLM backend
 
 The system prompt defining the bot's pedagogical behavior is in [`src/config/systemPrompt.ts`](src/config/systemPrompt.ts).
 
