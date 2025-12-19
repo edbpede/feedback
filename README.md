@@ -43,17 +43,33 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
 | [![Adgangskode](public/screenshots/01-password-gate-light.png)](public/screenshots/fullsize/01-password-gate-light.png) | [![Velkomst](public/screenshots/02-welcome-light.png)](public/screenshots/fullsize/02-welcome-light.png) |
 
-|                                                    Vælg fag og klassetrin                                                     |                                                     Beskriv opgaven                                                     |
-| :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: |
-| [![Fag og klassetrin](public/screenshots/03-subject-grade-light.png)](public/screenshots/fullsize/03-subject-grade-light.png) | [![Opgavebeskrivelse](public/screenshots/04-assignment-light.png)](public/screenshots/fullsize/04-assignment-light.png) |
+|                                                    Vælg modeltype                                                     |                                                    Vælg fag og klassetrin                                                     |
+| :-------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| [![Modeltype](public/screenshots/03-model-path-light.png)](public/screenshots/fullsize/03-model-path-light.png) | [![Fag og klassetrin](public/screenshots/04-subject-grade-light.png)](public/screenshots/fullsize/04-subject-grade-light.png) |
 
-|                                                  Indsæt dit arbejde                                                   |                                                          Karaktervurdering?                                                          |
-| :-------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------: |
-| [![Elevarbejde](public/screenshots/05-student-work-light.png)](public/screenshots/fullsize/05-student-work-light.png) | [![Karakterpræference](public/screenshots/06-grade-preference-light.png)](public/screenshots/fullsize/06-grade-preference-light.png) |
+|                                                     Beskriv opgaven                                                     |                                                  Indsæt dit arbejde                                                   |
+| :---------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: |
+| [![Opgavebeskrivelse](public/screenshots/05-assignment-light.png)](public/screenshots/fullsize/05-assignment-light.png) | [![Elevarbejde](public/screenshots/06-student-work-light.png)](public/screenshots/fullsize/06-student-work-light.png) |
 
-|                                                       Vælg AI-model                                                       |                                           Chat med feedback-botten                                           |
-| :-----------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: |
-| [![Modelvalg](public/screenshots/07-model-selection-light.png)](public/screenshots/fullsize/07-model-selection-light.png) | [![Chat](public/screenshots/08-chat-window-light.png)](public/screenshots/fullsize/08-chat-window-light.png) |
+|                                                          Karaktervurdering?                                                          |                                                          Finder personlige oplysninger                                                          |
+| :----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
+| [![Karakterpræference](public/screenshots/07-grade-preference-light.png)](public/screenshots/fullsize/07-grade-preference-light.png) | [![Finder oplysninger](public/screenshots/08-anon-detecting-light.png)](public/screenshots/fullsize/08-anon-detecting-light.png) |
+
+|                                                          Gennemse fundne oplysninger                                                          |                                                          Indsigelses-muligheder                                                          |
+| :-------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------: |
+| [![Gennemse fund](public/screenshots/09-anon-review-light.png)](public/screenshots/fullsize/09-anon-review-light.png) | [![Indsigelse](public/screenshots/10-anon-decline-menu-light.png)](public/screenshots/fullsize/10-anon-decline-menu-light.png) |
+
+|                                                          Tilføj kontekst                                                          |                                                          Vælg hvad der skal beholdes                                                          |
+| :-------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: |
+| [![Tilføj kontekst](public/screenshots/11-anon-context-input-light.png)](public/screenshots/fullsize/11-anon-context-input-light.png) | [![Behold valgte](public/screenshots/12-anon-selective-keep-light.png)](public/screenshots/fullsize/12-anon-selective-keep-light.png) |
+
+|                                                          Bekræft at beholde oplysninger                                                          |                                                       Vælg AI-model                                                       |
+| :----------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: |
+| [![Bekræft behold](public/screenshots/13-anon-warning-light.png)](public/screenshots/fullsize/13-anon-warning-light.png) | [![Modelvalg](public/screenshots/14-model-selection-light.png)](public/screenshots/fullsize/14-model-selection-light.png) |
+
+|                                           Chat med feedback-botten                                           |
+| :----------------------------------------------------------------------------------------------------------: |
+| [![Chat](public/screenshots/15-chat-window-light.png)](public/screenshots/fullsize/15-chat-window-light.png) |
 
 </details>
 
@@ -65,17 +81,33 @@ Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/conf
 | :-------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
 | [![Adgangskode](public/screenshots/01-password-gate-dark.png)](public/screenshots/fullsize/01-password-gate-dark.png) | [![Velkomst](public/screenshots/02-welcome-dark.png)](public/screenshots/fullsize/02-welcome-dark.png) |
 
-|                                                   Vælg fag og klassetrin                                                    |                                                    Beskriv opgaven                                                    |
-| :-------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: |
-| [![Fag og klassetrin](public/screenshots/03-subject-grade-dark.png)](public/screenshots/fullsize/03-subject-grade-dark.png) | [![Opgavebeskrivelse](public/screenshots/04-assignment-dark.png)](public/screenshots/fullsize/04-assignment-dark.png) |
+|                                                   Vælg modeltype                                                    |                                                   Vælg fag og klassetrin                                                    |
+| :-----------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: |
+| [![Modeltype](public/screenshots/03-model-path-dark.png)](public/screenshots/fullsize/03-model-path-dark.png) | [![Fag og klassetrin](public/screenshots/04-subject-grade-dark.png)](public/screenshots/fullsize/04-subject-grade-dark.png) |
 
-|                                                 Indsæt dit arbejde                                                  |                                                         Karaktervurdering?                                                         |
-| :-----------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: |
-| [![Elevarbejde](public/screenshots/05-student-work-dark.png)](public/screenshots/fullsize/05-student-work-dark.png) | [![Karakterpræference](public/screenshots/06-grade-preference-dark.png)](public/screenshots/fullsize/06-grade-preference-dark.png) |
+|                                                    Beskriv opgaven                                                    |                                                 Indsæt dit arbejde                                                  |
+| :-------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: |
+| [![Opgavebeskrivelse](public/screenshots/05-assignment-dark.png)](public/screenshots/fullsize/05-assignment-dark.png) | [![Elevarbejde](public/screenshots/06-student-work-dark.png)](public/screenshots/fullsize/06-student-work-dark.png) |
 
-|                                                      Vælg AI-model                                                      |                                          Chat med feedback-botten                                          |
-| :---------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| [![Modelvalg](public/screenshots/07-model-selection-dark.png)](public/screenshots/fullsize/07-model-selection-dark.png) | [![Chat](public/screenshots/08-chat-window-dark.png)](public/screenshots/fullsize/08-chat-window-dark.png) |
+|                                                         Karaktervurdering?                                                         |                                                         Finder personlige oplysninger                                                         |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: |
+| [![Karakterpræference](public/screenshots/07-grade-preference-dark.png)](public/screenshots/fullsize/07-grade-preference-dark.png) | [![Finder oplysninger](public/screenshots/08-anon-detecting-dark.png)](public/screenshots/fullsize/08-anon-detecting-dark.png) |
+
+|                                                         Gennemse fundne oplysninger                                                         |                                                         Indsigelses-muligheder                                                         |
+| :-----------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: |
+| [![Gennemse fund](public/screenshots/09-anon-review-dark.png)](public/screenshots/fullsize/09-anon-review-dark.png) | [![Indsigelse](public/screenshots/10-anon-decline-menu-dark.png)](public/screenshots/fullsize/10-anon-decline-menu-dark.png) |
+
+|                                                         Tilføj kontekst                                                         |                                                         Vælg hvad der skal beholdes                                                         |
+| :-----------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
+| [![Tilføj kontekst](public/screenshots/11-anon-context-input-dark.png)](public/screenshots/fullsize/11-anon-context-input-dark.png) | [![Behold valgte](public/screenshots/12-anon-selective-keep-dark.png)](public/screenshots/fullsize/12-anon-selective-keep-dark.png) |
+
+|                                                         Bekræft at beholde oplysninger                                                         |                                                      Vælg AI-model                                                      |
+| :--------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: |
+| [![Bekræft behold](public/screenshots/13-anon-warning-dark.png)](public/screenshots/fullsize/13-anon-warning-dark.png) | [![Modelvalg](public/screenshots/14-model-selection-dark.png)](public/screenshots/fullsize/14-model-selection-dark.png) |
+
+|                                          Chat med feedback-botten                                          |
+| :--------------------------------------------------------------------------------------------------------: |
+| [![Chat](public/screenshots/15-chat-window-dark.png)](public/screenshots/fullsize/15-chat-window-dark.png) |
 
 </details>
 
