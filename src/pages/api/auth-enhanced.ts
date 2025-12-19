@@ -1,12 +1,8 @@
 import type { APIRoute } from "astro";
-import { createHmac, createHash, timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { SESSION_SECRET, ENHANCED_QUALITY_PASSWORD_HASH } from "astro:env/server";
 import type { ApiResponse, AuthRequest } from "@lib/types";
-
-function signToken(payload: string, secret: string): string {
-  const signature = createHmac("sha256", secret).update(payload).digest("base64url");
-  return `${payload}.${signature}`;
-}
+import { signToken } from "@lib/auth";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {

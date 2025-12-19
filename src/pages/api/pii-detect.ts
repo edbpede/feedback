@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { createHmac, timingSafeEqual } from "node:crypto";
 import { SESSION_SECRET, NANO_GPT_API_KEY, API_BASE_URL } from "astro:env/server";
 import { PII_DETECTION_MODEL, PII_DETECTION_FALLBACK_MODELS } from "@config/models";
 import {
@@ -15,6 +14,7 @@ import type {
   PIIConfidence,
   ErrorDetails,
 } from "@lib/types";
+import { verifyToken } from "@lib/auth";
 
 /** Status codes that are considered retryable (temporary failures) */
 const RETRYABLE_STATUS_CODES = [500, 502, 503, 504];
@@ -48,34 +48,8 @@ interface RawPIIResponse {
   context_notes?: string;
 }
 
-/** Maximum token age: 7 days in milliseconds */
-const MAX_TOKEN_AGE = 7 * 24 * 60 * 60 * 1000;
-
-function verifyToken(token: string, secret: string): boolean {
-  const parts = token.split(".");
-  if (parts.length !== 2) return false;
-  const [payload, signature] = parts;
-  const expectedSignature = createHmac("sha256", secret).update(payload).digest("base64url");
-
-  // Use timing-safe comparison to prevent timing attacks
-  try {
-    const signaturesMatch = timingSafeEqual(
-      Buffer.from(signature, "base64url"),
-      Buffer.from(expectedSignature, "base64url")
-    );
-    if (!signaturesMatch) return false;
-  } catch {
-    return false; // Different lengths
-  }
-
-  // Validate payload structure and expiration
-  const colonIndex = payload.indexOf(":");
-  if (colonIndex === -1) return false;
-  const timestamp = parseInt(payload.slice(colonIndex + 1), 10);
-  if (isNaN(timestamp)) return false;
-  const tokenAge = Date.now() - timestamp;
-  return tokenAge >= 0 && tokenAge <= MAX_TOKEN_AGE;
-}
+/** Timeout for PII detection API calls: 60 seconds */
+const PII_DETECTION_TIMEOUT_MS = 60000;
 
 /**
  * Parse the raw JSON response from the model into typed PIIFindings.
@@ -87,19 +61,23 @@ function parseFindings(rawResponse: RawPIIResponse): {
   const validCategories: PIICategory[] = ["name", "place", "institution", "contact", "other"];
   const validConfidences: PIIConfidence[] = ["high", "medium", "low"];
 
-  const findings: PIIFinding[] = rawResponse.findings.map((raw, index) => ({
-    id: `pii-${Date.now()}-${index}`,
-    original: raw.original || "",
-    replacement: raw.replacement || "[ANONYMISERET]",
-    category: validCategories.includes(raw.category as PIICategory)
-      ? (raw.category as PIICategory)
-      : "other",
-    confidence: validConfidences.includes(raw.confidence as PIIConfidence)
-      ? (raw.confidence as PIIConfidence)
-      : "medium",
-    reasoning: raw.reasoning || "",
-    kept: false,
-  }));
+  // Filter out findings with empty or whitespace-only original values
+  // to prevent text corruption in applyAnonymizations (split("").join() issue)
+  const findings: PIIFinding[] = rawResponse.findings
+    .filter((raw) => raw.original && raw.original.trim().length > 0)
+    .map((raw, index) => ({
+      id: `pii-${Date.now()}-${index}`,
+      original: raw.original,
+      replacement: raw.replacement || "[ANONYMISERET]",
+      category: validCategories.includes(raw.category as PIICategory)
+        ? (raw.category as PIICategory)
+        : "other",
+      confidence: validConfidences.includes(raw.confidence as PIIConfidence)
+        ? (raw.confidence as PIIConfidence)
+        : "medium",
+      reasoning: raw.reasoning || "",
+      kept: false,
+    }));
 
   return {
     findings,
@@ -178,24 +156,53 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     const userPrompt = generatePIIDetectionPrompt(body.text, body.context);
 
-    // Call NanoGPT with the TEE model for PII detection (non-streaming)
-    const nanoGptResponse = await fetch(`${API_BASE_URL}/chat/completions`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${NANO_GPT_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: requestedModel,
-        messages: [
-          { role: "system", content: PII_DETECTION_SYSTEM_PROMPT },
-          { role: "user", content: userPrompt },
-        ],
-        stream: false,
-        temperature: 0.1, // Low temperature for consistent detection
-        max_tokens: 4000,
-      }),
-    });
+    // Set up timeout for the API call
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), PII_DETECTION_TIMEOUT_MS);
+
+    let nanoGptResponse: Response;
+    try {
+      // Call NanoGPT with the TEE model for PII detection (non-streaming)
+      nanoGptResponse = await fetch(`${API_BASE_URL}/chat/completions`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${NANO_GPT_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: requestedModel,
+          messages: [
+            { role: "system", content: PII_DETECTION_SYSTEM_PROMPT },
+            { role: "user", content: userPrompt },
+          ],
+          stream: false,
+          temperature: 0.1, // Low temperature for consistent detection
+          max_tokens: 4000,
+        }),
+        signal: controller.signal,
+      });
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      // Handle timeout/abort error
+      if (fetchError instanceof Error && fetchError.name === "AbortError") {
+        const response: ApiResponse<never> = {
+          success: false,
+          error: "PII detection request timed out",
+          errorDetails: {
+            status: 408,
+            message: "Request timed out after 60 seconds",
+            type: "TimeoutError",
+            retryable: true,
+          },
+        };
+        return new Response(JSON.stringify(response), {
+          status: 408,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      throw fetchError;
+    }
+    clearTimeout(timeoutId);
 
     if (!nanoGptResponse.ok) {
       const errorBody = await nanoGptResponse.text();
