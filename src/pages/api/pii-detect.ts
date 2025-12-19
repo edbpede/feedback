@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createHmac } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { SESSION_SECRET, NANO_GPT_API_KEY, API_BASE_URL } from "astro:env/server";
 import { PII_DETECTION_MODEL, PII_DETECTION_FALLBACK_MODELS } from "@config/models";
 import {
@@ -48,12 +48,33 @@ interface RawPIIResponse {
   context_notes?: string;
 }
 
+/** Maximum token age: 7 days in milliseconds */
+const MAX_TOKEN_AGE = 7 * 24 * 60 * 60 * 1000;
+
 function verifyToken(token: string, secret: string): boolean {
   const parts = token.split(".");
   if (parts.length !== 2) return false;
   const [payload, signature] = parts;
   const expectedSignature = createHmac("sha256", secret).update(payload).digest("base64url");
-  return signature === expectedSignature;
+
+  // Use timing-safe comparison to prevent timing attacks
+  try {
+    const signaturesMatch = timingSafeEqual(
+      Buffer.from(signature, "base64url"),
+      Buffer.from(expectedSignature, "base64url")
+    );
+    if (!signaturesMatch) return false;
+  } catch {
+    return false; // Different lengths
+  }
+
+  // Validate payload structure and expiration
+  const colonIndex = payload.indexOf(":");
+  if (colonIndex === -1) return false;
+  const timestamp = parseInt(payload.slice(colonIndex + 1), 10);
+  if (isNaN(timestamp)) return false;
+  const tokenAge = Date.now() - timestamp;
+  return tokenAge >= 0 && tokenAge <= MAX_TOKEN_AGE;
 }
 
 /**
@@ -92,7 +113,7 @@ function parseFindings(rawResponse: RawPIIResponse): {
 function applyAnonymizations(text: string, findings: PIIFinding[]): string {
   let result = text;
 
-  // Sort findings by position (longest first to avoid index issues)
+  // Sort findings by length (longest first to avoid substring replacement issues)
   const sortedFindings = [...findings]
     .filter((f) => !f.kept)
     .sort((a, b) => b.original.length - a.original.length);
