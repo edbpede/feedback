@@ -20,7 +20,7 @@ import { StepIndicator } from "@components/onboarding/StepIndicator";
 import { EnhancedQualityPasswordDialog } from "@components/EnhancedQualityPasswordDialog";
 import type { ModelPath, ApiResponse, EnhancedConfigResponse } from "@lib/types";
 import { getTheme } from "@lib/theme";
-import { getModelsForPath, getProviderLogoPath, type AIProvider } from "@config/models";
+import { getProviderLogoPath, type AIProvider } from "@config/models";
 
 /** Props for the ModelPathStep component */
 interface ModelPathStepProps {
@@ -176,7 +176,6 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
           <For each={PATH_OPTIONS}>
             {(option) => {
               const isSelected = () => selectedPath() === option.id;
-              const models = () => getModelsForPath(option.id);
               const isDisabled = () => option.id === "enhanced-quality" && isEnhancedDisabled();
 
               // Wrap in tooltip if disabled
