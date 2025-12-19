@@ -52,6 +52,7 @@ bun run format:check # Check code formatting
 ## Architecture
 
 ### User Flow
+
 ```
 PasswordGate → OnboardingFlow → ChatWindow
 ```
@@ -61,10 +62,12 @@ PasswordGate → OnboardingFlow → ChatWindow
 3. **Chat**: Streaming AI responses with markdown rendering, cost tracking, retry logic
 
 ### Two Model Paths
+
 - **Privacy-first**: TEE (Trusted Execution Environment) models - no PII detection needed
 - **Enhanced-quality**: Commercial models - requires PII detection/anonymization before sending
 
 ### Key Directories
+
 ```
 src/
 ├── components/          # SolidJS components
@@ -83,19 +86,22 @@ src/
 ```
 
 ### API Endpoints
-| Endpoint | Purpose |
-|----------|---------|
-| `/api/auth` | Password authentication |
-| `/api/chat` | Stream AI feedback |
-| `/api/pii-detect` | Detect PII with fallback models |
-| `/api/balance` | Fetch NanoGPT account balance |
-| `/api/verify-session` | Check session validity |
+
+| Endpoint              | Purpose                         |
+| --------------------- | ------------------------------- |
+| `/api/auth`           | Password authentication         |
+| `/api/chat`           | Stream AI feedback              |
+| `/api/pii-detect`     | Detect PII with fallback models |
+| `/api/balance`        | Fetch NanoGPT account balance   |
+| `/api/verify-session` | Check session validity          |
 
 ### State Management
+
 - **SolidJS signals** for reactive UI state
 - **localStorage** for persistence: messages, costs, onboarding state, theme, language
 
 ### Streaming & Rendering
+
 - Markdown rendered server-side with `marked` + `highlight.js`
 - API responses streamed via `ReadableStream`
 - Lazy-loaded: PDF.js, mammoth (DOCX), highlight.js
@@ -103,6 +109,7 @@ src/
 ## Environment Variables
 
 Required in `.env`:
+
 ```
 PASSWORD_HASH         # SHA-256 of access password
 SESSION_SECRET        # HMAC signing key (32+ chars)
@@ -110,6 +117,7 @@ NANO_GPT_API_KEY      # LLM provider API key
 ```
 
 Optional:
+
 ```
 NANO_GPT_MODEL        # Default model (defaults to TEE/deepseek-v3.2)
 API_BASE_URL          # NanoGPT endpoint
@@ -125,6 +133,7 @@ ENHANCED_QUALITY_PASSWORD_HASH  # Separate auth for premium models
 ## SolidJS Patterns
 
 Use Solid idioms, not React:
+
 - `createSignal()` not `useState()`
 - `createEffect()` not `useEffect()`
 - `createMemo()` not `useMemo()`
