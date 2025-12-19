@@ -52,7 +52,8 @@ export const EnhancedQualityPasswordDialog: Component<EnhancedQualityPasswordDia
       } else {
         setError(t("enhancedAuth.invalidPassword"));
       }
-    } catch {
+    } catch (err) {
+      console.error("[EnhancedQualityPasswordDialog] Auth error:", err);
       setError(t("enhancedAuth.connectionError"));
     } finally {
       setIsLoading(false);

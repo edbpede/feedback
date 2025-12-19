@@ -98,7 +98,6 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
   const [enhancedConfigured, setEnhancedConfigured] = createSignal(true); // Default true to avoid flash
   const [enhancedAuthenticated, setEnhancedAuthenticated] = createSignal(false);
   const [showPasswordDialog, setShowPasswordDialog] = createSignal(false);
-  const [isCheckingConfig, setIsCheckingConfig] = createSignal(true);
 
   // Check enhanced quality config on mount
   onMount(async () => {
@@ -112,8 +111,6 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
     } catch {
       // On error, assume not configured for safety
       setEnhancedConfigured(false);
-    } finally {
-      setIsCheckingConfig(false);
     }
   });
 

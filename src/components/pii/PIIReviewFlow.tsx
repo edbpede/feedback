@@ -67,14 +67,20 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
   const [falsePositiveContext, setFalsePositiveContext] = createSignal("");
   const [detectionStatus, setDetectionStatus] = createSignal<PIIDetectionStatus | null>(null);
 
-  // Run initial detection
-  createEffect(() => {
+  // Run initial detection with AbortController to prevent race conditions
+  createEffect((prevController: AbortController | undefined) => {
+    // Abort any in-flight request when effect re-runs
+    prevController?.abort();
+
     if (state() === "detecting" || state() === "verification") {
-      runDetection();
+      const controller = new AbortController();
+      runDetection(controller.signal);
+      return controller;
     }
+    return undefined;
   });
 
-  async function runDetection() {
+  async function runDetection(signal?: AbortSignal) {
     try {
       setError(null);
       setDetectionStatus(null);
@@ -85,9 +91,14 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
         text: props.text,
         context,
         onStatusUpdate: (status) => {
+          // Don't update if aborted
+          if (signal?.aborted) return;
           setDetectionStatus(status);
         },
       });
+
+      // Don't process result if aborted
+      if (signal?.aborted) return;
 
       setDetectionResult(result);
       setFindings(result.findings.map((f) => ({ ...f, kept: false })));
@@ -99,6 +110,10 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
         setState("review");
       }
     } catch (err) {
+      // Ignore abort errors
+      if (err instanceof Error && err.name === "AbortError") return;
+      if (signal?.aborted) return;
+
       console.error("[PIIReviewFlow] Detection error:", err);
       setError(err instanceof Error ? err.message : "Unknown error");
       setState("error");
@@ -287,18 +302,6 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
                 onConfirm={handleConfirmKeeping}
                 onCancel={() => setState("selective-keep")}
               />
-            </Show>
-
-            {/* Clean State (no PII found) */}
-            <Show when={detectionResult()?.isClean && state() === "review"}>
-              <div class="flex flex-col items-center gap-4 py-8">
-                <span class="i-carbon-checkmark-filled text-4xl text-emerald-500" />
-                <h2 class="text-xl font-semibold">{t("pii.review.noDetections")}</h2>
-                <Button onClick={handleAcceptAll}>
-                  {t("pii.review.proceedButton")}
-                  <span class="i-carbon-arrow-right ml-1" />
-                </Button>
-              </div>
             </Show>
           </CardContent>
         </Card>

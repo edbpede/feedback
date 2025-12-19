@@ -75,33 +75,35 @@ export const PIIDetectionLoading: Component<PIIDetectionLoadingProps> = (props) 
           </Show>
 
           {/* Retry/fallback status */}
-          <Show when={showRetryInfo()}>
-            <div class="bg-muted/50 rounded-lg px-4 py-2 text-center">
-              <Show
-                when={props.status!.modelIndex > 1}
-                fallback={
+          <Show when={showRetryInfo() && props.status}>
+            {(status) => (
+              <div class="bg-muted/50 rounded-lg px-4 py-2 text-center">
+                <Show
+                  when={status().modelIndex > 1}
+                  fallback={
+                    <p class="text-muted-foreground text-sm">
+                      {t("pii.detecting.retrying", {
+                        attempt: String(status().retryAttempt),
+                        max: String(status().maxRetries),
+                      })}
+                    </p>
+                  }
+                >
                   <p class="text-muted-foreground text-sm">
-                    {t("pii.detecting.retrying", {
-                      attempt: String(props.status!.retryAttempt),
-                      max: String(props.status!.maxRetries),
+                    {t("pii.detecting.tryingModel", {
+                      current: String(status().modelIndex),
+                      total: String(status().totalModels),
                     })}
                   </p>
-                }
-              >
-                <p class="text-muted-foreground text-sm">
-                  {t("pii.detecting.tryingModel", {
-                    current: String(props.status!.modelIndex),
-                    total: String(props.status!.totalModels),
-                  })}
-                </p>
-              </Show>
+                </Show>
 
-              <Show when={props.status?.lastError}>
-                <p class="text-destructive mt-1 text-xs">
-                  {t("pii.detecting.lastError")}: {props.status!.lastError}
-                </p>
-              </Show>
-            </div>
+                <Show when={status().lastError}>
+                  <p class="text-destructive mt-1 text-xs">
+                    {t("pii.detecting.lastError")}: {status().lastError}
+                  </p>
+                </Show>
+              </div>
+            )}
           </Show>
 
           {/* Description */}
