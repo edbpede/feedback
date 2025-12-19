@@ -15,7 +15,6 @@ import { CardExternalLinks } from "@components/CardExternalLinks";
 import { Logo } from "@components/Logo";
 import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
 import { StepIndicator } from "@components/onboarding/StepIndicator";
 import { EnhancedQualityPasswordDialog } from "@components/EnhancedQualityPasswordDialog";
 import type { ModelPath, ApiResponse, EnhancedConfigResponse } from "@lib/types";
@@ -137,9 +136,6 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
     props.onContinue(selectedPath());
   };
 
-  // Enhanced quality is always enabled - auth is handled separately via password dialog
-  const isEnhancedDisabled = () => false;
-
   return (
     <Card class="w-full max-w-3xl">
       <CardContent class="pt-6">
@@ -173,20 +169,15 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
           <For each={PATH_OPTIONS}>
             {(option) => {
               const isSelected = () => selectedPath() === option.id;
-              const isDisabled = () => option.id === "enhanced-quality" && isEnhancedDisabled();
 
-              // Wrap in tooltip if disabled
-              const cardContent = () => (
+              return (
                 <button
                   type="button"
-                  onClick={() => !isDisabled() && setSelectedPath(option.id)}
-                  disabled={isDisabled()}
+                  onClick={() => setSelectedPath(option.id)}
                   class={`relative flex w-full flex-col rounded-xl border-2 p-5 text-left transition-all ${
-                    isDisabled()
-                      ? "border-border/50 cursor-not-allowed opacity-50"
-                      : isSelected()
-                        ? "border-primary bg-accent/20 ring-primary/20 ring-2"
-                        : "border-border hover:border-muted-foreground"
+                    isSelected()
+                      ? "border-primary bg-accent/20 ring-primary/20 ring-2"
+                      : "border-border hover:border-muted-foreground"
                   }`}
                 >
                   {/* Badge */}
@@ -250,30 +241,12 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
                   </div>
 
                   {/* Selection indicator */}
-                  <Show when={isSelected() && !isDisabled()}>
+                  <Show when={isSelected()}>
                     <div class="bg-primary absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full">
                       <span class="i-carbon-checkmark text-primary-foreground text-sm" />
                     </div>
                   </Show>
-
-                  {/* Disabled badge */}
-                  <Show when={isDisabled()}>
-                    <div class="bg-muted text-muted-foreground absolute -right-2 -top-2 rounded-full px-2 py-0.5 text-xs font-medium">
-                      {t("enhancedAuth.notConfigured")}
-                    </div>
-                  </Show>
                 </button>
-              );
-
-              return (
-                <Show when={isDisabled()} fallback={cardContent()}>
-                  <Tooltip>
-                    <TooltipTrigger as="div" class="w-full">
-                      {cardContent()}
-                    </TooltipTrigger>
-                    <TooltipContent>{t("enhancedAuth.notConfiguredTooltip")}</TooltipContent>
-                  </Tooltip>
-                </Show>
               );
             }}
           </For>
