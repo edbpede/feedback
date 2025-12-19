@@ -271,9 +271,14 @@ export function getFallbackModels(
   failedModelId: string,
   subject?: string
 ): { models: ModelConfig[]; recommendedId: string | null } {
-  const filtered = AVAILABLE_MODELS.filter((m) => m.id !== failedModelId).sort(
-    (a, b) => FALLBACK_SORT_ORDER.indexOf(a.id) - FALLBACK_SORT_ORDER.indexOf(b.id)
-  );
+  const filtered = AVAILABLE_MODELS.filter((m) => m.id !== failedModelId).sort((a, b) => {
+    const aIndex = FALLBACK_SORT_ORDER.indexOf(a.id);
+    const bIndex = FALLBACK_SORT_ORDER.indexOf(b.id);
+    // Models not in the fallback list (e.g., commercial) sort after TEE models
+    const aOrder = aIndex === -1 ? Infinity : aIndex;
+    const bOrder = bIndex === -1 ? Infinity : bIndex;
+    return aOrder - bOrder;
+  });
 
   const recommendedId = subject ? getRecommendedModelForSubject(subject) : null;
   const validRecommendedId = recommendedId !== failedModelId ? recommendedId : null;
