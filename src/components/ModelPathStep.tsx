@@ -94,7 +94,6 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
   const theme = () => getTheme();
 
   // Enhanced quality config state
-  const [enhancedConfigured, setEnhancedConfigured] = createSignal(true); // Default true to avoid flash
   const [enhancedAuthenticated, setEnhancedAuthenticated] = createSignal(false);
   const [showPasswordDialog, setShowPasswordDialog] = createSignal(false);
 
@@ -104,12 +103,10 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
       const response = await fetch("/api/check-enhanced");
       const result = (await response.json()) as ApiResponse<EnhancedConfigResponse>;
       if (result.success) {
-        setEnhancedConfigured(result.data.configured);
         setEnhancedAuthenticated(result.data.authenticated);
       }
     } catch {
-      // On error, assume not configured for safety
-      setEnhancedConfigured(false);
+      // On error, assume not authenticated for safety
     }
   });
 

@@ -169,10 +169,10 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
     const keptItems = findings().filter((f) => f.kept);
     const appliedItems = findings().filter((f) => !f.kept);
 
-    // Build anonymized text excluding kept items
-    let anonymizedText = props.text;
-    for (const finding of appliedItems) {
-      anonymizedText = anonymizedText.split(finding.original).join(finding.replacement);
+    // Start from fully anonymized text and undo kept items
+    let anonymizedText = result.anonymizedText;
+    for (const finding of keptItems) {
+      anonymizedText = anonymizedText.split(finding.replacement).join(finding.original);
     }
 
     const anonymizationState: AnonymizationState = {
