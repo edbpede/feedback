@@ -29,7 +29,8 @@
 
 1. **Godkendelse** → Adgangskodebeskyttet session
 2. **Onboarding** → Eleven vælger fag, klassetrin og uploader opgave/arbejde
-3. **Chat** → Streaming AI-feedback via konfigurerbar LLM-backend
+3. **Anonymisering** → Personlige oplysninger detekteres og anonymiseres via en privat TEE-model før afsendelse til AI
+4. **Chat** → Streaming AI-feedback via konfigurerbar LLM-backend
 
 Systemprompt'en, der definerer bottens pædagogiske adfærd, findes i [`src/config/systemPrompt.ts`](src/config/systemPrompt.ts).
 
