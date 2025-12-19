@@ -64,6 +64,9 @@ interface RawPIIResponse {
 /** Timeout for PII detection API calls: 60 seconds */
 const PII_DETECTION_TIMEOUT_MS = 60000;
 
+/** Maximum text length for PII detection (100,000 chars ≈ 25,000 words) */
+const MAX_TEXT_LENGTH = 100_000;
+
 /**
  * Parse and validate the raw JSON response from the model into typed PIIFindings.
  * Filters out invalid entries (empty originals) and normalizes categories/confidence levels.
@@ -183,6 +186,23 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         },
       };
       return new Response(JSON.stringify(response), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Validate text length to prevent excessive API costs
+    if (body.text.length > MAX_TEXT_LENGTH) {
+      const response: ApiResponse<never> = {
+        success: false,
+        error: "Text too long for PII detection",
+        errorDetails: {
+          status: 400,
+          message: `Text exceeds maximum length of ${MAX_TEXT_LENGTH.toLocaleString()} characters`,
+          retryable: false,
+        },
+      };
+      return new Response(JSON.stringify(response), {
+        status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }

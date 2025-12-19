@@ -346,7 +346,8 @@
     "error": {
       "title": "An error occurred",
       "description": "Could not check for personal information. Please try again.",
-      "retryButton": "Try again"
+      "retryButton": "Try again",
+      "textTooLong": "The text is too long to analyze. Please shorten it and try again."
     }
   },
   "enhancedAuth": {

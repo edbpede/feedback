@@ -346,7 +346,8 @@
     "error": {
       "title": "Der opstod en fejl",
       "description": "Kunne ikke tjekke for personlige oplysninger. Prøv igen.",
-      "retryButton": "Prøv igen"
+      "retryButton": "Prøv igen",
+      "textTooLong": "Teksten er for lang til at analysere. Forkort den venligst og prøv igen."
     }
   },
   "enhancedAuth": {
