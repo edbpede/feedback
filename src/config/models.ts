@@ -17,7 +17,8 @@ export type AIProvider =
   | "Alibaba"
   | "Google"
   | "Anthropic"
-  | "xAI";
+  | "xAI"
+  | "Moonshot AI";
 
 /** Model path type - TEE (privacy) or commercial */
 export type ModelPathType = "tee" | "commercial";
@@ -108,6 +109,17 @@ export const AVAILABLE_MODELS: ModelConfig[] = [
     provider: "Google",
     speedTier: "fast",
     bestForKey: "onboarding.models.gemma.bestFor",
+    pathType: "tee",
+  },
+  {
+    id: "TEE/kimi-k2-thinking",
+    nameKey: "onboarding.models.kimi.name",
+    descriptionKey: "onboarding.models.kimi.description",
+    pricingTier: "premium",
+    releaseDate: "Dec 2025",
+    provider: "Moonshot AI",
+    speedTier: "medium",
+    bestForKey: "onboarding.models.kimi.bestFor",
     pathType: "tee",
   },
 
@@ -241,6 +253,10 @@ export const PROVIDER_LOGO_PATHS: Record<AIProvider, { light: string; dark: stri
   xAI: {
     light: "/ai-providers/xai-dark.svg",
     dark: "/ai-providers/xai-light.svg",
+  },
+  "Moonshot AI": {
+    light: "/ai-providers/kimi-light.svg",
+    dark: "/ai-providers/kimi-dark.svg",
   },
 };
 

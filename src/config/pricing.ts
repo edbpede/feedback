@@ -23,6 +23,7 @@ export const MODEL_PRICING: Record<string, ModelPricing> = {
   "TEE/glm-4.6": { input: 0.5, output: 1.5 },
   "TEE/qwen3-coder": { input: 1.5, output: 2.0 },
   "TEE/gemma-3-27b-it": { input: 0.2, output: 0.8 },
+  "TEE/kimi-k2-thinking": { input: 2.0, output: 2.0 },
   // Commercial Models (Enhanced Quality)
   "gpt-5.1": { input: 1.25, output: 10.0 },
   "x-ai/grok-4.1-fast": { input: 0.2, output: 0.5 },

@@ -29,6 +29,7 @@ AVAILABLE_MODELS=(
     "TEE/glm-4.6"
     "TEE/qwen3-coder"
     "TEE/gemma-3-27b-it"
+    "TEE/kimi-k2-thinking"
 )
 DEFAULT_MODEL="TEE/DeepSeek-v3.2"
 DEFAULT_API_URL="https://nano-gpt.com/api/v1"

@@ -212,6 +212,11 @@
         "description": "Google's multilingual model with excellent language understanding. Supports 140+ languages and long documents.",
         "bestFor": "Languages and writing"
       },
+      "kimi": {
+        "name": "Kimi K2 (Thinking)",
+        "description": "Moonshot AI's reasoning model that thinks step-by-step. Strong at problem-solving and complex tasks.",
+        "bestFor": "All subjects"
+      },
       "gpt5": {
         "name": "GPT-5.1",
         "description": "OpenAI's latest and most advanced model. Exceptional for complex tasks and nuanced feedback.",
