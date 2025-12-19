@@ -1,4 +1,9 @@
-/** Detailed error information for debugging */
+/**
+ * @fileoverview Core type definitions for the Student Feedback Bot.
+ * Includes API types, message types, onboarding context, and GDPR/PII-related types.
+ */
+
+/** Detailed error information for debugging and user feedback */
 export interface ErrorDetails {
   status: number;
   message: string;

@@ -1,3 +1,19 @@
+/**
+ * @fileoverview Main orchestrator component for the PII (Personal Identifiable Information) review flow.
+ * Implements a state machine to guide users through detecting, reviewing, and optionally
+ * declining PII anonymization before sending student work to commercial AI models.
+ *
+ * The flow states are:
+ * - detecting: Initial PII scan using TEE model
+ * - review: Display detected PII items for user approval
+ * - decline: Show menu of decline reasons
+ * - verification: Re-run detection after user claims they removed PII
+ * - context-input: Gather user context for false positive reports
+ * - selective-keep: Allow user to mark specific items to keep
+ * - warning: Final confirmation when keeping PII items
+ * - error: Display error state with retry option
+ */
+
 import { createSignal, type Component, Show, createEffect } from "solid-js";
 import { t } from "@lib/i18n";
 import { detectPIIWithFallback } from "@lib/api";
@@ -16,7 +32,10 @@ import { PIIFindingsList } from "./PIIFindingsList";
 import { PIIDeclineMenu } from "./PIIDeclineMenu";
 import { PIIWarningDialog } from "./PIIWarningDialog";
 
-/** State machine states for PII review flow */
+/**
+ * State machine states for the PII review flow.
+ * Each state corresponds to a distinct UI view or processing phase.
+ */
 type PIIReviewState =
   | "detecting"
   | "review"

@@ -1,8 +1,15 @@
+/**
+ * @fileoverview Onboarding step for PII anonymization review.
+ * Wraps PIIReviewFlow with step indicator for integration into the onboarding flow.
+ * Only shown when user selects the enhanced-quality model path.
+ */
+
 import type { Component } from "solid-js";
 import type { AnonymizationState } from "@lib/types";
 import { PIIReviewFlow } from "@components/pii";
 import { StepIndicator } from "./StepIndicator";
 
+/** Props for the AnonymizationStep component */
 interface AnonymizationStepProps {
   /** Text to analyze for PII (combined student work text and file content) */
   text: string;

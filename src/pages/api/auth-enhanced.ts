@@ -1,9 +1,26 @@
+/**
+ * @fileoverview Authentication endpoint for enhanced-quality model access.
+ * Validates a password against the configured hash and issues a signed session cookie.
+ * Uses timing-safe comparison to prevent timing attacks.
+ *
+ * @route POST /api/auth-enhanced
+ */
+
 import type { APIRoute } from "astro";
 import { createHash, timingSafeEqual } from "node:crypto";
 import { SESSION_SECRET, ENHANCED_QUALITY_PASSWORD_HASH } from "astro:env/server";
 import type { ApiResponse, AuthRequest } from "@lib/types";
 import { signToken } from "@lib/auth";
 
+/**
+ * Authenticates user for enhanced-quality model access.
+ * Issues a 7-day session cookie on successful authentication.
+ *
+ * @returns 200 with success message on valid password
+ * @returns 401 on invalid password
+ * @returns 403 if enhanced quality is not configured
+ * @returns 400 on malformed request
+ */
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     // Check if enhanced quality is configured

@@ -1,12 +1,21 @@
+/**
+ * @fileoverview Warning dialog shown when users choose to keep some PII items.
+ * Displays a list of items being kept and requires explicit confirmation
+ * to ensure users understand the privacy implications.
+ */
+
 import { type Component, For } from "solid-js";
 import { t } from "@lib/i18n";
 import { Button } from "@components/ui/button";
 import type { PIIFinding } from "@lib/types";
 
+/** Props for the PIIWarningDialog component */
 interface PIIWarningDialogProps {
-  /** PII items the user is choosing to keep */
+  /** PII items the user is choosing to keep (not anonymize) */
   keptItems: PIIFinding[];
+  /** Callback when user confirms keeping the items */
   onConfirm: () => void;
+  /** Callback when user cancels and returns to selection */
   onCancel: () => void;
 }
 

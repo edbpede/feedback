@@ -317,21 +317,21 @@ export const PII_DETECTION_FALLBACK_MODELS = [
   "TEE/glm-4.6", // Final fallback - very fast
 ] as const;
 
+/** Type representing valid PII detection model IDs */
 export type PIIDetectionModel = (typeof PII_DETECTION_FALLBACK_MODELS)[number];
 
-/**
- * Default TEE model for privacy-first path.
- */
+/** Default TEE model for privacy-first path (best reasoning capability) */
 export const DEFAULT_TEE_MODEL_ID = "TEE/DeepSeek-v3.2";
 
-/**
- * Default commercial model for enhanced-quality path.
- */
+/** Default commercial model for enhanced-quality path (best overall quality) */
 export const DEFAULT_COMMERCIAL_MODEL_ID = "gpt-5.1";
 
 /**
  * Check if a model is a TEE (Trusted Execution Environment) model.
  * TEE models have hardware encryption and don't require client-side PII anonymization.
+ *
+ * @param modelId - The model ID to check
+ * @returns true if the model runs in a TEE
  */
 export function isTEEModel(modelId: string): boolean {
   const model = getModelById(modelId);
@@ -341,6 +341,9 @@ export function isTEEModel(modelId: string): boolean {
 /**
  * Check if a model requires PII anonymization before sending data.
  * Commercial (non-TEE) models require anonymization for GDPR compliance.
+ *
+ * @param modelId - The model ID to check
+ * @returns true if the model requires PII anonymization
  */
 export function requiresPIIAnonymization(modelId: string): boolean {
   return !isTEEModel(modelId);
@@ -348,6 +351,7 @@ export function requiresPIIAnonymization(modelId: string): boolean {
 
 /**
  * Get models filtered by path type.
+ *
  * @param path - The model path ("privacy-first" or "enhanced-quality")
  * @returns Array of models matching the path type
  */
@@ -358,6 +362,9 @@ export function getModelsForPath(path: ModelPath): ModelConfig[] {
 
 /**
  * Get the default model ID for a given path.
+ *
+ * @param path - The model path ("privacy-first" or "enhanced-quality")
+ * @returns The default model ID for that path
  */
 export function getDefaultModelForPath(path: ModelPath): string {
   return path === "privacy-first" ? DEFAULT_TEE_MODEL_ID : DEFAULT_COMMERCIAL_MODEL_ID;

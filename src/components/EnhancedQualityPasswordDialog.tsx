@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Password dialog for enhanced-quality model access.
+ * Prompts users to enter a password to unlock commercial AI models.
+ * Used when the enhanced-quality path is selected in the model path step.
+ */
+
 import { createSignal, Show, type Component } from "solid-js";
 import { Dialog } from "@kobalte/core/dialog";
 import { t } from "@lib/i18n";
@@ -5,12 +11,20 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import type { ApiResponse } from "@lib/types";
 
+/** Props for the EnhancedQualityPasswordDialog component */
 interface EnhancedQualityPasswordDialogProps {
+  /** Whether the dialog is open */
   open: boolean;
+  /** Callback when dialog open state changes */
   onOpenChange: (open: boolean) => void;
+  /** Callback when authentication succeeds */
   onSuccess: () => void;
 }
 
+/**
+ * Modal dialog for authenticating access to enhanced-quality (commercial) models.
+ * Submits password to /api/auth-enhanced and calls onSuccess on valid credentials.
+ */
 export const EnhancedQualityPasswordDialog: Component<EnhancedQualityPasswordDialogProps> = (
   props
 ) => {

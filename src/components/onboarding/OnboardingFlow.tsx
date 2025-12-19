@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Main onboarding flow orchestrator component.
+ * Manages a multi-step wizard for collecting student context before starting a chat.
+ * Steps include: Welcome → Model Path → Subject/Grade → Assignment → Student Work →
+ * Grade Preference → [Anonymization] → Model Selection.
+ *
+ * The anonymization step is conditionally shown only for the enhanced-quality path
+ * when student work content is present.
+ */
+
 import { createSignal, createMemo, Switch, Match, type Component } from "solid-js";
 import type { OnboardingContext, AttachedFile, ModelPath, AnonymizationState } from "@lib/types";
 import { WelcomeStep } from "./WelcomeStep";
@@ -10,16 +20,25 @@ import { AnonymizationStep } from "./AnonymizationStep";
 import { ModelSelectionStep } from "./ModelSelectionStep";
 import { getDefaultModelForPath } from "@config/models";
 
+/** Props for the OnboardingFlow component */
 interface OnboardingFlowProps {
+  /** Callback when onboarding is completed with collected context */
   onComplete: (context: OnboardingContext) => void;
+  /** Callback when user skips onboarding entirely */
   onSkip: () => void;
+  /** Pre-populated context for editing existing onboarding data */
   initialContext?: OnboardingContext | null;
+  /** Whether this is an edit flow (skips welcome/model path steps) */
   isEditing?: boolean;
 }
 
 /** Base number of displayed steps (without anonymization) */
 const BASE_STEPS = 6;
 
+/**
+ * Multi-step onboarding wizard for collecting student context.
+ * Dynamically adjusts step count based on whether anonymization is needed.
+ */
 export const OnboardingFlow: Component<OnboardingFlowProps> = (props) => {
   // Start at step 2 (SubjectGradeStep) when editing, step 0 (WelcomeStep) otherwise
   const [currentStep, setCurrentStep] = createSignal(
