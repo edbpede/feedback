@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createHmac, createHash } from "node:crypto";
+import { createHmac, createHash, timingSafeEqual } from "node:crypto";
 import { SESSION_SECRET, ENHANCED_QUALITY_PASSWORD_HASH } from "astro:env/server";
 import type { ApiResponse, AuthRequest } from "@lib/types";
 
@@ -22,7 +22,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const body = (await request.json()) as AuthRequest;
     const hashedInput = createHash("sha256").update(body.password).digest("hex");
 
-    if (hashedInput !== ENHANCED_QUALITY_PASSWORD_HASH) {
+    // Use timing-safe comparison to prevent timing attacks
+    const hashesMatch = timingSafeEqual(
+      Buffer.from(hashedInput, "hex"),
+      Buffer.from(ENHANCED_QUALITY_PASSWORD_HASH, "hex")
+    );
+
+    if (!hashesMatch) {
       const response: ApiResponse<never> = {
         success: false,
         error: "Invalid password",

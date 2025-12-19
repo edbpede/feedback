@@ -94,7 +94,7 @@ export const PIIReviewFlow: Component<PIIReviewFlowProps> = (props) => {
       originalText: props.text,
       anonymizedText: result.anonymizedText,
       appliedReplacements: findings().filter((f) => !f.kept),
-      skippedItems: [],
+      skippedItems: findings().filter((f) => f.kept),
     };
     props.onComplete(anonymizationState);
   }

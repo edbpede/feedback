@@ -25,10 +25,19 @@ export const MessageBubble: Component<MessageBubbleProps> = (props) => {
     parseMarkdownSync(props.message.content)
   );
 
+  // Track parse sequence to prevent race conditions
+  let parseSequence = 0;
+
   // Parse markdown when content changes
   createEffect(() => {
     const content = props.message.content;
-    parseMarkdown(content).then(setHtmlContent);
+    const currentSequence = ++parseSequence;
+    parseMarkdown(content).then((html) => {
+      // Only update if this is still the latest parse
+      if (currentSequence === parseSequence) {
+        setHtmlContent(html);
+      }
+    });
   });
 
   // Get provider from model ID for logo display

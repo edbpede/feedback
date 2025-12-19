@@ -59,7 +59,7 @@ async function initializeRenderer() {
   });
 
   return {
-    parse: (content: string) => marked.parse(content) as string,
+    parse: (content: string) => marked.parse(content, { async: false }),
   };
 }
 
@@ -90,8 +90,16 @@ export async function parseMarkdown(content: string): Promise<string> {
     rendererPromise = initializeRenderer();
   }
 
-  const renderer = await rendererPromise;
-  return renderer.parse(content);
+  try {
+    const renderer = await rendererPromise;
+    return renderer.parse(content);
+  } catch (error) {
+    console.error("Failed to parse markdown:", error);
+    // Reset promise so next call will retry initialization
+    rendererPromise = null;
+    // Fallback to sync version on error
+    return parseMarkdownSync(content);
+  }
 }
 
 /**
