@@ -280,6 +280,10 @@
     }
   },
   "pii": {
+    "findingCard": {
+      "from": "From:",
+      "to": "To:"
+    },
     "detecting": {
       "title": "Checking for personal information...",
       "description": "We're scanning your text to protect your privacy",
