@@ -274,7 +274,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
       rawResponse = JSON.parse(jsonContent) as RawPIIResponse;
     } catch (parseError) {
-      console.error("Failed to parse PII detection response:", content);
+      console.error(
+        "Failed to parse PII detection response. Content length:",
+        content.length,
+        "Parse error:",
+        parseError instanceof Error ? parseError.message : "Unknown"
+      );
       const response: ApiResponse<never> = {
         success: false,
         error: "Failed to parse PII detection response",
