@@ -1,3 +1,4 @@
+import type { TranslationKey } from "@lib/i18n";
 import type { ErrorDetails } from "@lib/types";
 
 /** Error categories for user-friendly error messages */
@@ -14,8 +15,8 @@ export type ErrorCategory =
 /** Error information for UI display */
 export interface ErrorInfo {
   category: ErrorCategory;
-  titleKey: string;
-  messageKey: string;
+  titleKey: TranslationKey;
+  messageKey: TranslationKey;
   icon: string;
   retryable: boolean;
 }

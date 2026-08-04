@@ -155,11 +155,7 @@ export const ModelPathStep: Component<ModelPathStepProps> = (props) => {
 
         {/* Step indicator */}
         <Show when={props.currentStep !== undefined && props.totalSteps !== undefined}>
-          <StepIndicator
-            currentStep={props.currentStep!}
-            totalSteps={props.totalSteps!}
-            class="mb-6"
-          />
+          <StepIndicator currentStep={props.currentStep!} totalSteps={props.totalSteps!} />
         </Show>
 
         {/* Title and description */}

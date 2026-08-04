@@ -58,7 +58,7 @@ export interface SendMessageOptions {
 
 export async function sendMessage(options: SendMessageOptions): Promise<void> {
   const { messages, model, subject, onChunk, onRetry, onUsage } = options;
-  let lastError: Error | null = null;
+  let lastError: ApiError | null = null;
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     try {
@@ -145,8 +145,7 @@ export async function sendMessage(options: SendMessageOptions): Promise<void> {
   // Always throw with retryable: false when retry loop is exhausted
   // This ensures ChatWindow sets retriesExhausted = true, showing fallback model selector
   if (lastError) {
-    const apiError = lastError as ApiError;
-    throw new ApiError(apiError.status, apiError.message, false);
+    throw new ApiError(lastError.status, lastError.message, false);
   }
   throw new ApiError(0, "Connection failed after 10 attempts", false);
 }

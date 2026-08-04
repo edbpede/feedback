@@ -11,7 +11,7 @@ import { fetchBalance, type RetryPhase, sendMessage } from "@lib/api";
 import { ApiError, type ErrorCategory } from "@lib/errorUtils";
 import { t } from "@lib/i18n";
 import { loadMessageCosts, loadMessages, saveMessageCosts, saveMessages } from "@lib/storage";
-import type { Message, OnboardingContext, TokenUsage } from "@lib/types";
+import type { Message, ModelPath, OnboardingContext, TokenUsage } from "@lib/types";
 import { batch, type Component, createEffect, createSignal, onMount, Show } from "solid-js";
 
 interface ChatWindowProps {
@@ -23,6 +23,18 @@ interface ChatWindowProps {
   onAutoSubmitComplete?: () => void;
   /** Callback when model is changed (e.g., after successful fallback) */
   onModelChange?: (modelId: string) => void;
+  /**
+   * Resets onboarding, GDPR and cost state so the user can pick a different model path.
+   * Not yet surfaced in the chat UI - no affordance exists for it, so this is currently
+   * unreachable. See `handleChangeModelPath` in App.tsx.
+   */
+  onChangeModelPath?: () => void;
+  /**
+   * The model path the current conversation was started on.
+   * Not yet consumed here; note that the fallback model selector does not restrict
+   * its options to this path.
+   */
+  modelPath?: ModelPath | null;
 }
 
 interface AttachedFile {
