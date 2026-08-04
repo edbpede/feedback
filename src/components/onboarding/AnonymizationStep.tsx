@@ -4,9 +4,9 @@
  * Only shown when user selects the enhanced-quality model path.
  */
 
-import type { Component } from "solid-js";
-import type { AnonymizationState } from "@lib/types";
 import { PIIReviewFlow } from "@components/pii";
+import type { AnonymizationState } from "@lib/types";
+import type { Component } from "solid-js";
 import { StepIndicator } from "./StepIndicator";
 
 /** Props for the AnonymizationStep component */

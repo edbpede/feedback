@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro";
 import type { ApiResponse } from "@lib/types";
+import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ cookies }) => {
   cookies.delete("session", { path: "/" });

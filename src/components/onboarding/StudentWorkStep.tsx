@@ -1,13 +1,13 @@
-import { createSignal, Show, type Component } from "solid-js";
-import { t } from "@lib/i18n";
-import { cn } from "@lib/utils";
-import { StepIndicator } from "./StepIndicator";
-import { PrivacyWarning } from "./PrivacyWarning";
-import { extractTextFromFile } from "@lib/fileParser";
-import type { AttachedFile } from "@lib/types";
-import { Card, CardContent } from "@components/ui/card";
 import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
 import { Textarea } from "@components/ui/textarea";
+import { extractTextFromFile } from "@lib/fileParser";
+import { t } from "@lib/i18n";
+import type { AttachedFile } from "@lib/types";
+import { cn } from "@lib/utils";
+import { type Component, createSignal, Show } from "solid-js";
+import { PrivacyWarning } from "./PrivacyWarning";
+import { StepIndicator } from "./StepIndicator";
 
 interface StudentWorkStepProps {
   value: string;

@@ -1,7 +1,7 @@
-import { createSignal, type Component } from "solid-js";
-import { t } from "@lib/i18n";
-import { Textarea } from "@components/ui/textarea";
 import { Button } from "@components/ui/button";
+import { Textarea } from "@components/ui/textarea";
+import { t } from "@lib/i18n";
+import { type Component, createSignal } from "solid-js";
 
 interface ChatInputProps {
   onSend: (message: string) => void;

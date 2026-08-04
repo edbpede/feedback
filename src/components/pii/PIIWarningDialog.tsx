@@ -4,10 +4,10 @@
  * to ensure users understand the privacy implications.
  */
 
-import { type Component, For } from "solid-js";
-import { t } from "@lib/i18n";
 import { Button } from "@components/ui/button";
+import { t } from "@lib/i18n";
 import type { PIIFinding } from "@lib/types";
+import { type Component, For } from "solid-js";
 
 /** Props for the PIIWarningDialog component */
 interface PIIWarningDialogProps {

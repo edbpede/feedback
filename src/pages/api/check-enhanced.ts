@@ -6,10 +6,10 @@
  * @route GET /api/check-enhanced
  */
 
-import type { APIRoute } from "astro";
-import { SESSION_SECRET, ENHANCED_QUALITY_PASSWORD_HASH } from "astro:env/server";
-import type { ApiResponse, EnhancedConfigResponse } from "@lib/types";
+import { ENHANCED_QUALITY_PASSWORD_HASH, SESSION_SECRET } from "astro:env/server";
 import { verifyToken } from "@lib/auth";
+import type { ApiResponse, EnhancedConfigResponse } from "@lib/types";
+import type { APIRoute } from "astro";
 
 /**
  * Checks enhanced-quality configuration and authentication status.

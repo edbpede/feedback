@@ -1,5 +1,5 @@
-import { type Component } from "solid-js";
 import { formatDkk, usdToDkk } from "@config/pricing";
+import type { Component } from "solid-js";
 
 interface CostBadgeProps {
   /** Cost in USD */

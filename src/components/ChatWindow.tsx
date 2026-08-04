@@ -1,18 +1,18 @@
-import { createSignal, createEffect, onMount, batch, Show, type Component } from "solid-js";
-import { MessageList } from "@components/MessageList";
+import { BalanceDisplay } from "@components/BalanceDisplay";
 import { ChatInput } from "@components/ChatInput";
 import { FileUpload } from "@components/FileUpload";
 import { LanguageSwitcher } from "@components/LanguageSwitcher";
-import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { Logo } from "@components/Logo";
+import { MessageList } from "@components/MessageList";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { Button } from "@components/ui/button";
-import { loadMessages, saveMessages, loadMessageCosts, saveMessageCosts } from "@lib/storage";
-import { sendMessage, fetchBalance, type RetryPhase } from "@lib/api";
-import { t } from "@lib/i18n";
 import { calculateCostUsd } from "@config/pricing";
-import { BalanceDisplay } from "@components/BalanceDisplay";
+import { fetchBalance, type RetryPhase, sendMessage } from "@lib/api";
 import { ApiError, type ErrorCategory } from "@lib/errorUtils";
+import { t } from "@lib/i18n";
+import { loadMessageCosts, loadMessages, saveMessageCosts, saveMessages } from "@lib/storage";
 import type { Message, OnboardingContext, TokenUsage } from "@lib/types";
+import { batch, type Component, createEffect, createSignal, onMount, Show } from "solid-js";
 
 interface ChatWindowProps {
   onLogout: () => void;
@@ -464,6 +464,9 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
           <h1 class="text-lg font-semibold">{t("chat.header")}</h1>
           {/* External links */}
           <div class="ml-2 flex items-center gap-3">
+            {/* biome-ignore-start lint/a11y/useAnchorContent: Biome 2.5.6 does not honour
+                aria-label on an anchor whose only child is aria-hidden; the accessible name of
+                each icon link comes from its aria-label. */}
             <a
               href="/"
               class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
@@ -498,6 +501,7 @@ export const ChatWindow: Component<ChatWindowProps> = (props) => {
             >
               <img src="/icons/agpl.svg" alt="" class="h-5 w-auto" aria-hidden="true" />
             </a>
+            {/* biome-ignore-end lint/a11y/useAnchorContent: end of icon-link row */}
           </div>
         </div>
         <div class="flex items-center gap-2">

@@ -1,7 +1,7 @@
-import type { JSX, ParentComponent } from "solid-js";
-import { splitProps } from "solid-js";
 import { Collapsible as CollapsiblePrimitive } from "@kobalte/core/collapsible";
 import { cn } from "@lib/utils";
+import type { JSX, ParentComponent } from "solid-js";
+import { splitProps } from "solid-js";
 
 const Collapsible = CollapsiblePrimitive;
 
@@ -44,4 +44,4 @@ const CollapsibleContent: ParentComponent<CollapsibleContentProps> = (props) => 
   );
 };
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+export { Collapsible, CollapsibleContent, CollapsibleTrigger };

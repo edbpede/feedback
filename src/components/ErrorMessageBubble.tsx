@@ -1,8 +1,8 @@
-import { Show, type Component } from "solid-js";
-import { Button } from "@components/ui/button";
-import { t } from "@lib/i18n";
-import { getErrorInfo, type ErrorCategory } from "@lib/errorUtils";
 import { FallbackModelSelector } from "@components/FallbackModelSelector";
+import { Button } from "@components/ui/button";
+import { type ErrorCategory, getErrorInfo } from "@lib/errorUtils";
+import { t } from "@lib/i18n";
+import { type Component, Show } from "solid-js";
 
 interface ErrorMessageBubbleProps {
   category: ErrorCategory;

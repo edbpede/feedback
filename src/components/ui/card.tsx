@@ -1,6 +1,6 @@
+import { cn } from "@lib/utils";
 import type { Component, JSX } from "solid-js";
 import { splitProps } from "solid-js";
-import { cn } from "@lib/utils";
 
 const Card: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
   const [local, others] = splitProps(props, ["class", "children"]);
@@ -59,4 +59,4 @@ const CardFooter: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
   );
 };
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };

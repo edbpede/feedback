@@ -1,7 +1,7 @@
-import { splitProps, type Component } from "solid-js";
+import { type AIProvider, getProviderLogoPath } from "@config/models";
 import { getTheme } from "@lib/theme";
-import { getProviderLogoPath, type AIProvider } from "@config/models";
 import { cn } from "@lib/utils";
+import { type Component, splitProps } from "solid-js";
 
 interface AIProviderLogoProps {
   /** The AI provider to display the logo for */
@@ -34,7 +34,6 @@ export const AIProviderLogo: Component<AIProviderLogoProps> = (props) => {
     <img
       src={logoPath()}
       alt={`${local.provider} logo`}
-      role="img"
       aria-label={`${local.provider} AI provider logo`}
       class={cn(sizeClass(), "object-contain", local.class)}
       {...others}

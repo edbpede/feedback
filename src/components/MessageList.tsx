@@ -1,11 +1,11 @@
-import { For, Show, createEffect, type Component } from "solid-js";
-import { MessageBubble } from "@components/MessageBubble";
-import { ErrorMessageBubble } from "@components/ErrorMessageBubble";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { t } from "@lib/i18n";
+import { ErrorMessageBubble } from "@components/ErrorMessageBubble";
+import { MessageBubble } from "@components/MessageBubble";
 import { getModelById } from "@config/models";
 import type { ErrorCategory } from "@lib/errorUtils";
+import { t } from "@lib/i18n";
 import type { Message } from "@lib/types";
+import { type Component, createEffect, For, Show } from "solid-js";
 
 interface MessageListProps {
   messages: Message[];

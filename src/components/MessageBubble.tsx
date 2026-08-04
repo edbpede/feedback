@@ -1,11 +1,11 @@
-import { createSignal, createEffect, Show, type Component } from "solid-js";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
 import { AIProviderLogo } from "@components/AIProviderLogo";
 import { CostBadge } from "@components/CostBadge";
-import { t } from "@lib/i18n";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@components/ui/collapsible";
 import { getModelById } from "@config/models";
+import { t } from "@lib/i18n";
 import { parseMarkdown, parseMarkdownSync } from "@lib/markdownRenderer";
 import type { Message } from "@lib/types";
+import { type Component, createEffect, createSignal, Show } from "solid-js";
 
 interface MessageBubbleProps {
   message: Message;

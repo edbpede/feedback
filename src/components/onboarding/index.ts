@@ -5,13 +5,13 @@
  * @module components/onboarding
  */
 
-export { OnboardingFlow } from "./OnboardingFlow";
-export { WelcomeStep } from "./WelcomeStep";
-export { SubjectGradeStep } from "./SubjectGradeStep";
-export { AssignmentStep } from "./AssignmentStep";
-export { StudentWorkStep } from "./StudentWorkStep";
-export { GradePreferenceStep } from "./GradePreferenceStep";
 export { AnonymizationStep } from "./AnonymizationStep";
+export { AssignmentStep } from "./AssignmentStep";
+export { GradePreferenceStep } from "./GradePreferenceStep";
 export { ModelSelectionStep } from "./ModelSelectionStep";
+export { OnboardingFlow } from "./OnboardingFlow";
 export { PrivacyWarning } from "./PrivacyWarning";
 export { StepIndicator } from "./StepIndicator";
+export { StudentWorkStep } from "./StudentWorkStep";
+export { SubjectGradeStep } from "./SubjectGradeStep";
+export { WelcomeStep } from "./WelcomeStep";

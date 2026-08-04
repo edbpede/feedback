@@ -1,0 +1,58 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/.astro",
+      "!**/.vercel",
+      "!**/.output",
+      "!**/.omc",
+      "!**/node_modules",
+      "!**/.cache",
+      "!**/.turbo",
+      "!**/.idea",
+      "!**/.vscode",
+      "!**/bun.lockb",
+      "!**/pnpm-lock.yaml",
+      "!**/package-lock.json",
+      "!**/.env",
+      "!**/.env.*",
+      "!**/*.min.js",
+      "!**/*.min.mjs",
+      "!**/*.min.css",
+      "!**/public/**/*.svg"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "bracketSpacing": true,
+    "bracketSameLine": false
+  },
+  "assist": { "enabled": true, "actions": { "source": { "recommended": true } } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "correctness": {
+        "noUnusedImports": "off",
+        "noUnusedVariables": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingCommas": "es5",
+      "arrowParentheses": "always"
+    }
+  }
+}

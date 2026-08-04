@@ -3,7 +3,7 @@
  * Re-exports types and utilities from systemPrompts module.
  */
 
-import { SubjectKey, SUBJECT_PROMPTS } from "./systemPrompts";
+import { SUBJECT_PROMPTS, type SubjectKey } from "./systemPrompts";
 
 export type { SubjectKey };
 

@@ -4,13 +4,13 @@
  * and retry/fallback status during the detection process.
  */
 
-import { Show, type Component } from "solid-js";
-import { t } from "@lib/i18n";
-import { Card, CardContent } from "@components/ui/card";
 import { AIProviderLogo } from "@components/AIProviderLogo";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
+import { Card, CardContent } from "@components/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@components/ui/tooltip";
 import { getModelById } from "@config/models";
+import { t } from "@lib/i18n";
 import type { PIIDetectionStatus } from "@lib/types";
+import { type Component, Show } from "solid-js";
 
 /** Props for the PIIDetectionLoading component */
 interface PIIDetectionLoadingProps {

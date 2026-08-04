@@ -1,7 +1,7 @@
-import type { JSX, ParentComponent } from "solid-js";
-import { splitProps } from "solid-js";
 import { Tooltip as TooltipPrimitive } from "@kobalte/core/tooltip";
 import { cn } from "@lib/utils";
+import type { JSX, ParentComponent } from "solid-js";
+import { splitProps } from "solid-js";
 
 const Tooltip = TooltipPrimitive;
 
@@ -31,4 +31,4 @@ const TooltipContent: ParentComponent<TooltipContentProps> = (props) => {
   );
 };
 
-export { Tooltip, TooltipTrigger, TooltipContent };
+export { Tooltip, TooltipContent, TooltipTrigger };

@@ -4,12 +4,12 @@
  * Used when the enhanced-quality path is selected in the model path step.
  */
 
-import { createSignal, Show, type Component } from "solid-js";
-import { Dialog } from "@kobalte/core/dialog";
-import { t } from "@lib/i18n";
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
+import { Dialog } from "@kobalte/core/dialog";
+import { t } from "@lib/i18n";
 import type { ApiResponse } from "@lib/types";
+import { type Component, createSignal, Show } from "solid-js";
 
 /** Props for the EnhancedQualityPasswordDialog component */
 interface EnhancedQualityPasswordDialogProps {

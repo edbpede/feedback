@@ -1,4 +1,4 @@
-import { splitProps, type Component } from "solid-js";
+import { type Component, splitProps } from "solid-js";
 
 interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -20,7 +20,6 @@ export const Logo: Component<LogoProps> = (props) => {
     <img
       src="/feedback-logo.svg"
       alt="Feedback Bot Logo"
-      role="img"
       aria-label="Feedback Bot til Studerende logo"
       class={`${sizeClass()} ${local.class ?? ""}`}
       {...others}

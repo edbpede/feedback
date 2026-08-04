@@ -1,5 +1,5 @@
-import { defineConfig, presetIcons } from "unocss";
 import { presetWind } from "@unocss/preset-wind3";
+import { defineConfig, presetIcons } from "unocss";
 import presetAnimations from "unocss-preset-animations";
 import { presetShadcn } from "unocss-preset-shadcn";
 

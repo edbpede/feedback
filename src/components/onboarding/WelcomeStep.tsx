@@ -1,11 +1,11 @@
-import type { Component } from "solid-js";
-import { t } from "@lib/i18n";
-import { ThemeSwitcher } from "@components/ThemeSwitcher";
-import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { CardExternalLinks } from "@components/CardExternalLinks";
+import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { Logo } from "@components/Logo";
-import { Card, CardContent } from "@components/ui/card";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
+import { t } from "@lib/i18n";
+import type { Component } from "solid-js";
 
 interface WelcomeStepProps {
   onStart: () => void;

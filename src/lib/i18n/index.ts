@@ -1,9 +1,8 @@
-import { createSignal, createMemo } from "solid-js";
-import type { Locale, Translations, TranslationKey } from "./types";
-
+import { createMemo, createSignal } from "solid-js";
 // Import locale files
 import da from "./locales/da.json";
 import en from "./locales/en.json";
+import type { Locale, TranslationKey, Translations } from "./types";
 
 /** Available locales mapped to their translations */
 const locales: Record<Locale, Translations> = { da, en };
@@ -129,4 +128,4 @@ export function getTranslations(): Translations {
 }
 
 // Re-export types
-export type { Locale, Translations, TranslationKey };
+export type { Locale, TranslationKey, Translations };

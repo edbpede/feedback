@@ -7,19 +7,19 @@
  * Enhanced-quality path: Uses commercial models with PII anonymization step
  */
 
-import { createSignal, onMount, type Component, For, Show } from "solid-js";
-import { t } from "@lib/i18n";
-import { ThemeSwitcher } from "@components/ThemeSwitcher";
-import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { CardExternalLinks } from "@components/CardExternalLinks";
-import { Logo } from "@components/Logo";
-import { Card, CardContent } from "@components/ui/card";
-import { Button } from "@components/ui/button";
-import { StepIndicator } from "@components/onboarding/StepIndicator";
 import { EnhancedQualityPasswordDialog } from "@components/EnhancedQualityPasswordDialog";
-import type { ModelPath, ApiResponse, EnhancedConfigResponse } from "@lib/types";
+import { LanguageSwitcher } from "@components/LanguageSwitcher";
+import { Logo } from "@components/Logo";
+import { StepIndicator } from "@components/onboarding/StepIndicator";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
+import { type AIProvider, getProviderLogoPath } from "@config/models";
+import { t } from "@lib/i18n";
 import { getTheme } from "@lib/theme";
-import { getProviderLogoPath, type AIProvider } from "@config/models";
+import type { ApiResponse, EnhancedConfigResponse, ModelPath } from "@lib/types";
+import { type Component, createSignal, For, onMount, Show } from "solid-js";
 
 /** Props for the ModelPathStep component */
 interface ModelPathStepProps {

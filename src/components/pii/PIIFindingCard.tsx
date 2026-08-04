@@ -4,9 +4,9 @@
  * and optionally a toggle to keep the original text.
  */
 
-import type { Component } from "solid-js";
 import { t } from "@lib/i18n";
-import type { PIIFinding, PIICategory, PIIConfidence } from "@lib/types";
+import type { PIICategory, PIIConfidence, PIIFinding } from "@lib/types";
+import type { Component } from "solid-js";
 
 /** Props for the PIIFindingCard component */
 interface PIIFindingCardProps {

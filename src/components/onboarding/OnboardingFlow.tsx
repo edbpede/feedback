@@ -8,17 +8,17 @@
  * when student work content is present.
  */
 
-import { createSignal, createMemo, Switch, Match, type Component } from "solid-js";
-import type { OnboardingContext, AttachedFile, ModelPath, AnonymizationState } from "@lib/types";
-import { WelcomeStep } from "./WelcomeStep";
-import { ModelPathStep } from "../ModelPathStep";
-import { SubjectGradeStep } from "./SubjectGradeStep";
-import { AssignmentStep } from "./AssignmentStep";
-import { StudentWorkStep } from "./StudentWorkStep";
-import { GradePreferenceStep } from "./GradePreferenceStep";
-import { AnonymizationStep } from "./AnonymizationStep";
-import { ModelSelectionStep } from "./ModelSelectionStep";
 import { getDefaultModelForPath } from "@config/models";
+import type { AnonymizationState, AttachedFile, ModelPath, OnboardingContext } from "@lib/types";
+import { type Component, createMemo, createSignal, Match, Switch } from "solid-js";
+import { ModelPathStep } from "../ModelPathStep";
+import { AnonymizationStep } from "./AnonymizationStep";
+import { AssignmentStep } from "./AssignmentStep";
+import { GradePreferenceStep } from "./GradePreferenceStep";
+import { ModelSelectionStep } from "./ModelSelectionStep";
+import { StudentWorkStep } from "./StudentWorkStep";
+import { SubjectGradeStep } from "./SubjectGradeStep";
+import { WelcomeStep } from "./WelcomeStep";
 
 /** Props for the OnboardingFlow component */
 interface OnboardingFlowProps {

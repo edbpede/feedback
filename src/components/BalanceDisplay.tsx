@@ -1,7 +1,7 @@
-import { Show, type Component } from "solid-js";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@components/ui/tooltip";
 import { formatDkk, usdToDkk } from "@config/pricing";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
 import { t } from "@lib/i18n";
+import { type Component, Show } from "solid-js";
 
 interface BalanceDisplayProps {
   /** Balance in USD (null when loading/error) */

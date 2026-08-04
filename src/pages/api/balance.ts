@@ -1,7 +1,7 @@
-import type { APIRoute } from "astro";
-import { SESSION_SECRET, NANO_GPT_API_KEY } from "astro:env/server";
-import type { ApiResponse, BalanceResponse } from "@lib/types";
+import { NANO_GPT_API_KEY, SESSION_SECRET } from "astro:env/server";
 import { verifyToken } from "@lib/auth";
+import type { ApiResponse, BalanceResponse } from "@lib/types";
+import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ cookies }) => {
   // Verify session (same pattern as chat.ts)

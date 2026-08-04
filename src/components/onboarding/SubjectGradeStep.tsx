@@ -1,9 +1,9 @@
+import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
+import { t } from "@lib/i18n";
 import type { Component } from "solid-js";
 import { For } from "solid-js";
-import { t } from "@lib/i18n";
 import { StepIndicator } from "./StepIndicator";
-import { Card, CardContent } from "@components/ui/card";
-import { Button } from "@components/ui/button";
 
 interface SubjectGradeStepProps {
   subject: string;

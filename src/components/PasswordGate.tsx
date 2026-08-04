@@ -1,13 +1,13 @@
-import { createSignal, Show, type Component } from "solid-js";
-import type { ApiResponse } from "@lib/types";
-import { t } from "@lib/i18n";
-import { LanguageSwitcher } from "@components/LanguageSwitcher";
-import { ThemeSwitcher } from "@components/ThemeSwitcher";
 import { CardExternalLinks } from "@components/CardExternalLinks";
+import { LanguageSwitcher } from "@components/LanguageSwitcher";
 import { Logo } from "@components/Logo";
+import { ThemeSwitcher } from "@components/ThemeSwitcher";
+import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { Input } from "@components/ui/input";
-import { Button } from "@components/ui/button";
+import { t } from "@lib/i18n";
+import type { ApiResponse } from "@lib/types";
+import { type Component, createSignal, Show } from "solid-js";
 
 interface PasswordGateProps {
   onSuccess: () => void;

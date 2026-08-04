@@ -1,24 +1,25 @@
-import { createSignal, onMount, Show, lazy, Suspense, type Component } from "solid-js";
-import { PasswordGate } from "@components/PasswordGate";
 import { OnboardingFlow } from "@components/onboarding";
+import { PasswordGate } from "@components/PasswordGate";
+import { type Component, createSignal, lazy, onMount, Show, Suspense } from "solid-js";
 
 // Lazy load ChatWindow - user must complete onboarding first
 const ChatWindow = lazy(() =>
   import("@components/ChatWindow").then((m) => ({ default: m.ChatWindow }))
 );
+
 import { initLocale } from "@lib/i18n";
-import { initTheme } from "@lib/theme";
 import {
-  loadOnboardingState,
-  saveOnboardingState,
-  clearOnboardingState,
-  clearMessages,
-  clearMessageCosts,
-  saveModelPath,
   clearGDPRState,
+  clearMessageCosts,
+  clearMessages,
+  clearOnboardingState,
+  loadOnboardingState,
   saveAnonymizationState,
+  saveModelPath,
+  saveOnboardingState,
 } from "@lib/storage";
-import type { OnboardingContext, OnboardingState, ModelPathState } from "@lib/types";
+import { initTheme } from "@lib/theme";
+import type { ModelPathState, OnboardingContext, OnboardingState } from "@lib/types";
 
 export const App: Component = () => {
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);

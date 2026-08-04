@@ -7,9 +7,9 @@
  * @module components/pii
  */
 
+export { PIIDeclineMenu } from "./PIIDeclineMenu";
 export { PIIDetectionLoading } from "./PIIDetectionLoading";
 export { PIIFindingCard } from "./PIIFindingCard";
 export { PIIFindingsList } from "./PIIFindingsList";
-export { PIIDeclineMenu } from "./PIIDeclineMenu";
-export { PIIWarningDialog } from "./PIIWarningDialog";
 export { PIIReviewFlow } from "./PIIReviewFlow";
+export { PIIWarningDialog } from "./PIIWarningDialog";

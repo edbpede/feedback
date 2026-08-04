@@ -6,11 +6,11 @@
  * @route POST /api/auth-enhanced
  */
 
-import type { APIRoute } from "astro";
+import { ENHANCED_QUALITY_PASSWORD_HASH, SESSION_SECRET } from "astro:env/server";
 import { createHash, timingSafeEqual } from "node:crypto";
-import { SESSION_SECRET, ENHANCED_QUALITY_PASSWORD_HASH } from "astro:env/server";
-import type { ApiResponse, AuthRequest } from "@lib/types";
 import { signToken } from "@lib/auth";
+import type { ApiResponse, AuthRequest } from "@lib/types";
+import type { APIRoute } from "astro";
 
 /**
  * Authenticates user for enhanced-quality model access.

@@ -1,7 +1,7 @@
-import { For, Show, type Component } from "solid-js";
-import { t } from "@lib/i18n";
 import { AIProviderLogo } from "@components/AIProviderLogo";
 import { getFallbackModels, type ModelConfig } from "@config/models";
+import { t } from "@lib/i18n";
+import { type Component, For, Show } from "solid-js";
 
 interface FallbackModelSelectorProps {
   /** The model ID that failed and should be excluded from options */

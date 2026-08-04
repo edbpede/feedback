@@ -14,22 +14,22 @@
  * - error: Display error state with retry option
  */
 
-import { createSignal, type Component, Show, createEffect } from "solid-js";
-import { t } from "@lib/i18n";
-import { detectPIIWithFallback } from "@lib/api";
-import { Card, CardContent } from "@components/ui/card";
-import { Button } from "@components/ui/button";
 import { Alert, AlertDescription } from "@components/ui/alert";
+import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
+import { detectPIIWithFallback } from "@lib/api";
+import { t } from "@lib/i18n";
 import type {
-  PIIFinding,
-  PIIDetectionResult,
-  PIIDeclineReason,
   AnonymizationState,
+  PIIDeclineReason,
+  PIIDetectionResult,
   PIIDetectionStatus,
+  PIIFinding,
 } from "@lib/types";
+import { type Component, createEffect, createSignal, Show } from "solid-js";
+import { PIIDeclineMenu } from "./PIIDeclineMenu";
 import { PIIDetectionLoading } from "./PIIDetectionLoading";
 import { PIIFindingsList } from "./PIIFindingsList";
-import { PIIDeclineMenu } from "./PIIDeclineMenu";
 import { PIIWarningDialog } from "./PIIWarningDialog";
 
 /**

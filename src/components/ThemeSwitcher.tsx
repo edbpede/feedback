@@ -1,7 +1,7 @@
-import { type Component } from "solid-js";
-import { getTheme, toggleTheme } from "@lib/theme";
-import { t } from "@lib/i18n";
 import { Button } from "@components/ui/button";
+import { t } from "@lib/i18n";
+import { getTheme, toggleTheme } from "@lib/theme";
+import type { Component } from "solid-js";
 
 export const ThemeSwitcher: Component = () => {
   const isDark = () => getTheme() === "dark";

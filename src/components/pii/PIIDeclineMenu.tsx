@@ -3,10 +3,10 @@
  * Part of the PII review flow, allowing users to explain false positives or keep specific items.
  */
 
-import type { Component } from "solid-js";
-import { t } from "@lib/i18n";
 import { Button } from "@components/ui/button";
+import { t } from "@lib/i18n";
 import type { PIIDeclineReason } from "@lib/types";
+import type { Component } from "solid-js";
 
 /** Props for the PIIDeclineMenu component */
 interface PIIDeclineMenuProps {

@@ -7,23 +7,23 @@
  * @route POST /api/pii-detect
  */
 
-import type { APIRoute } from "astro";
-import { SESSION_SECRET, NANO_GPT_API_KEY, API_BASE_URL } from "astro:env/server";
-import { PII_DETECTION_MODEL, PII_DETECTION_FALLBACK_MODELS } from "@config/models";
+import { API_BASE_URL, NANO_GPT_API_KEY, SESSION_SECRET } from "astro:env/server";
+import { PII_DETECTION_FALLBACK_MODELS, PII_DETECTION_MODEL } from "@config/models";
 import {
-  PII_DETECTION_SYSTEM_PROMPT,
   generatePIIDetectionPrompt,
+  PII_DETECTION_SYSTEM_PROMPT,
 } from "@config/prompts/anonymization";
+import { verifyToken } from "@lib/auth";
 import type {
   ApiResponse,
+  ErrorDetails,
+  PIICategory,
+  PIIConfidence,
   PIIDetectionRequest,
   PIIDetectionResult,
   PIIFinding,
-  PIICategory,
-  PIIConfidence,
-  ErrorDetails,
 } from "@lib/types";
-import { verifyToken } from "@lib/auth";
+import type { APIRoute } from "astro";
 
 /** HTTP status codes that indicate temporary failures worth retrying */
 const RETRYABLE_STATUS_CODES = [500, 502, 503, 504];

@@ -4,9 +4,9 @@
  * keep toggles for selective anonymization.
  */
 
-import { type Component, For, Show } from "solid-js";
 import { t } from "@lib/i18n";
 import type { PIIFinding } from "@lib/types";
+import { type Component, For, Show } from "solid-js";
 import { PIIFindingCard } from "./PIIFindingCard";
 
 /** Props for the PIIFindingsList component */

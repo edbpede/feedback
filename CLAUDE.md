@@ -28,9 +28,25 @@ Danish AI-powered educational chatbot ("Feedback Bot til Studerende") for studen
 bun run dev          # Start development server
 bun run build        # Production build
 bun run preview      # Preview production build
-bun run format       # Format code with Prettier
-bun run format:check # Check code formatting
+bun run lint         # Check formatting and lint with Biome
+bun run lint:fix     # Apply Biome formatting and safe fixes
+bun run check        # Astro/TypeScript type check
 ```
+
+### Formatting and linting
+
+Biome is the single formatter and linter (`biome.json`). Two Prettier plugins were
+dropped in the migration and have no Biome equivalent in use:
+
+- **`.astro` templates**: Biome formats only the `---` frontmatter fence. Template
+  markup, `<script is:inline>` bodies, and `<style>` blocks in `src/pages/index.astro`
+  are no longer auto-formatted — keep them tidy by hand.
+- **Tailwind/UnoCSS class sorting**: no longer automated. Biome's `useSortedClasses`
+  is a nursery rule that sorts to a different (Tailwind v3-era) order than the
+  existing code, so it is deliberately not enabled.
+
+`bun run check` currently reports 5 pre-existing type errors, so it is not yet a
+CI gate.
 
 ## Tech Stack
 

@@ -37,7 +37,7 @@ export function verifyToken(token: string, secret: string): boolean {
   const colonIndex = payload.indexOf(":");
   if (colonIndex === -1) return false;
   const timestamp = parseInt(payload.slice(colonIndex + 1), 10);
-  if (isNaN(timestamp)) return false;
+  if (Number.isNaN(timestamp)) return false;
   const tokenAge = Date.now() - timestamp;
   return tokenAge >= 0 && tokenAge <= MAX_TOKEN_AGE;
 }

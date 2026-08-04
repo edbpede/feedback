@@ -1,8 +1,8 @@
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@components/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@components/ui/tooltip";
+import { t } from "@lib/i18n";
 import type { VoidComponent } from "solid-js";
 import { For } from "solid-js";
-import { t } from "@lib/i18n";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@components/ui/collapsible";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@components/ui/tooltip";
 
 const benefits = [
   {

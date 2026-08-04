@@ -1,7 +1,7 @@
-import { defineConfig, envField } from "astro/config";
 import solidJs from "@astrojs/solid-js";
-import UnoCSS from "unocss/astro";
 import vercel from "@astrojs/vercel";
+import { defineConfig, envField } from "astro/config";
+import UnoCSS from "unocss/astro";
 
 export default defineConfig({
   integrations: [UnoCSS({ injectReset: true }), solidJs()],

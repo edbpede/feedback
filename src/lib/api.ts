@@ -1,16 +1,16 @@
+import { PII_DETECTION_FALLBACK_MODELS } from "@config/models";
+import { ApiError } from "@lib/errorUtils";
 import type {
   ApiResponse,
   BalanceResponse,
   ErrorDetails,
   Message,
+  PIIDetectionRequest,
+  PIIDetectionResult,
+  PIIDetectionStatus,
   StreamChunkWithUsage,
   TokenUsage,
-  PIIDetectionResult,
-  PIIDetectionRequest,
-  PIIDetectionStatus,
 } from "@lib/types";
-import { ApiError } from "@lib/errorUtils";
-import { PII_DETECTION_FALLBACK_MODELS } from "@config/models";
 
 /** Retry configuration - progressive strategy */
 const MAX_RETRIES = 10;

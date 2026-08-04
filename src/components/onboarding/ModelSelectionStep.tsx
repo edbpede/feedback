@@ -4,25 +4,25 @@
  * with pricing tiers, speed indicators, and subject-based recommendations.
  */
 
-import type { Component } from "solid-js";
-import { For, Show, createMemo } from "solid-js";
-import { t, type TranslationKey } from "@lib/i18n";
-import { StepIndicator } from "./StepIndicator";
-import { Card, CardContent } from "@components/ui/card";
-import { Button } from "@components/ui/button";
-import { PrivacyInfoBox } from "./PrivacyInfoBox";
 import { AIProviderLogo } from "@components/AIProviderLogo";
 import { Alert, AlertDescription } from "@components/ui/alert";
-import type { ModelPath } from "@lib/types";
+import { Button } from "@components/ui/button";
+import { Card, CardContent } from "@components/ui/card";
 import {
   AVAILABLE_MODELS,
-  getRecommendedModelForSubject,
   DEFAULT_MODEL_ID,
-  getModelsForPath,
   getDefaultModelForPath,
+  getModelsForPath,
+  getRecommendedModelForSubject,
   type ModelConfig,
   type SpeedTier,
 } from "@config/models";
+import { type TranslationKey, t } from "@lib/i18n";
+import type { ModelPath } from "@lib/types";
+import type { Component } from "solid-js";
+import { createMemo, For, Show } from "solid-js";
+import { PrivacyInfoBox } from "./PrivacyInfoBox";
+import { StepIndicator } from "./StepIndicator";
 
 /** Props for the ModelSelectionStep component */
 interface ModelSelectionStepProps {

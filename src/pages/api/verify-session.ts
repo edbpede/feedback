@@ -1,7 +1,7 @@
-import type { APIRoute } from "astro";
 import { SESSION_SECRET } from "astro:env/server";
-import type { ApiResponse } from "@lib/types";
 import { verifyToken } from "@lib/auth";
+import type { ApiResponse } from "@lib/types";
+import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async ({ cookies }) => {
   const sessionCookie = cookies.get("session")?.value;

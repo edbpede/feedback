@@ -1,6 +1,6 @@
-import { type Component } from "solid-js";
-import { getLocale, setLocale, t, type Locale } from "@lib/i18n";
 import { Button } from "@components/ui/button";
+import { getLocale, type Locale, setLocale, t } from "@lib/i18n";
+import type { Component } from "solid-js";
 
 export const LanguageSwitcher: Component = () => {
   const toggleLocale = () => {

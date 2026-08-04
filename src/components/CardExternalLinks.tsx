@@ -1,4 +1,4 @@
-import { For, type Component } from "solid-js";
+import { type Component, For } from "solid-js";
 
 interface ExternalLink {
   name: string;
@@ -41,6 +41,9 @@ const links: ExternalLink[] = [
 export const CardExternalLinks: Component = () => {
   return (
     <div class="flex items-center gap-2.5">
+      {/* biome-ignore-start lint/a11y/useAnchorContent: Biome 2.5.6 does not honour aria-label on
+          an anchor whose only child is aria-hidden; the accessible name of each icon link comes
+          from its aria-label. */}
       <For each={links}>
         {(link) => {
           const isExternal = link.href.startsWith("http");
@@ -62,6 +65,7 @@ export const CardExternalLinks: Component = () => {
           );
         }}
       </For>
+      {/* biome-ignore-end lint/a11y/useAnchorContent: end of icon-link row */}
     </div>
   );
 };

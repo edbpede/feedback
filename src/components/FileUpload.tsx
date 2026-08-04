@@ -1,7 +1,7 @@
-import { createSignal, Show, type Component } from "solid-js";
+import { Button } from "@components/ui/button";
 import { extractTextFromFile } from "@lib/fileParser";
 import { t } from "@lib/i18n";
-import { Button } from "@components/ui/button";
+import { type Component, createSignal, Show } from "solid-js";
 
 interface AttachedFile {
   name: string;
@@ -92,6 +92,9 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
           </div>
         }
       >
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: drag-and-drop is a pointer-only
+            enhancement on the wrapper; the keyboard-accessible path is the label + file input
+            below. Giving this div an ARIA role would announce interactivity it does not have. */}
         <div
           onDrop={handleDrop}
           onDragOver={handleDragOver}

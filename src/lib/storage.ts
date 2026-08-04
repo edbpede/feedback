@@ -5,7 +5,7 @@
  * (they silently fail if localStorage is unavailable).
  */
 
-import type { Message, OnboardingState, ModelPathState, AnonymizationState } from "@lib/types";
+import type { AnonymizationState, Message, ModelPathState, OnboardingState } from "@lib/types";
 
 /** LocalStorage key for chat messages */
 const STORAGE_KEY = "feedback-bot-messages";

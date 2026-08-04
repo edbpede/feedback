@@ -1,8 +1,8 @@
-import type { APIRoute } from "astro";
-import { createHash, timingSafeEqual } from "node:crypto";
 import { PASSWORD_HASH, SESSION_SECRET } from "astro:env/server";
-import type { ApiResponse, AuthRequest } from "@lib/types";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { signToken } from "@lib/auth";
+import type { ApiResponse, AuthRequest } from "@lib/types";
+import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
