@@ -9,7 +9,6 @@ const ChatWindow = lazy(() =>
 
 import { initLocale } from "@lib/i18n";
 import {
-  clearGDPRState,
   clearMessageCosts,
   clearMessages,
   clearOnboardingState,
@@ -58,16 +57,6 @@ export const App: Component = () => {
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
     setIsAuthenticated(false);
-  };
-
-  const handleChangeModelPath = () => {
-    // Reset all state when changing model path
-    clearGDPRState();
-    clearOnboardingState();
-    clearMessages();
-    clearMessageCosts();
-    setOnboardingState({ completed: false, context: null });
-    setIsEditing(false);
   };
 
   const handleOnboardingComplete = (context: OnboardingContext) => {
@@ -159,8 +148,6 @@ export const App: Component = () => {
                 autoSubmit={pendingAutoSubmit()}
                 onAutoSubmitComplete={handleAutoSubmitComplete}
                 onModelChange={handleModelChange}
-                onChangeModelPath={handleChangeModelPath}
-                modelPath={onboardingState().context?.modelPath ?? null}
               />
             </Suspense>
           </Show>
