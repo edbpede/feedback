@@ -29,7 +29,7 @@
     "pdfjs-dist": "^5.4.449",
     "solid-js": "^1.9.10",
     "tailwind-merge": "^3.4.0",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.6",
