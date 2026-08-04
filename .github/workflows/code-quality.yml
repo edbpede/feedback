@@ -7,11 +7,10 @@
 # its `if:` restricts it to Renovate branches in this repository — ordinary and
 # forked pull requests can never reach the write path.
 #
-# There is no type-check step: `astro check` currently reports 5 pre-existing
-# type errors (App.tsx, ErrorMessageBubble.tsx x2, ModelPathStep.tsx, api.ts)
-# that are unrelated to tooling and need product decisions to resolve. The
-# `bun run check` script exists for local use; wire it in here once those are
-# fixed rather than adding a step that cannot pass.
+# The type check is a gate as of the commit that added it: `astro check` reports
+# 0 errors. It previously reported 5 pre-existing errors (App.tsx,
+# ErrorMessageBubble.tsx x2, ModelPathStep.tsx, api.ts) and was deliberately not
+# wired up, since a step that cannot pass is not a gate.
 #
 # This repository has no prek.toml, so there is no prek step, and no tests, so
 # there is no test step.
@@ -90,7 +89,7 @@ jobs:
         run: bunx biome ci .
 
   quality:
-    name: Format · lint · build
+    name: Format · lint · types · build
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [biome-migrate]
@@ -118,6 +117,9 @@ jobs:
 
       - name: Biome format and lint check
         run: bunx biome ci .
+
+      - name: Astro type check
+        run: bun run check
 
       # astro.config.ts declares `validateSecrets: true`, so the build refuses to
       # start unless the three required secrets are present. These are throwaway

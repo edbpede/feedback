@@ -45,8 +45,7 @@ dropped in the migration and have no Biome equivalent in use:
   is a nursery rule that sorts to a different (Tailwind v3-era) order than the
   existing code, so it is deliberately not enabled.
 
-`bun run check` currently reports 5 pre-existing type errors, so it is not yet a
-CI gate.
+`bun run check` reports 0 errors and runs as a CI gate in `code-quality.yml`.
 
 ## Tech Stack
 
