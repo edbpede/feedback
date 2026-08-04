@@ -282,22 +282,43 @@ const FALLBACK_SORT_ORDER = [
 /**
  * Get available models for fallback selection, excluding the failed model.
  * Returns models sorted by fallback priority with the recommended model for the subject.
+ *
+ * Fallbacks never cross between the TEE and commercial paths. The privacy-first
+ * path deliberately skips PII anonymisation because the hardware enclave is the
+ * protection, so offering a commercial model after a TEE model fails would send
+ * student work that was never anonymised to a provider the user did not choose
+ * and did not consent to. Restricting by path keeps that guarantee intact.
+ *
+ * When the failed model is not recognised the TEE path is assumed, because
+ * over-restricting the options is recoverable and leaking the work is not.
  */
 export function getFallbackModels(
   failedModelId: string,
   subject?: string
 ): { models: ModelConfig[]; recommendedId: string | null } {
-  const filtered = AVAILABLE_MODELS.filter((m) => m.id !== failedModelId).sort((a, b) => {
+  const failedModel = AVAILABLE_MODELS.find((m) => m.id === failedModelId);
+  const pathType: ModelPathType = failedModel?.pathType ?? "tee";
+
+  const filtered = AVAILABLE_MODELS.filter(
+    (m) => m.id !== failedModelId && m.pathType === pathType
+  ).sort((a, b) => {
     const aIndex = FALLBACK_SORT_ORDER.indexOf(a.id);
     const bIndex = FALLBACK_SORT_ORDER.indexOf(b.id);
-    // Models not in the fallback list (e.g., commercial) sort after TEE models
+    // FALLBACK_SORT_ORDER only lists TEE models, so anything absent from it
+    // (every commercial model) keeps its relative order at the end.
     const aOrder = aIndex === -1 ? Infinity : aIndex;
     const bOrder = bIndex === -1 ? Infinity : bIndex;
     return aOrder - bOrder;
   });
 
+  // Only recommend something the user can actually select here: the
+  // subject-recommended model may sit on the other path, or be the one that
+  // just failed.
   const recommendedId = subject ? getRecommendedModelForSubject(subject) : null;
-  const validRecommendedId = recommendedId !== failedModelId ? recommendedId : null;
+  const validRecommendedId =
+    recommendedId && recommendedId !== failedModelId && filtered.some((m) => m.id === recommendedId)
+      ? recommendedId
+      : null;
 
   return { models: filtered, recommendedId: validRecommendedId };
 }
