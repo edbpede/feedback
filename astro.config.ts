@@ -1,10 +1,10 @@
-import solidJs from "@astrojs/solid-js";
+import svelte from "@astrojs/svelte";
 import vercel from "@astrojs/vercel";
 import { defineConfig, envField } from "astro/config";
 import UnoCSS from "unocss/astro";
 
 export default defineConfig({
-  integrations: [UnoCSS({ injectReset: true }), solidJs()],
+  integrations: [UnoCSS({ injectReset: true }), svelte()],
   output: "server",
   adapter: vercel(),
   env: {
@@ -49,15 +49,18 @@ export default defineConfig({
             if (id.includes("pdfjs-dist")) return "pdf";
             if (id.includes("mammoth")) return "docx";
 
+            // UI component library
+            // Must be checked BEFORE svelte: id.includes("svelte") also matches
+            // bits-ui's svelte-toolbelt dependency and every *.svelte module id,
+            // which would silently pull bits-ui into the svelte chunk.
+            if (id.includes("bits-ui")) return "bits-ui";
+
             // Core framework
-            if (id.includes("solid-js")) return "solid";
+            if (id.includes("svelte")) return "svelte";
 
             // Markdown rendering (used in chat messages)
             if (id.includes("highlight.js")) return "highlight";
             if (id.includes("marked")) return "markdown";
-
-            // UI component library
-            if (id.includes("@kobalte/core")) return "kobalte";
 
             // Fonts
             if (id.includes("@fontsource")) return "fonts";
