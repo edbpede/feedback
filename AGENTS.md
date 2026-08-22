@@ -99,6 +99,13 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
   python3 -c 'import re,hashlib,base64;s=open("src/pages/index.astro").read();b=re.search(r"<script is:inline>(.*?)</script>",s,re.S).group(1);print(base64.b64encode(hashlib.sha256(b.encode()).digest()).decode())'
   ```
 
+- **UnoCSS is on `presetWind4`, and two of its config keys fail silently.** `theme.font` entries
+  must be single strings — an array emits no `--font-*` variable at all, and `font-mono` then
+  resolves to an undefined var. And `unocss-preset-shadcn` 1.0.1 still declares its radius scale
+  under the `presetWind3` key `borderRadius`, which `presetWind4` ignores, so `uno.config.ts`
+  restates that scale under `radius` to keep `rounded-lg/md/xl` tracking `--radius`. Neither
+  failure produces a build error. Note also that Tailwind v4 renamed the shadow and blur scales:
+  the old `shadow-sm` is now `shadow-xs` and the old `backdrop-blur-sm` is now `backdrop-blur-xs`.
 - **`public/pdf.worker.min.mjs` is vendored and hand-synced.** pdf.js compares `apiVersion`
   against the worker's hardcoded version and throws synchronously on mismatch, breaking every
   PDF upload. No build step regenerates it — after any `pdfjs-dist` bump, run

@@ -10,6 +10,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 let { class: className, children, ...rest }: Props = $props();
 </script>
 
-<div class={cn("bg-card text-card-foreground rounded-lg border shadow-sm", className)} {...rest}>
+<div class={cn("bg-card text-card-foreground rounded-lg border shadow-xs", className)} {...rest}>
   {@render children?.()}
 </div>

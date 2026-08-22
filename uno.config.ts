@@ -1,11 +1,10 @@
-import { presetWind } from "@unocss/preset-wind3";
-import { defineConfig, presetIcons } from "unocss";
+import { defineConfig, presetIcons, presetWind4 } from "unocss";
 import presetAnimations from "unocss-preset-animations";
 import { presetShadcn } from "unocss-preset-shadcn";
 
 export default defineConfig({
   presets: [
-    presetWind(),
+    presetWind4(),
     presetAnimations(),
     presetShadcn({
       color: false, // Using custom northern-lights theme
@@ -24,10 +23,25 @@ export default defineConfig({
     }),
   ],
   theme: {
-    fontFamily: {
-      sans: ["Plus Jakarta Sans Variable", "system-ui", "sans-serif"],
-      mono: ["JetBrains Mono", "Consolas", "monospace"],
-      serif: ["Source Serif 4 Variable", "Georgia", "serif"],
+    // presetWind4 renamed this key from `fontFamily`, and it only emits the
+    // --font-* variables its utilities resolve against when the value is a
+    // single string. An array here yields no variable at all, so `font-mono`
+    // would silently resolve to var(--font-mono) with nothing behind it.
+    font: {
+      sans: '"Plus Jakarta Sans Variable", system-ui, sans-serif',
+      mono: '"JetBrains Mono", Consolas, monospace',
+      serif: '"Source Serif 4 Variable", Georgia, serif',
+    },
+    // The shadcn radius contract, restated for presetWind4.
+    // unocss-preset-shadcn 1.0.1 still ships this scale under the presetWind3
+    // key `borderRadius`, which presetWind4 ignores (it reads `radius`), so
+    // without this block rounded-lg/md/xl silently stop tracking --radius from
+    // src/styles/globals.css and fall back to presetWind4's own defaults.
+    radius: {
+      xl: "calc(var(--radius) + 4px)",
+      lg: "var(--radius)",
+      md: "calc(var(--radius) - 2px)",
+      sm: "calc(var(--radius) - 4px)",
     },
   },
   content: {
