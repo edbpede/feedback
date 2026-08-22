@@ -90,15 +90,46 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 - **`bun run preview` does not work.** The Vercel adapter rejects `astro preview` outright, so
   `bun run preview` and `scripts/devserver/run.sh preview` both fail. Verify locally with
   `bun run dev`; `bun run build` is the only production-bundle signal.
-- **`vercel.json` pins inline-script SHA-256 hashes in the CSP.** The first hash
-  (`sha256-tWgYCKflfnAc/…`) is the FOUC-prevention script in `src/pages/index.astro`. Editing
-  that script — whitespace included — breaks all JS in production until the hash is recomputed
-  and updated in `vercel.json`. It is the base64 SHA-256 of the exact script body:
+- **`vercel.json` pins inline-script SHA-256 hashes in the CSP, and only one of the three is
+  yours.** The page serves three inline scripts: the FOUC-prevention script in
+  `src/pages/index.astro`, and two that Astro generates — the `client:idle` directive shim and
+  the `astro-island` custom-element bootstrap. All three need a `'sha256-…'` entry in
+  `script-src`. Editing the FOUC script — whitespace included — changes its hash; **so does
+  bumping `astro`**, which silently rewrites the generated pair. A missing hash blocks that
+  script in production, and a missing bootstrap hash means the island never hydrates while the
+  server-rendered shell still looks fine. Nothing in CI catches it: the smoke test only asserts
+  that `/` serves a `<title>`. Recompute all three from a real build rather than from source —
+  build, serve `.vercel/output` (or deploy a preview), and hash every inline script in the
+  response:
 
   ```bash
-  python3 -c 'import re,hashlib,base64;s=open("src/pages/index.astro").read();b=re.search(r"<script is:inline>(.*?)</script>",s,re.S).group(1);print(base64.b64encode(hashlib.sha256(b.encode()).digest()).decode())'
+  curl -s <deployment>/ | python3 -c 'import sys,re,hashlib,base64
+  for s in re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", sys.stdin.read(), re.S):
+      print(base64.b64encode(hashlib.sha256(s.encode()).digest()).decode())'
   ```
 
+- **UnoCSS is on `presetWind4`, and two of its config keys fail silently.** The font theme has
+  two separate traps, with different symptoms and no build error for either. The key is `font`,
+  not the `presetWind3` name `fontFamily`: under the old name the whole block is ignored and
+  `--font-*` is emitted with `presetWind4`'s own default stack, so `font-mono` renders
+  `ui-monospace` instead of JetBrains Mono. Under the right name the values must be single
+  strings: an array is ignored too, but emits no `--font-*` variable at all, so `font-mono`
+  resolves against an undefined var and falls back to whatever is inherited. Three call sites in
+  two components depend on this (`pii/PIIFindingCard.svelte:77,88`, `pii/PIIWarningDialog.svelte:46`).
+  Separately, `unocss-preset-shadcn` 1.0.1 still declares its radius scale
+  under the `presetWind3` key `borderRadius`, which `presetWind4` ignores, so `uno.config.ts`
+  restates that scale under `radius` to keep `rounded-lg/md/xl` tracking `--radius` rather than
+  `presetWind4`'s own defaults. Buttons also lose their pointer cursor, and not for the reason it
+  looks like: it never came from `presetWind3`, it came from `@unocss/reset/tailwind.css`
+  (`button,[role=button]{cursor:pointer}` plus `:disabled{cursor:default}`), which
+  `@unocss/astro` injects under `injectReset: true` and then **stops injecting entirely** once
+  it detects `presetWind4`. `presetWind4`'s own reset carries no cursor rule, so
+  `src/styles/globals.css` restates both halves as one `:not(:disabled)` rule. Without it every
+  button in the app renders with the default arrow. Note also the Tailwind v4 utility renames, all of which change
+  rendering silently: the old `shadow-sm` is now `shadow-xs`, the old `backdrop-blur-sm` is now
+  `backdrop-blur-xs`, and the old `outline-none` is now `outline-hidden` — under `presetWind4`
+  `outline-none` means a literal `outline-style: none`, which removes the transparent-outline
+  focus indicator that is the only one visible in forced-colors mode.
 - **`public/pdf.worker.min.mjs` is vendored and hand-synced.** pdf.js compares `apiVersion`
   against the worker's hardcoded version and throws synchronously on mismatch, breaking every
   PDF upload. No build step regenerates it — after any `pdfjs-dist` bump, run
@@ -128,11 +159,13 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 - Biome owns formatting (100 cols, 2 spaces, double quotes, `es5` trailing commas, LF).
   `noUnusedImports` and `noUnusedVariables` are deliberately **off**.
 - Compose classes with `cn()` from `src/lib/utils.ts`, not template strings.
-- Dark mode is `data-kb-theme` on `<html>`. The name is historical and project-owned — no
-  library ever read it, and the `darkSelector` option in `uno.config.ts` is inert because
-  `presetShadcn` is configured with `color: false`. The rule that actually applies the dark
-  palette is hand-written in `src/styles/globals.css`; the attribute is written by
-  `src/lib/theme.svelte.ts` and the anti-FOUC inline script in `src/pages/index.astro`.
+- Dark mode is the `.dark` class on `<html>` — the shadcn/UnoCSS convention, and the selector
+  presetWind4 compiles the `dark:` variant against, so the two cannot drift apart. The rule that
+  actually applies the dark palette is hand-written in `src/styles/globals.css`; the class is
+  written by `src/lib/theme.svelte.ts` and by the anti-FOUC inline script in
+  `src/pages/index.astro`, and `<html>` ships with it already set so the default dark theme
+  paints on the first frame. The `darkSelector` option in `uno.config.ts` emits nothing because
+  `presetShadcn` is configured with `color: false`, but is kept equal to the real selector.
   Colors come from `oklch(var(--token))`, defined in `src/styles/globals.css`.
 - `tailwind.config.js` is an empty stub for shadcn CLI compatibility — real config is
   `uno.config.ts`. The shadcn-style primitives in `src/components/ui/` are one component per

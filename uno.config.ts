@@ -1,19 +1,18 @@
-import { presetWind } from "@unocss/preset-wind3";
-import { defineConfig, presetIcons } from "unocss";
+import { defineConfig, presetIcons, presetWind4 } from "unocss";
 import presetAnimations from "unocss-preset-animations";
 import { presetShadcn } from "unocss-preset-shadcn";
 
 export default defineConfig({
   presets: [
-    presetWind(),
+    presetWind4(),
     presetAnimations(),
     presetShadcn({
       color: false, // Using custom northern-lights theme
       // Inert: presetShadcn only reads darkSelector when `color` is set, so this
-      // emits nothing. The dark palette is the hand-written [data-kb-theme="dark"]
-      // rule in src/styles/globals.css. Kept so the two stay in sync if `color` is
-      // ever enabled.
-      darkSelector: '[data-kb-theme="dark"]',
+      // emits nothing. The dark palette is the hand-written .dark rule in
+      // src/styles/globals.css. Kept so the two stay in sync if `color` is ever
+      // enabled.
+      darkSelector: ".dark",
     }),
     presetIcons({
       scale: 1.2,
@@ -24,10 +23,26 @@ export default defineConfig({
     }),
   ],
   theme: {
-    fontFamily: {
-      sans: ["Plus Jakarta Sans Variable", "system-ui", "sans-serif"],
-      mono: ["JetBrains Mono", "Consolas", "monospace"],
-      serif: ["Source Serif 4 Variable", "Georgia", "serif"],
+    // Two silent traps here, neither of which errors. The key is `font`:
+    // presetWind4 ignores the presetWind3 name `fontFamily` and emits --font-*
+    // from its own defaults instead, so `font-mono` would render ui-monospace.
+    // And the values must be single strings — an array emits no --font-*
+    // variable at all, so `font-mono` resolves var(--font-mono) against nothing.
+    font: {
+      sans: '"Plus Jakarta Sans Variable", system-ui, sans-serif',
+      mono: '"JetBrains Mono", Consolas, monospace',
+      serif: '"Source Serif 4 Variable", Georgia, serif',
+    },
+    // The shadcn radius contract, restated for presetWind4.
+    // unocss-preset-shadcn 1.0.1 still ships this scale under the presetWind3
+    // key `borderRadius`, which presetWind4 ignores (it reads `radius`), so
+    // without this block rounded-lg/md/xl silently stop tracking --radius from
+    // src/styles/globals.css and fall back to presetWind4's own defaults.
+    radius: {
+      xl: "calc(var(--radius) + 4px)",
+      lg: "var(--radius)",
+      md: "calc(var(--radius) - 2px)",
+      sm: "calc(var(--radius) - 4px)",
     },
   },
   content: {

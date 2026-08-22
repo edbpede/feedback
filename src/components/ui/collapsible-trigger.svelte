@@ -9,7 +9,7 @@ let { class: className, children, ...rest }: CollapsibleTriggerProps = $props();
 <CollapsiblePrimitive.Trigger
   class={cn(
     "flex items-center gap-2 text-sm font-medium transition-colors",
-    "hover:text-foreground focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+    "hover:text-foreground focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2",
     className
   )}
   {...rest}
