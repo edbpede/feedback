@@ -1,38 +1,38 @@
 <script lang="ts">
-  /**
-   * @fileoverview Loading state component for PII detection.
-   * Displays an animated spinner, current model info, TEE security badge,
-   * and retry/fallback status during the detection process.
-   */
+/**
+ * @fileoverview Loading state component for PII detection.
+ * Displays an animated spinner, current model info, TEE security badge,
+ * and retry/fallback status during the detection process.
+ */
 
-  import AIProviderLogo from "@components/AIProviderLogo.svelte";
-  import { Card, CardContent, Tooltip, TooltipContent, TooltipTrigger } from "@components/ui";
-  import { getModelById } from "@config/models";
-  import { t } from "@lib/i18n";
-  import type { PIIDetectionStatus } from "@lib/types";
+import AIProviderLogo from "@components/AIProviderLogo.svelte";
+import { Card, CardContent, Tooltip, TooltipContent, TooltipTrigger } from "@components/ui";
+import { getModelById } from "@config/models";
+import { t } from "@lib/i18n";
+import type { PIIDetectionStatus } from "@lib/types";
 
-  /** Props for the PIIDetectionLoading component */
-  interface PIIDetectionLoadingProps {
-    /** Status object for showing retry/fallback progress during detection */
-    status?: PIIDetectionStatus | null;
-  }
+/** Props for the PIIDetectionLoading component */
+interface PIIDetectionLoadingProps {
+  /** Status object for showing retry/fallback progress during detection */
+  status?: PIIDetectionStatus | null;
+}
 
-  /**
-   * Loading state shown during PII detection.
-   * Displays spinner, current model info, and retry status.
-   */
-  let { status }: PIIDetectionLoadingProps = $props();
+/**
+ * Loading state shown during PII detection.
+ * Displays spinner, current model info, and retry status.
+ */
+let { status }: PIIDetectionLoadingProps = $props();
 
-  const modelConfig = $derived.by(() => {
-    if (!status?.currentModel) return null;
-    return getModelById(status.currentModel);
-  });
+const modelConfig = $derived.by(() => {
+  if (!status?.currentModel) return null;
+  return getModelById(status.currentModel);
+});
 
-  const showRetryInfo = $derived.by(() => {
-    if (!status) return false;
-    // Show retry info if we're past first attempt or past first model
-    return status.retryAttempt > 1 || status.modelIndex > 1;
-  });
+const showRetryInfo = $derived.by(() => {
+  if (!status) return false;
+  // Show retry info if we're past first attempt or past first model
+  return status.retryAttempt > 1 || status.modelIndex > 1;
+});
 </script>
 
 <Card class="w-full max-w-2xl">

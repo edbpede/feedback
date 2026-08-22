@@ -1,10 +1,10 @@
 <script lang="ts">
-  interface Props {
-    totalSteps: number;
-    currentStep: number;
-  }
+interface Props {
+  totalSteps: number;
+  currentStep: number;
+}
 
-  let { totalSteps, currentStep }: Props = $props();
+let { totalSteps, currentStep }: Props = $props();
 </script>
 
 <div class="mb-6 flex items-center justify-center gap-2">

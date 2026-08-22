@@ -1,103 +1,103 @@
 <script lang="ts">
-  import { Button, Card, CardContent, Textarea } from "@components/ui";
-  import { extractTextFromFile } from "@lib/fileParser";
-  import { t } from "@lib/i18n";
-  import type { AttachedFile } from "@lib/types";
-  import { cn } from "@lib/utils";
-  import PrivacyWarning from "./PrivacyWarning.svelte";
-  import StepIndicator from "./StepIndicator.svelte";
+import { Button, Card, CardContent, Textarea } from "@components/ui";
+import { extractTextFromFile } from "@lib/fileParser";
+import { t } from "@lib/i18n";
+import type { AttachedFile } from "@lib/types";
+import { cn } from "@lib/utils";
+import PrivacyWarning from "./PrivacyWarning.svelte";
+import StepIndicator from "./StepIndicator.svelte";
 
-  interface StudentWorkStepProps {
-    value: string;
-    onChange: (value: string) => void;
-    file: AttachedFile | null;
-    onFileChange: (file: AttachedFile | null) => void;
-    onNext: () => void;
-    onBack: () => void;
-    onSkip: () => void;
-    currentStep: number;
-    totalSteps: number;
+interface StudentWorkStepProps {
+  value: string;
+  onChange: (value: string) => void;
+  file: AttachedFile | null;
+  onFileChange: (file: AttachedFile | null) => void;
+  onNext: () => void;
+  onBack: () => void;
+  onSkip: () => void;
+  currentStep: number;
+  totalSteps: number;
+}
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ACCEPTED_TYPES = [
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
+// `file` is renamed locally because the handlers below declare their own `file`
+// bindings for the incoming File object; the rename keeps the two unambiguous.
+let {
+  value,
+  onChange,
+  file: attachedFile,
+  onFileChange,
+  onNext,
+  onBack,
+  onSkip,
+  currentStep,
+  totalSteps,
+}: StudentWorkStepProps = $props();
+
+let isDragging = $state(false);
+let isProcessing = $state(false);
+let error = $state("");
+
+const processFile = async (file: File) => {
+  error = "";
+
+  if (!ACCEPTED_TYPES.includes(file.type)) {
+    error = t("fileUpload.errorUnsupportedType");
+    return;
   }
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-  const ACCEPTED_TYPES = [
-    "application/pdf",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ];
+  if (file.size > MAX_FILE_SIZE) {
+    error = t("fileUpload.errorFileTooLarge");
+    return;
+  }
 
-  // `file` is renamed locally because the handlers below declare their own `file`
-  // bindings for the incoming File object; the rename keeps the two unambiguous.
-  let {
-    value,
-    onChange,
-    file: attachedFile,
-    onFileChange,
-    onNext,
-    onBack,
-    onSkip,
-    currentStep,
-    totalSteps,
-  }: StudentWorkStepProps = $props();
+  isProcessing = true;
 
-  let isDragging = $state(false);
-  let isProcessing = $state(false);
-  let error = $state("");
+  try {
+    const content = await extractTextFromFile(file);
+    onFileChange({ name: file.name, content });
+  } catch (err) {
+    error = `${t("fileUpload.errorExtractionFailed")} ${err instanceof Error ? err.message : "Unknown error"}`;
+  } finally {
+    isProcessing = false;
+  }
+};
 
-  const processFile = async (file: File) => {
-    error = "";
+const handleDrop = (e: DragEvent) => {
+  e.preventDefault();
+  isDragging = false;
+  const file = e.dataTransfer?.files[0];
+  if (file) processFile(file);
+};
 
-    if (!ACCEPTED_TYPES.includes(file.type)) {
-      error = t("fileUpload.errorUnsupportedType");
-      return;
-    }
+const handleDragOver = (e: DragEvent) => {
+  e.preventDefault();
+  isDragging = true;
+};
 
-    if (file.size > MAX_FILE_SIZE) {
-      error = t("fileUpload.errorFileTooLarge");
-      return;
-    }
+const handleDragLeave = () => {
+  isDragging = false;
+};
 
-    isProcessing = true;
+const handleFileSelect = (e: Event) => {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (file) processFile(file);
+  input.value = "";
+};
 
-    try {
-      const content = await extractTextFromFile(file);
-      onFileChange({ name: file.name, content });
-    } catch (err) {
-      error = `${t("fileUpload.errorExtractionFailed")} ${err instanceof Error ? err.message : "Unknown error"}`;
-    } finally {
-      isProcessing = false;
-    }
-  };
+const handleClearFile = () => {
+  onFileChange(null);
+  error = "";
+};
 
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
-    isDragging = false;
-    const file = e.dataTransfer?.files[0];
-    if (file) processFile(file);
-  };
-
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    isDragging = true;
-  };
-
-  const handleDragLeave = () => {
-    isDragging = false;
-  };
-
-  const handleFileSelect = (e: Event) => {
-    const input = e.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (file) processFile(file);
-    input.value = "";
-  };
-
-  const handleClearFile = () => {
-    onFileChange(null);
-    error = "";
-  };
-
-  // Allow proceeding if either file is uploaded OR text is entered
-  const canProceed = $derived(attachedFile !== null || value.trim().length > 0);
+// Allow proceeding if either file is uploaded OR text is entered
+const canProceed = $derived(attachedFile !== null || value.trim().length > 0);
 </script>
 
 <Card class="w-full max-w-2xl">

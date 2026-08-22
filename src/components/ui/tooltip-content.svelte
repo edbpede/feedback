@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { cn } from "@lib/utils";
-  import { Tooltip as TooltipPrimitive } from "bits-ui";
-  import type { TooltipContentProps } from "bits-ui";
+import { cn } from "@lib/utils";
+import { Tooltip as TooltipPrimitive } from "bits-ui";
+import type { TooltipContentProps } from "bits-ui";
 
-  let { class: className, children, ...rest }: TooltipContentProps = $props();
+let { class: className, children, ...rest }: TooltipContentProps = $props();
 </script>
 
 <TooltipPrimitive.Portal>

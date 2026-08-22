@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from "@components/ui";
-  import { t } from "@lib/i18n";
-  import { getTheme, toggleTheme } from "@lib/theme";
+import { Button } from "@components/ui";
+import { t } from "@lib/i18n";
+import { getTheme, toggleTheme } from "@lib/theme";
 
-  const isDark = $derived(getTheme() === "dark");
+const isDark = $derived(getTheme() === "dark");
 </script>
 
 <Button

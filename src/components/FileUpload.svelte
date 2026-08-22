@@ -1,78 +1,78 @@
 <script lang="ts">
-  import { Button } from "@components/ui";
-  import { extractTextFromFile } from "@lib/fileParser";
-  import { t } from "@lib/i18n";
+import { Button } from "@components/ui";
+import { extractTextFromFile } from "@lib/fileParser";
+import { t } from "@lib/i18n";
 
-  interface AttachedFile {
-    name: string;
-    content: string;
+interface AttachedFile {
+  name: string;
+  content: string;
+}
+
+interface FileUploadProps {
+  currentFile: AttachedFile | null;
+  onFileProcessed: (file: AttachedFile) => void;
+  onClear: () => void;
+}
+
+let { currentFile, onFileProcessed, onClear }: FileUploadProps = $props();
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ACCEPTED_TYPES = [
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
+let isDragging = $state(false);
+let isProcessing = $state(false);
+let error = $state("");
+
+const processFile = async (file: File) => {
+  error = "";
+
+  if (!ACCEPTED_TYPES.includes(file.type)) {
+    error = t("fileUpload.errorUnsupportedType");
+    return;
   }
 
-  interface FileUploadProps {
-    currentFile: AttachedFile | null;
-    onFileProcessed: (file: AttachedFile) => void;
-    onClear: () => void;
+  if (file.size > MAX_FILE_SIZE) {
+    error = t("fileUpload.errorFileTooLarge");
+    return;
   }
 
-  let { currentFile, onFileProcessed, onClear }: FileUploadProps = $props();
+  isProcessing = true;
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-  const ACCEPTED_TYPES = [
-    "application/pdf",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ];
+  try {
+    const content = await extractTextFromFile(file);
+    onFileProcessed({ name: file.name, content });
+  } catch (err) {
+    error = `${t("fileUpload.errorExtractionFailed")} ${err instanceof Error ? err.message : "Unknown error"}`;
+  } finally {
+    isProcessing = false;
+  }
+};
 
-  let isDragging = $state(false);
-  let isProcessing = $state(false);
-  let error = $state("");
+const handleDrop = (e: DragEvent) => {
+  e.preventDefault();
+  isDragging = false;
+  const file = e.dataTransfer?.files[0];
+  if (file) processFile(file);
+};
 
-  const processFile = async (file: File) => {
-    error = "";
+const handleDragOver = (e: DragEvent) => {
+  e.preventDefault();
+  isDragging = true;
+};
 
-    if (!ACCEPTED_TYPES.includes(file.type)) {
-      error = t("fileUpload.errorUnsupportedType");
-      return;
-    }
+const handleDragLeave = () => {
+  isDragging = false;
+};
 
-    if (file.size > MAX_FILE_SIZE) {
-      error = t("fileUpload.errorFileTooLarge");
-      return;
-    }
-
-    isProcessing = true;
-
-    try {
-      const content = await extractTextFromFile(file);
-      onFileProcessed({ name: file.name, content });
-    } catch (err) {
-      error = `${t("fileUpload.errorExtractionFailed")} ${err instanceof Error ? err.message : "Unknown error"}`;
-    } finally {
-      isProcessing = false;
-    }
-  };
-
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
-    isDragging = false;
-    const file = e.dataTransfer?.files[0];
-    if (file) processFile(file);
-  };
-
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    isDragging = true;
-  };
-
-  const handleDragLeave = () => {
-    isDragging = false;
-  };
-
-  const handleFileSelect = (e: Event) => {
-    const input = e.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (file) processFile(file);
-    input.value = ""; // Reset for re-selection
-  };
+const handleFileSelect = (e: Event) => {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (file) processFile(file);
+  input.value = ""; // Reset for re-selection
+};
 </script>
 
 <div class="px-4 pb-2">

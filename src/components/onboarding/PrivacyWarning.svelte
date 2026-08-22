@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Alert, AlertDescription, AlertTitle } from "@components/ui";
-  import { t } from "@lib/i18n";
+import { Alert, AlertDescription, AlertTitle } from "@components/ui";
+import { t } from "@lib/i18n";
 </script>
 
 <Alert variant="warning">

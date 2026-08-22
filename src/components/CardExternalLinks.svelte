@@ -1,37 +1,37 @@
 <script lang="ts">
-  interface ExternalLink {
-    name: string;
-    src: string;
-    href: string;
-    alt: string;
-  }
+interface ExternalLink {
+  name: string;
+  src: string;
+  href: string;
+  alt: string;
+}
 
-  const links: ExternalLink[] = [
-    {
-      name: "edbpede",
-      src: "/icons/edbpede.svg",
-      href: "/",
-      alt: "EDB Pede - Homepage",
-    },
-    {
-      name: "github",
-      src: "/icons/github.svg",
-      href: "https://github.com/edbpede/feedback",
-      alt: "GitHub Repository",
-    },
-    {
-      name: "donate",
-      src: "/icons/donate.svg",
-      href: "https://kutt.it/Hrtu2H",
-      alt: "Support/Donate",
-    },
-    {
-      name: "agpl",
-      src: "/icons/agpl.svg",
-      href: "https://www.gnu.org/licenses/agpl-3.0.en.html",
-      alt: "AGPL-3.0 License",
-    },
-  ];
+const links: ExternalLink[] = [
+  {
+    name: "edbpede",
+    src: "/icons/edbpede.svg",
+    href: "/",
+    alt: "EDB Pede - Homepage",
+  },
+  {
+    name: "github",
+    src: "/icons/github.svg",
+    href: "https://github.com/edbpede/feedback",
+    alt: "GitHub Repository",
+  },
+  {
+    name: "donate",
+    src: "/icons/donate.svg",
+    href: "https://kutt.it/Hrtu2H",
+    alt: "Support/Donate",
+  },
+  {
+    name: "agpl",
+    src: "/icons/agpl.svg",
+    href: "https://www.gnu.org/licenses/agpl-3.0.en.html",
+    alt: "AGPL-3.0 License",
+  },
+];
 </script>
 
 <!--

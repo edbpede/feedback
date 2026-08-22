@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { Tooltip, TooltipContent, TooltipTrigger } from "@components/ui";
-  import { formatDkk, usdToDkk } from "@config/pricing";
-  import { t } from "@lib/i18n";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@components/ui";
+import { formatDkk, usdToDkk } from "@config/pricing";
+import { t } from "@lib/i18n";
 
-  interface BalanceDisplayProps {
-    /** Balance in USD (null when loading/error) */
-    balanceUsd: number | null;
-    /** Whether balance is currently being fetched */
-    isLoading: boolean;
-  }
+interface BalanceDisplayProps {
+  /** Balance in USD (null when loading/error) */
+  balanceUsd: number | null;
+  /** Whether balance is currently being fetched */
+  isLoading: boolean;
+}
 
-  let { balanceUsd, isLoading }: BalanceDisplayProps = $props();
+let { balanceUsd, isLoading }: BalanceDisplayProps = $props();
 
-  const balanceDkk = $derived(balanceUsd !== null ? usdToDkk(balanceUsd) : null);
+const balanceDkk = $derived(balanceUsd !== null ? usdToDkk(balanceUsd) : null);
 </script>
 
 <Tooltip>

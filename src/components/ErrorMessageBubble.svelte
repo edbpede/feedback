@@ -1,36 +1,36 @@
 <script lang="ts">
-  import FallbackModelSelector from "@components/FallbackModelSelector.svelte";
-  import { Button } from "@components/ui";
-  import { type ErrorCategory, getErrorInfo } from "@lib/errorUtils";
-  import { t } from "@lib/i18n";
+import FallbackModelSelector from "@components/FallbackModelSelector.svelte";
+import { Button } from "@components/ui";
+import { type ErrorCategory, getErrorInfo } from "@lib/errorUtils";
+import { t } from "@lib/i18n";
 
-  interface ErrorMessageBubbleProps {
-    category: ErrorCategory;
-    canRetry?: boolean;
-    retryDisabled?: boolean;
-    onRetry?: () => void;
-    /** Show fallback model selector when all retries exhausted */
-    showFallbackSelector?: boolean;
-    /** The model that failed (to exclude from fallback options) */
-    failedModelId?: string;
-    /** User's subject for model recommendations */
-    subject?: string;
-    /** Callback when user selects a fallback model */
-    onSelectFallbackModel?: (modelId: string) => void;
-  }
+interface ErrorMessageBubbleProps {
+  category: ErrorCategory;
+  canRetry?: boolean;
+  retryDisabled?: boolean;
+  onRetry?: () => void;
+  /** Show fallback model selector when all retries exhausted */
+  showFallbackSelector?: boolean;
+  /** The model that failed (to exclude from fallback options) */
+  failedModelId?: string;
+  /** User's subject for model recommendations */
+  subject?: string;
+  /** Callback when user selects a fallback model */
+  onSelectFallbackModel?: (modelId: string) => void;
+}
 
-  let {
-    category,
-    canRetry,
-    retryDisabled,
-    onRetry,
-    showFallbackSelector,
-    failedModelId,
-    subject,
-    onSelectFallbackModel,
-  }: ErrorMessageBubbleProps = $props();
+let {
+  category,
+  canRetry,
+  retryDisabled,
+  onRetry,
+  showFallbackSelector,
+  failedModelId,
+  subject,
+  onSelectFallbackModel,
+}: ErrorMessageBubbleProps = $props();
 
-  const errorInfo = $derived(getErrorInfo(category));
+const errorInfo = $derived(getErrorInfo(category));
 </script>
 
 <div class="flex justify-start gap-2">

@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { Button, Card, CardContent } from "@components/ui";
-  import { t } from "@lib/i18n";
-  import StepIndicator from "./StepIndicator.svelte";
+import { Button, Card, CardContent } from "@components/ui";
+import { t } from "@lib/i18n";
+import StepIndicator from "./StepIndicator.svelte";
 
-  interface GradePreferenceStepProps {
-    value: boolean;
-    onChange: (value: boolean) => void;
-    onNext: () => void;
-    onBack: () => void;
-    currentStep: number;
-    totalSteps: number;
-  }
+interface GradePreferenceStepProps {
+  value: boolean;
+  onChange: (value: boolean) => void;
+  onNext: () => void;
+  onBack: () => void;
+  currentStep: number;
+  totalSteps: number;
+}
 
-  let { value, onChange, onNext, onBack, currentStep, totalSteps }: GradePreferenceStepProps =
-    $props();
+let { value, onChange, onNext, onBack, currentStep, totalSteps }: GradePreferenceStepProps =
+  $props();
 </script>
 
 <Card class="w-full max-w-2xl">

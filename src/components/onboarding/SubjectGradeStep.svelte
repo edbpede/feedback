@@ -1,47 +1,47 @@
 <script lang="ts">
-  import { Button, Card, CardContent } from "@components/ui";
-  import { t } from "@lib/i18n";
-  import StepIndicator from "./StepIndicator.svelte";
+import { Button, Card, CardContent } from "@components/ui";
+import { t } from "@lib/i18n";
+import StepIndicator from "./StepIndicator.svelte";
 
-  interface SubjectGradeStepProps {
-    subject: string;
-    grade: string;
-    onSubjectChange: (subject: string) => void;
-    onGradeChange: (grade: string) => void;
-    onNext: () => void;
-    onBack: () => void;
-    currentStep: number;
-    totalSteps: number;
-  }
+interface SubjectGradeStepProps {
+  subject: string;
+  grade: string;
+  onSubjectChange: (subject: string) => void;
+  onGradeChange: (grade: string) => void;
+  onNext: () => void;
+  onBack: () => void;
+  currentStep: number;
+  totalSteps: number;
+}
 
-  const SUBJECTS = [
-    { key: "dansk", icon: "📚" },
-    { key: "matematik", icon: "🔢" },
-    { key: "engelsk", icon: "🇬🇧" },
-    { key: "tysk", icon: "🇩🇪" },
-    { key: "historie", icon: "🏛️" },
-    { key: "samfundsfag", icon: "🌍" },
-    { key: "naturfag", icon: "🔬" },
-    { key: "kristendomskundskab", icon: "✝️" },
-  ] as const;
+const SUBJECTS = [
+  { key: "dansk", icon: "📚" },
+  { key: "matematik", icon: "🔢" },
+  { key: "engelsk", icon: "🇬🇧" },
+  { key: "tysk", icon: "🇩🇪" },
+  { key: "historie", icon: "🏛️" },
+  { key: "samfundsfag", icon: "🌍" },
+  { key: "naturfag", icon: "🔬" },
+  { key: "kristendomskundskab", icon: "✝️" },
+] as const;
 
-  const GRADES = ["grade7", "grade8", "grade9"] as const;
+const GRADES = ["grade7", "grade8", "grade9"] as const;
 
-  // `subject`/`grade` are renamed locally because the {#each} item variables below
-  // are named `subject` and `grade`; without the rename they would shadow the props
-  // and the selected-state comparisons would silently compare an item with itself.
-  let {
-    subject: selectedSubject,
-    grade: selectedGrade,
-    onSubjectChange,
-    onGradeChange,
-    onNext,
-    onBack,
-    currentStep,
-    totalSteps,
-  }: SubjectGradeStepProps = $props();
+// `subject`/`grade` are renamed locally because the {#each} item variables below
+// are named `subject` and `grade`; without the rename they would shadow the props
+// and the selected-state comparisons would silently compare an item with itself.
+let {
+  subject: selectedSubject,
+  grade: selectedGrade,
+  onSubjectChange,
+  onGradeChange,
+  onNext,
+  onBack,
+  currentStep,
+  totalSteps,
+}: SubjectGradeStepProps = $props();
 
-  const canProceed = $derived(selectedSubject !== "" && selectedGrade !== "");
+const canProceed = $derived(selectedSubject !== "" && selectedGrade !== "");
 </script>
 
 <Card class="w-full max-w-2xl">

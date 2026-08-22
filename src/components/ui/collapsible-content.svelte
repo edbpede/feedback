@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { cn } from "@lib/utils";
-  import { Collapsible as CollapsiblePrimitive } from "bits-ui";
-  import type { CollapsibleContentProps } from "bits-ui";
+import { cn } from "@lib/utils";
+import { Collapsible as CollapsiblePrimitive } from "bits-ui";
+import type { CollapsibleContentProps } from "bits-ui";
 
-  let { class: className, children, ...rest }: CollapsibleContentProps = $props();
+let { class: className, children, ...rest }: CollapsibleContentProps = $props();
 </script>
 
 <CollapsiblePrimitive.Content

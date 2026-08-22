@@ -1,452 +1,446 @@
 <script lang="ts">
-  import BalanceDisplay from "@components/BalanceDisplay.svelte";
-  import ChatInput from "@components/ChatInput.svelte";
-  import FileUpload from "@components/FileUpload.svelte";
-  import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
-  import Logo from "@components/Logo.svelte";
-  import MessageList from "@components/MessageList.svelte";
-  import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
-  import { Button } from "@components/ui";
-  import { calculateCostUsd } from "@config/pricing";
-  import { fetchBalance, type RetryPhase, sendMessage } from "@lib/api";
-  import { ApiError, type ErrorCategory } from "@lib/errorUtils";
-  import { t } from "@lib/i18n";
-  import { loadMessageCosts, loadMessages, saveMessageCosts, saveMessages } from "@lib/storage";
-  import type { Message, OnboardingContext, TokenUsage } from "@lib/types";
-  import { onMount } from "svelte";
+import BalanceDisplay from "@components/BalanceDisplay.svelte";
+import ChatInput from "@components/ChatInput.svelte";
+import FileUpload from "@components/FileUpload.svelte";
+import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
+import Logo from "@components/Logo.svelte";
+import MessageList from "@components/MessageList.svelte";
+import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
+import { Button } from "@components/ui";
+import { calculateCostUsd } from "@config/pricing";
+import { fetchBalance, type RetryPhase, sendMessage } from "@lib/api";
+import { ApiError, type ErrorCategory } from "@lib/errorUtils";
+import { t } from "@lib/i18n";
+import { loadMessageCosts, loadMessages, saveMessageCosts, saveMessages } from "@lib/storage";
+import type { Message, OnboardingContext, TokenUsage } from "@lib/types";
+import { onMount } from "svelte";
 
-  interface ChatWindowProps {
-    onLogout: () => void;
-    onboardingContext: OnboardingContext | null;
-    onClearOnboarding: () => void;
-    onEditContext: () => void;
-    autoSubmit?: boolean;
-    onAutoSubmitComplete?: () => void;
-    /** Callback when model is changed (e.g., after successful fallback) */
-    onModelChange?: (modelId: string) => void;
+interface ChatWindowProps {
+  onLogout: () => void;
+  onboardingContext: OnboardingContext | null;
+  onClearOnboarding: () => void;
+  onEditContext: () => void;
+  autoSubmit?: boolean;
+  onAutoSubmitComplete?: () => void;
+  /** Callback when model is changed (e.g., after successful fallback) */
+  onModelChange?: (modelId: string) => void;
+}
+
+interface AttachedFile {
+  name: string;
+  content: string;
+}
+
+let {
+  onLogout,
+  onboardingContext,
+  onClearOnboarding,
+  onEditContext,
+  autoSubmit,
+  onAutoSubmitComplete,
+  onModelChange,
+}: ChatWindowProps = $props();
+
+let messages = $state<Message[]>([]);
+let isLoading = $state(false);
+let attachedFile = $state<AttachedFile | null>(null);
+let streamingContent = $state("");
+
+// Retry state with phase and delay info
+let retryState = $state<{
+  attempt: number;
+  max: number;
+  phase: RetryPhase;
+  delayMs: number;
+} | null>(null);
+let failedMessage = $state<Message | null>(null);
+let retryDisabledUntil = $state<number>(0);
+let errorCategory = $state<ErrorCategory | null>(null);
+let retriesExhausted = $state(false);
+
+// Track which model is being used for current streaming request
+let streamingModelId = $state<string | null>(null);
+
+// Cost tracking state
+let balance = $state<number | null>(null);
+let balanceLoading = $state(false);
+let messageCosts = $state<Map<number, number>>(new Map());
+
+// Fetch account balance
+const refreshBalance = async () => {
+  balanceLoading = true;
+  try {
+    const result = await fetchBalance();
+    if (result) {
+      balance = result.balance;
+    }
+  } finally {
+    balanceLoading = false;
+  }
+};
+
+// Load messages and costs from localStorage on mount, and fetch initial balance
+onMount(() => {
+  const saved = loadMessages();
+  if (saved.length > 0) {
+    messages = saved;
+  }
+  const savedCosts = loadMessageCosts();
+  if (savedCosts.size > 0) {
+    messageCosts = savedCosts;
+  }
+  refreshBalance();
+});
+
+// Auto-submit when onboarding completes
+$effect(() => {
+  if (autoSubmit && messages.length === 0 && onboardingContext && !isLoading) {
+    // Send the greeting message with context
+    handleSend("Hej! Giv mig venligst feedback på min opgave");
+    onAutoSubmitComplete?.();
+  }
+});
+
+// Save messages to localStorage when they change
+$effect(() => {
+  const currentMessages = messages;
+  if (currentMessages.length > 0) {
+    saveMessages(currentMessages);
+  }
+});
+
+// Save costs to localStorage when they change
+$effect(() => {
+  const currentCosts = messageCosts;
+  if (currentCosts.size > 0) {
+    saveMessageCosts(currentCosts);
+  }
+});
+
+const formatOnboardingContext = (ctx: OnboardingContext): string => {
+  const parts = [];
+  if (ctx.subject || ctx.grade) {
+    parts.push(`**Fag:** ${ctx.subject}${ctx.grade ? `, ${ctx.grade}` : ""}`);
+  }
+  if (ctx.assignmentDescription) {
+    parts.push(`**Opgave:** ${ctx.assignmentDescription}`);
+  }
+  // Include file content if present
+  if (ctx.studentWorkFile) {
+    parts.push(`[Vedhæftet fil: ${ctx.studentWorkFile.name}]\n\n${ctx.studentWorkFile.content}`);
+  }
+  if (ctx.studentWork) {
+    parts.push(`**Mit arbejde indtil nu:**\n${ctx.studentWork}`);
+  }
+  parts.push(`**Vejledende karakter:** ${ctx.wantsGrade ? "Ja" : "Nej"}`);
+  return parts.join("\n\n");
+};
+
+const handleSend = async (content: string) => {
+  // Prevent multiple submissions while loading
+  if (isLoading) return;
+
+  const file = attachedFile;
+  let fullContent = content;
+
+  // Prepend onboarding context to first message
+  if (messages.length === 0 && onboardingContext) {
+    const contextText = formatOnboardingContext(onboardingContext);
+    fullContent = contextText + "\n\n---\n\n" + content;
   }
 
-  interface AttachedFile {
-    name: string;
-    content: string;
+  if (file) {
+    fullContent = `[Attached file: ${file.name}]\n\n${file.content}\n\n---\n\n${fullContent}`;
+    attachedFile = null;
   }
 
-  let {
-    onLogout,
-    onboardingContext,
-    onClearOnboarding,
-    onEditContext,
-    autoSubmit,
-    onAutoSubmitComplete,
-    onModelChange,
-  }: ChatWindowProps = $props();
+  const userMessage: Message = { role: "user", content: fullContent };
 
-  let messages = $state<Message[]>([]);
-  let isLoading = $state(false);
-  let attachedFile = $state<AttachedFile | null>(null);
-  let streamingContent = $state("");
+  // Track which model is being used for streaming indicator
+  const currentModel = onboardingContext?.model ?? null;
+  streamingModelId = currentModel;
 
-  // Retry state with phase and delay info
-  let retryState = $state<{
-    attempt: number;
-    max: number;
-    phase: RetryPhase;
-    delayMs: number;
-  } | null>(null);
-  let failedMessage = $state<Message | null>(null);
-  let retryDisabledUntil = $state<number>(0);
-  let errorCategory = $state<ErrorCategory | null>(null);
-  let retriesExhausted = $state(false);
+  // Svelte 5 groups these updates into a single reactive cycle on its own; Solid needed an
+  // explicit batch wrapper here
+  messages = [...messages, userMessage];
+  isLoading = true;
+  streamingContent = "";
 
-  // Track which model is being used for current streaming request
-  let streamingModelId = $state<string | null>(null);
+  try {
+    let assistantContent = "";
+    let messageUsage: TokenUsage | null = null;
 
-  // Cost tracking state
-  let balance = $state<number | null>(null);
-  let balanceLoading = $state(false);
-  let messageCosts = $state<Map<number, number>>(new Map());
+    await sendMessage({
+      messages: [...messages, userMessage],
+      model: onboardingContext?.model,
+      subject: onboardingContext?.subject,
+      onChunk: (chunk) => {
+        assistantContent += chunk;
+        streamingContent = assistantContent;
+      },
+      onRetry: (attempt, max, phase, delayMs) => {
+        retryState = { attempt, max, phase, delayMs };
+      },
+      onUsage: (usage) => {
+        messageUsage = usage;
+      },
+    });
 
-  // Fetch account balance
-  const refreshBalance = async () => {
-    balanceLoading = true;
-    try {
-      const result = await fetchBalance();
-      if (result) {
-        balance = result.balance;
-      }
-    } finally {
-      balanceLoading = false;
+    // Success - clear any failed message and error state
+    failedMessage = null;
+    errorCategory = null;
+
+    // Calculate index for the new assistant message
+    const newMessageIndex = messages.length;
+    const modelId = onboardingContext?.model;
+
+    messages = [...messages, { role: "assistant", content: assistantContent, modelId }];
+
+    // Store cost for this message if usage data received
+    if (messageUsage !== null) {
+      // Type assertion needed: TypeScript's control flow doesn't track callback assignments
+      const usage = messageUsage as TokenUsage;
+      const costModelId = modelId ?? "TEE/DeepSeek-v3.2";
+      const costUsd = calculateCostUsd(costModelId, usage.prompt_tokens, usage.completion_tokens);
+
+      const newMap = new Map(messageCosts);
+      newMap.set(newMessageIndex, costUsd);
+      messageCosts = newMap;
     }
-  };
 
-  // Load messages and costs from localStorage on mount, and fetch initial balance
-  onMount(() => {
-    const saved = loadMessages();
-    if (saved.length > 0) {
-      messages = saved;
-    }
-    const savedCosts = loadMessageCosts();
-    if (savedCosts.size > 0) {
-      messageCosts = savedCosts;
-    }
+    // Refresh balance after successful message
     refreshBalance();
-  });
-
-  // Auto-submit when onboarding completes
-  $effect(() => {
-    if (autoSubmit && messages.length === 0 && onboardingContext && !isLoading) {
-      // Send the greeting message with context
-      handleSend("Hej! Giv mig venligst feedback på min opgave");
-      onAutoSubmitComplete?.();
+  } catch (error) {
+    // Store failed message for manual retry and set error category
+    failedMessage = userMessage;
+    if (error instanceof ApiError) {
+      errorCategory = error.category;
+      // Set retriesExhausted when error is not retryable (all retries failed)
+      retriesExhausted = !error.retryable;
+    } else {
+      errorCategory = "unknown";
+      retriesExhausted = true;
     }
-  });
-
-  // Save messages to localStorage when they change
-  $effect(() => {
-    const currentMessages = messages;
-    if (currentMessages.length > 0) {
-      saveMessages(currentMessages);
-    }
-  });
-
-  // Save costs to localStorage when they change
-  $effect(() => {
-    const currentCosts = messageCosts;
-    if (currentCosts.size > 0) {
-      saveMessageCosts(currentCosts);
-    }
-  });
-
-  const formatOnboardingContext = (ctx: OnboardingContext): string => {
-    const parts = [];
-    if (ctx.subject || ctx.grade) {
-      parts.push(`**Fag:** ${ctx.subject}${ctx.grade ? `, ${ctx.grade}` : ""}`);
-    }
-    if (ctx.assignmentDescription) {
-      parts.push(`**Opgave:** ${ctx.assignmentDescription}`);
-    }
-    // Include file content if present
-    if (ctx.studentWorkFile) {
-      parts.push(`[Vedhæftet fil: ${ctx.studentWorkFile.name}]\n\n${ctx.studentWorkFile.content}`);
-    }
-    if (ctx.studentWork) {
-      parts.push(`**Mit arbejde indtil nu:**\n${ctx.studentWork}`);
-    }
-    parts.push(`**Vejledende karakter:** ${ctx.wantsGrade ? "Ja" : "Nej"}`);
-    return parts.join("\n\n");
-  };
-
-  const handleSend = async (content: string) => {
-    // Prevent multiple submissions while loading
-    if (isLoading) return;
-
-    const file = attachedFile;
-    let fullContent = content;
-
-    // Prepend onboarding context to first message
-    if (messages.length === 0 && onboardingContext) {
-      const contextText = formatOnboardingContext(onboardingContext);
-      fullContent = contextText + "\n\n---\n\n" + content;
-    }
-
-    if (file) {
-      fullContent = `[Attached file: ${file.name}]\n\n${file.content}\n\n---\n\n${fullContent}`;
-      attachedFile = null;
-    }
-
-    const userMessage: Message = { role: "user", content: fullContent };
-
-    // Track which model is being used for streaming indicator
-    const currentModel = onboardingContext?.model ?? null;
-    streamingModelId = currentModel;
-
-    // Svelte 5 groups these updates into a single reactive cycle on its own; Solid needed an
-    // explicit batch wrapper here
-    messages = [...messages, userMessage];
-    isLoading = true;
+  } finally {
+    isLoading = false;
     streamingContent = "";
+    retryState = null;
+    streamingModelId = null;
+  }
+};
 
-    try {
-      let assistantContent = "";
-      let messageUsage: TokenUsage | null = null;
+// Retry API call without adding new user message (for first message retry)
+const retryApiCall = async (existingMessages: Message[]) => {
+  if (isLoading) return;
 
-      await sendMessage({
-        messages: [...messages, userMessage],
-        model: onboardingContext?.model,
-        subject: onboardingContext?.subject,
-        onChunk: (chunk) => {
-          assistantContent += chunk;
-          streamingContent = assistantContent;
-        },
-        onRetry: (attempt, max, phase, delayMs) => {
-          retryState = { attempt, max, phase, delayMs };
-        },
-        onUsage: (usage) => {
-          messageUsage = usage;
-        },
-      });
+  // Track which model is being used for streaming indicator
+  const currentModel = onboardingContext?.model ?? null;
+  streamingModelId = currentModel;
 
-      // Success - clear any failed message and error state
-      failedMessage = null;
-      errorCategory = null;
+  isLoading = true;
+  streamingContent = "";
 
-      // Calculate index for the new assistant message
-      const newMessageIndex = messages.length;
-      const modelId = onboardingContext?.model;
+  try {
+    let assistantContent = "";
+    let messageUsage: TokenUsage | null = null;
 
-      messages = [...messages, { role: "assistant", content: assistantContent, modelId }];
+    await sendMessage({
+      messages: existingMessages,
+      model: onboardingContext?.model,
+      subject: onboardingContext?.subject,
+      onChunk: (chunk) => {
+        assistantContent += chunk;
+        streamingContent = assistantContent;
+      },
+      onRetry: (attempt, max, phase, delayMs) => {
+        retryState = { attempt, max, phase, delayMs };
+      },
+      onUsage: (usage) => {
+        messageUsage = usage;
+      },
+    });
 
-      // Store cost for this message if usage data received
-      if (messageUsage !== null) {
-        // Type assertion needed: TypeScript's control flow doesn't track callback assignments
-        const usage = messageUsage as TokenUsage;
-        const costModelId = modelId ?? "TEE/DeepSeek-v3.2";
-        const costUsd = calculateCostUsd(costModelId, usage.prompt_tokens, usage.completion_tokens);
+    // Success - clear any failed message and error state
+    failedMessage = null;
+    errorCategory = null;
 
-        const newMap = new Map(messageCosts);
-        newMap.set(newMessageIndex, costUsd);
-        messageCosts = newMap;
-      }
+    // Calculate index for the new assistant message
+    const newMessageIndex = messages.length;
+    const modelId = onboardingContext?.model;
 
-      // Refresh balance after successful message
-      refreshBalance();
-    } catch (error) {
-      // Store failed message for manual retry and set error category
+    messages = [...messages, { role: "assistant", content: assistantContent, modelId }];
+
+    // Store cost for this message if usage data received
+    if (messageUsage !== null) {
+      const usage = messageUsage as TokenUsage;
+      const costModelId = modelId ?? "TEE/DeepSeek-v3.2";
+      const costUsd = calculateCostUsd(costModelId, usage.prompt_tokens, usage.completion_tokens);
+
+      const newMap = new Map(messageCosts);
+      newMap.set(newMessageIndex, costUsd);
+      messageCosts = newMap;
+    }
+
+    // Refresh balance after successful message
+    refreshBalance();
+  } catch (error) {
+    // Store failed message for manual retry (the first user message)
+    const userMessage = existingMessages[0];
+    if (userMessage) {
       failedMessage = userMessage;
-      if (error instanceof ApiError) {
-        errorCategory = error.category;
-        // Set retriesExhausted when error is not retryable (all retries failed)
-        retriesExhausted = !error.retryable;
-      } else {
-        errorCategory = "unknown";
-        retriesExhausted = true;
-      }
-    } finally {
-      isLoading = false;
-      streamingContent = "";
-      retryState = null;
-      streamingModelId = null;
     }
-  };
-
-  // Retry API call without adding new user message (for first message retry)
-  const retryApiCall = async (existingMessages: Message[]) => {
-    if (isLoading) return;
-
-    // Track which model is being used for streaming indicator
-    const currentModel = onboardingContext?.model ?? null;
-    streamingModelId = currentModel;
-
-    isLoading = true;
+    if (error instanceof ApiError) {
+      errorCategory = error.category;
+      // Set retriesExhausted when error is not retryable (all retries failed)
+      retriesExhausted = !error.retryable;
+    } else {
+      errorCategory = "unknown";
+      retriesExhausted = true;
+    }
+  } finally {
+    isLoading = false;
     streamingContent = "";
+    retryState = null;
+    streamingModelId = null;
+  }
+};
 
-    try {
-      let assistantContent = "";
-      let messageUsage: TokenUsage | null = null;
+// Retry API call with a specific model override (for fallback model selection)
+const retryApiCallWithModel = async (existingMessages: Message[], modelOverride: string) => {
+  if (isLoading) return;
 
-      await sendMessage({
-        messages: existingMessages,
-        model: onboardingContext?.model,
-        subject: onboardingContext?.subject,
-        onChunk: (chunk) => {
-          assistantContent += chunk;
-          streamingContent = assistantContent;
-        },
-        onRetry: (attempt, max, phase, delayMs) => {
-          retryState = { attempt, max, phase, delayMs };
-        },
-        onUsage: (usage) => {
-          messageUsage = usage;
-        },
-      });
+  // Track which model is being used for streaming indicator
+  streamingModelId = modelOverride;
 
-      // Success - clear any failed message and error state
-      failedMessage = null;
-      errorCategory = null;
+  isLoading = true;
+  streamingContent = "";
 
-      // Calculate index for the new assistant message
-      const newMessageIndex = messages.length;
-      const modelId = onboardingContext?.model;
+  try {
+    let assistantContent = "";
+    let messageUsage: TokenUsage | null = null;
 
-      messages = [...messages, { role: "assistant", content: assistantContent, modelId }];
+    await sendMessage({
+      messages: existingMessages,
+      model: modelOverride,
+      subject: onboardingContext?.subject,
+      onChunk: (chunk) => {
+        assistantContent += chunk;
+        streamingContent = assistantContent;
+      },
+      onRetry: (attempt, max, phase, delayMs) => {
+        retryState = { attempt, max, phase, delayMs };
+      },
+      onUsage: (usage) => {
+        messageUsage = usage;
+      },
+    });
 
-      // Store cost for this message if usage data received
-      if (messageUsage !== null) {
-        const usage = messageUsage as TokenUsage;
-        const costModelId = modelId ?? "TEE/DeepSeek-v3.2";
-        const costUsd = calculateCostUsd(costModelId, usage.prompt_tokens, usage.completion_tokens);
+    // Success - clear any failed message and error state
+    failedMessage = null;
+    errorCategory = null;
+    retriesExhausted = false;
 
-        const newMap = new Map(messageCosts);
-        newMap.set(newMessageIndex, costUsd);
-        messageCosts = newMap;
-      }
+    // Calculate index for the new assistant message
+    const newMessageIndex = messages.length;
 
-      // Refresh balance after successful message
-      refreshBalance();
-    } catch (error) {
-      // Store failed message for manual retry (the first user message)
-      const userMessage = existingMessages[0];
-      if (userMessage) {
-        failedMessage = userMessage;
-      }
-      if (error instanceof ApiError) {
-        errorCategory = error.category;
-        // Set retriesExhausted when error is not retryable (all retries failed)
-        retriesExhausted = !error.retryable;
-      } else {
-        errorCategory = "unknown";
-        retriesExhausted = true;
-      }
-    } finally {
-      isLoading = false;
-      streamingContent = "";
-      retryState = null;
-      streamingModelId = null;
+    messages = [
+      ...messages,
+      { role: "assistant", content: assistantContent, modelId: modelOverride },
+    ];
+
+    // Store cost for this message if usage data received
+    if (messageUsage !== null) {
+      const usage = messageUsage as TokenUsage;
+      const costUsd = calculateCostUsd(modelOverride, usage.prompt_tokens, usage.completion_tokens);
+
+      const newMap = new Map(messageCosts);
+      newMap.set(newMessageIndex, costUsd);
+      messageCosts = newMap;
     }
-  };
 
-  // Retry API call with a specific model override (for fallback model selection)
-  const retryApiCallWithModel = async (existingMessages: Message[], modelOverride: string) => {
-    if (isLoading) return;
+    // Permanently update the model after successful fallback
+    onModelChange?.(modelOverride);
 
-    // Track which model is being used for streaming indicator
-    streamingModelId = modelOverride;
-
-    isLoading = true;
+    // Refresh balance after successful message
+    refreshBalance();
+  } catch (error) {
+    // Store failed message for manual retry (the first user message)
+    const userMessage = existingMessages[0];
+    if (userMessage) {
+      failedMessage = userMessage;
+    }
+    if (error instanceof ApiError) {
+      errorCategory = error.category;
+      retriesExhausted = !error.retryable;
+    } else {
+      errorCategory = "unknown";
+      retriesExhausted = true;
+    }
+  } finally {
+    isLoading = false;
     streamingContent = "";
+    retryState = null;
+    streamingModelId = null;
+  }
+};
 
-    try {
-      let assistantContent = "";
-      let messageUsage: TokenUsage | null = null;
+const handleRetry = () => {
+  const now = Date.now();
+  if (now < retryDisabledUntil) return; // Rate limited
 
-      await sendMessage({
-        messages: existingMessages,
-        model: modelOverride,
-        subject: onboardingContext?.subject,
-        onChunk: (chunk) => {
-          assistantContent += chunk;
-          streamingContent = assistantContent;
-        },
-        onRetry: (attempt, max, phase, delayMs) => {
-          retryState = { attempt, max, phase, delayMs };
-        },
-        onUsage: (usage) => {
-          messageUsage = usage;
-        },
-      });
+  retryDisabledUntil = now + 5000; // 5 second cooldown
+  const msg = failedMessage;
+  if (msg) {
+    // Clear error state
+    failedMessage = null;
+    errorCategory = null;
+    retriesExhausted = false;
 
-      // Success - clear any failed message and error state
-      failedMessage = null;
-      errorCategory = null;
-      retriesExhausted = false;
+    const currentMessages = messages;
+    // Check if this is a first message retry (only 1 user message, no assistant response yet)
+    const isFirstMessageRetry = currentMessages.length === 1 && currentMessages[0].role === "user";
 
-      // Calculate index for the new assistant message
-      const newMessageIndex = messages.length;
-
-      messages = [
-        ...messages,
-        { role: "assistant", content: assistantContent, modelId: modelOverride },
-      ];
-
-      // Store cost for this message if usage data received
-      if (messageUsage !== null) {
-        const usage = messageUsage as TokenUsage;
-        const costUsd = calculateCostUsd(
-          modelOverride,
-          usage.prompt_tokens,
-          usage.completion_tokens
-        );
-
-        const newMap = new Map(messageCosts);
-        newMap.set(newMessageIndex, costUsd);
-        messageCosts = newMap;
-      }
-
-      // Permanently update the model after successful fallback
-      onModelChange?.(modelOverride);
-
-      // Refresh balance after successful message
-      refreshBalance();
-    } catch (error) {
-      // Store failed message for manual retry (the first user message)
-      const userMessage = existingMessages[0];
-      if (userMessage) {
-        failedMessage = userMessage;
-      }
-      if (error instanceof ApiError) {
-        errorCategory = error.category;
-        retriesExhausted = !error.retryable;
-      } else {
-        errorCategory = "unknown";
-        retriesExhausted = true;
-      }
-    } finally {
-      isLoading = false;
-      streamingContent = "";
-      retryState = null;
-      streamingModelId = null;
+    if (isFirstMessageRetry) {
+      // First message retry: keep original message and retry API
+      retryApiCall([currentMessages[0]]);
+    } else {
+      // Regular retry: resend the last user message
+      handleSend(msg.content);
     }
-  };
+  }
+};
 
-  const handleRetry = () => {
-    const now = Date.now();
-    if (now < retryDisabledUntil) return; // Rate limited
+// Handle selection of a fallback model after retries exhausted
+const handleSelectFallbackModel = (modelId: string) => {
+  const now = Date.now();
+  if (now < retryDisabledUntil) return; // Rate limited
 
-    retryDisabledUntil = now + 5000; // 5 second cooldown
-    const msg = failedMessage;
-    if (msg) {
-      // Clear error state
-      failedMessage = null;
-      errorCategory = null;
-      retriesExhausted = false;
+  retryDisabledUntil = now + 5000; // 5 second cooldown
+  const msg = failedMessage;
+  if (msg) {
+    // Clear error state
+    failedMessage = null;
+    errorCategory = null;
+    retriesExhausted = false;
 
-      const currentMessages = messages;
-      // Check if this is a first message retry (only 1 user message, no assistant response yet)
-      const isFirstMessageRetry =
-        currentMessages.length === 1 && currentMessages[0].role === "user";
+    const currentMessages = messages;
+    // Check if this is a first message retry (only 1 user message, no assistant response yet)
+    const isFirstMessageRetry = currentMessages.length === 1 && currentMessages[0].role === "user";
 
-      if (isFirstMessageRetry) {
-        // First message retry: keep original message and retry API
-        retryApiCall([currentMessages[0]]);
-      } else {
-        // Regular retry: resend the last user message
-        handleSend(msg.content);
-      }
+    if (isFirstMessageRetry) {
+      // First message retry: keep original message and retry API with fallback model
+      retryApiCallWithModel([currentMessages[0]], modelId);
+    } else {
+      // Regular retry with fallback model - we need to resend the last user message
+      // But use the fallback model for this one request
+      retryApiCallWithModel([...currentMessages, msg], modelId);
     }
-  };
+  }
+};
 
-  // Handle selection of a fallback model after retries exhausted
-  const handleSelectFallbackModel = (modelId: string) => {
-    const now = Date.now();
-    if (now < retryDisabledUntil) return; // Rate limited
-
-    retryDisabledUntil = now + 5000; // 5 second cooldown
-    const msg = failedMessage;
-    if (msg) {
-      // Clear error state
-      failedMessage = null;
-      errorCategory = null;
-      retriesExhausted = false;
-
-      const currentMessages = messages;
-      // Check if this is a first message retry (only 1 user message, no assistant response yet)
-      const isFirstMessageRetry =
-        currentMessages.length === 1 && currentMessages[0].role === "user";
-
-      if (isFirstMessageRetry) {
-        // First message retry: keep original message and retry API with fallback model
-        retryApiCallWithModel([currentMessages[0]], modelId);
-      } else {
-        // Regular retry with fallback model - we need to resend the last user message
-        // But use the fallback model for this one request
-        retryApiCallWithModel([...currentMessages, msg], modelId);
-      }
-    }
-  };
-
-  const handleClearConversation = () => {
-    onClearOnboarding();
-  };
+const handleClearConversation = () => {
+  onClearOnboarding();
+};
 </script>
 
 <div class="flex h-screen flex-col">

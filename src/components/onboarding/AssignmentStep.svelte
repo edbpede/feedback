@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { Button, Card, CardContent, Textarea } from "@components/ui";
-  import { t } from "@lib/i18n";
-  import StepIndicator from "./StepIndicator.svelte";
+import { Button, Card, CardContent, Textarea } from "@components/ui";
+import { t } from "@lib/i18n";
+import StepIndicator from "./StepIndicator.svelte";
 
-  interface AssignmentStepProps {
-    value: string;
-    onChange: (value: string) => void;
-    onNext: () => void;
-    onBack: () => void;
-    onSkip: () => void;
-    currentStep: number;
-    totalSteps: number;
-  }
+interface AssignmentStepProps {
+  value: string;
+  onChange: (value: string) => void;
+  onNext: () => void;
+  onBack: () => void;
+  onSkip: () => void;
+  currentStep: number;
+  totalSteps: number;
+}
 
-  let { value, onChange, onNext, onBack, onSkip, currentStep, totalSteps }: AssignmentStepProps =
-    $props();
+let { value, onChange, onNext, onBack, onSkip, currentStep, totalSteps }: AssignmentStepProps =
+  $props();
 </script>
 
 <Card class="w-full max-w-2xl">
