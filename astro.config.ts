@@ -55,8 +55,13 @@ export default defineConfig({
             // which would silently pull bits-ui into the svelte chunk.
             if (id.includes("bits-ui")) return "bits-ui";
 
-            // Core framework
-            if (id.includes("svelte")) return "svelte";
+            // Core framework.
+            // The node_modules guard is load-bearing. Under Solid this branch matched
+            // "solid-js", which only ever appeared in a dependency path. Under Svelte a
+            // bare id.includes("svelte") also matches every one of this app's own
+            // *.svelte module ids, which sweeps all 52 components into this chunk and
+            // destroys the lazy-loaded ChatWindow split.
+            if (id.includes("node_modules") && id.includes("svelte")) return "svelte";
 
             // Markdown rendering (used in chat messages)
             if (id.includes("highlight.js")) return "highlight";

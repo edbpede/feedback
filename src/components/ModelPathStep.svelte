@@ -1,148 +1,148 @@
 <script lang="ts">
-  /**
-   * @fileoverview Model path selection step for choosing between privacy-first (TEE) and
-   * enhanced-quality (commercial) AI models. This is the first step in the onboarding flow
-   * and determines whether PII anonymization is required.
-   *
-   * Privacy-first path: Uses TEE models that process data in secure enclaves
-   * Enhanced-quality path: Uses commercial models with PII anonymization step
-   */
+/**
+ * @fileoverview Model path selection step for choosing between privacy-first (TEE) and
+ * enhanced-quality (commercial) AI models. This is the first step in the onboarding flow
+ * and determines whether PII anonymization is required.
+ *
+ * Privacy-first path: Uses TEE models that process data in secure enclaves
+ * Enhanced-quality path: Uses commercial models with PII anonymization step
+ */
 
-  import CardExternalLinks from "@components/CardExternalLinks.svelte";
-  import EnhancedQualityPasswordDialog from "@components/EnhancedQualityPasswordDialog.svelte";
-  import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
-  import Logo from "@components/Logo.svelte";
-  import StepIndicator from "@components/onboarding/StepIndicator.svelte";
-  import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
-  import { Button, Card, CardContent } from "@components/ui";
-  import { type AIProvider, getProviderLogoPath } from "@config/models";
-  import { t } from "@lib/i18n";
-  import { getTheme } from "@lib/theme";
-  import type { ApiResponse, EnhancedConfigResponse, ModelPath } from "@lib/types";
-  import { onMount } from "svelte";
+import CardExternalLinks from "@components/CardExternalLinks.svelte";
+import EnhancedQualityPasswordDialog from "@components/EnhancedQualityPasswordDialog.svelte";
+import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
+import Logo from "@components/Logo.svelte";
+import StepIndicator from "@components/onboarding/StepIndicator.svelte";
+import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
+import { Button, Card, CardContent } from "@components/ui";
+import { type AIProvider, getProviderLogoPath } from "@config/models";
+import { t } from "@lib/i18n";
+import { getTheme } from "@lib/theme";
+import type { ApiResponse, EnhancedConfigResponse, ModelPath } from "@lib/types";
+import { onMount } from "svelte";
 
-  /** Props for the ModelPathStep component */
-  interface ModelPathStepProps {
-    /** Callback when user selects a path and continues */
-    onContinue: (path: ModelPath) => void;
-    /** Optional callback to go back (not shown on first step) */
-    onBack?: () => void;
-    /** Current step number for progress indicator */
-    currentStep?: number;
-    /** Total steps for progress indicator */
-    totalSteps?: number;
-    /** Pre-selected path (defaults to privacy-first) */
-    initialPath?: ModelPath;
-  }
+/** Props for the ModelPathStep component */
+interface ModelPathStepProps {
+  /** Callback when user selects a path and continues */
+  onContinue: (path: ModelPath) => void;
+  /** Optional callback to go back (not shown on first step) */
+  onBack?: () => void;
+  /** Current step number for progress indicator */
+  currentStep?: number;
+  /** Total steps for progress indicator */
+  totalSteps?: number;
+  /** Pre-selected path (defaults to privacy-first) */
+  initialPath?: ModelPath;
+}
 
-  /** Configuration for a model path option card */
-  interface PathOption {
-    /** Path identifier */
-    id: ModelPath;
-    /** i18n key for the title */
-    titleKey: string;
-    /** i18n key for the description */
-    descriptionKey: string;
-    /** UnoCSS icon class */
-    icon: string;
-    /** List of feature items with optional warning flag */
-    features: { key: string; warning?: boolean }[];
-    /** AI providers available on this path */
-    providers: AIProvider[];
-    /** Optional badge text (e.g., "Recommended") */
-    badge?: string;
-  }
+/** Configuration for a model path option card */
+interface PathOption {
+  /** Path identifier */
+  id: ModelPath;
+  /** i18n key for the title */
+  titleKey: string;
+  /** i18n key for the description */
+  descriptionKey: string;
+  /** UnoCSS icon class */
+  icon: string;
+  /** List of feature items with optional warning flag */
+  features: { key: string; warning?: boolean }[];
+  /** AI providers available on this path */
+  providers: AIProvider[];
+  /** Optional badge text (e.g., "Recommended") */
+  badge?: string;
+}
 
-  const PATH_OPTIONS: PathOption[] = [
-    {
-      id: "privacy-first",
-      titleKey: "modelPath.privacyFirst.title",
-      descriptionKey: "modelPath.privacyFirst.description",
-      icon: "i-carbon-security",
-      badge: "modelPath.privacyFirst.badge",
-      features: [
-        { key: "modelPath.privacyFirst.features.tee" },
-        { key: "modelPath.privacyFirst.features.fast" },
-        { key: "modelPath.privacyFirst.features.gdpr" },
-      ],
-      providers: ["DeepSeek", "Alibaba", "Zhipu AI", "Google"],
-    },
-    {
-      id: "enhanced-quality",
-      titleKey: "modelPath.enhancedQuality.title",
-      descriptionKey: "modelPath.enhancedQuality.description",
-      icon: "i-carbon-ibm-watsonx-assistant",
-      features: [
-        { key: "modelPath.enhancedQuality.features.quality" },
-        { key: "modelPath.enhancedQuality.features.models" },
-        { key: "modelPath.enhancedQuality.features.anonymization", warning: true },
-      ],
-      providers: ["OpenAI", "Anthropic", "xAI", "Google"],
-    },
-  ];
+const PATH_OPTIONS: PathOption[] = [
+  {
+    id: "privacy-first",
+    titleKey: "modelPath.privacyFirst.title",
+    descriptionKey: "modelPath.privacyFirst.description",
+    icon: "i-carbon-security",
+    badge: "modelPath.privacyFirst.badge",
+    features: [
+      { key: "modelPath.privacyFirst.features.tee" },
+      { key: "modelPath.privacyFirst.features.fast" },
+      { key: "modelPath.privacyFirst.features.gdpr" },
+    ],
+    providers: ["DeepSeek", "Alibaba", "Zhipu AI", "Google"],
+  },
+  {
+    id: "enhanced-quality",
+    titleKey: "modelPath.enhancedQuality.title",
+    descriptionKey: "modelPath.enhancedQuality.description",
+    icon: "i-carbon-ibm-watsonx-assistant",
+    features: [
+      { key: "modelPath.enhancedQuality.features.quality" },
+      { key: "modelPath.enhancedQuality.features.models" },
+      { key: "modelPath.enhancedQuality.features.anonymization", warning: true },
+    ],
+    providers: ["OpenAI", "Anthropic", "xAI", "Google"],
+  },
+];
 
-  /**
-   * First step of onboarding: Model path selection.
-   * Allows users to choose between privacy-first TEE models or enhanced-quality
-   * commercial models. Enhanced-quality requires password authentication and
-   * triggers the PII anonymization flow.
-   */
-  let { onContinue, onBack, currentStep, totalSteps, initialPath }: ModelPathStepProps = $props();
+/**
+ * First step of onboarding: Model path selection.
+ * Allows users to choose between privacy-first TEE models or enhanced-quality
+ * commercial models. Enhanced-quality requires password authentication and
+ * triggers the PII anonymization flow.
+ */
+let { onContinue, onBack, currentStep, totalSteps, initialPath }: ModelPathStepProps = $props();
 
-  // The one-shot read of initialPath is deliberate and mirrors the Solid original
-  // (createSignal<ModelPath>(props.initialPath ?? "privacy-first")): the prop only seeds
-  // the local selection. Making it $derived would make the card clicks below unable to
-  // change the selection.
-  // svelte-ignore state_referenced_locally
-  let selectedPath = $state<ModelPath>(initialPath ?? "privacy-first");
-  // $derived, not a plain const: getTheme() reads module-level $state, so a plain
-  // const would snapshot the theme once and the provider logos would stop swapping.
-  const theme = $derived(getTheme());
+// The one-shot read of initialPath is deliberate and mirrors the Solid original
+// (createSignal<ModelPath>(props.initialPath ?? "privacy-first")): the prop only seeds
+// the local selection. Making it $derived would make the card clicks below unable to
+// change the selection.
+// svelte-ignore state_referenced_locally
+let selectedPath = $state<ModelPath>(initialPath ?? "privacy-first");
+// $derived, not a plain const: getTheme() reads module-level $state, so a plain
+// const would snapshot the theme once and the provider logos would stop swapping.
+const theme = $derived(getTheme());
 
-  // Enhanced quality config state
-  let enhancedAuthenticated = $state(false);
-  let showPasswordDialog = $state(false);
+// Enhanced quality config state
+let enhancedAuthenticated = $state(false);
+let showPasswordDialog = $state(false);
 
-  // Check enhanced quality config on mount
-  onMount(async () => {
-    try {
-      const response = await fetch("/api/check-enhanced");
-      if (!response.ok) {
-        console.warn("[ModelPathStep] Failed to check enhanced config:", response.status);
-        return;
-      }
-      const result = (await response.json()) as ApiResponse<EnhancedConfigResponse>;
-      if (result.success && result.data) {
-        enhancedAuthenticated = result.data.authenticated;
-      }
-    } catch (error) {
-      // On error, assume not authenticated for safety
-      console.warn("[ModelPathStep] Error checking enhanced config:", error);
-    }
-  });
-
-  const handleContinue = () => {
-    // If privacy-first is selected, proceed directly
-    if (selectedPath === "privacy-first") {
-      onContinue(selectedPath);
+// Check enhanced quality config on mount
+onMount(async () => {
+  try {
+    const response = await fetch("/api/check-enhanced");
+    if (!response.ok) {
+      console.warn("[ModelPathStep] Failed to check enhanced config:", response.status);
       return;
     }
-
-    // Enhanced quality selected - check if already authenticated
-    if (enhancedAuthenticated) {
-      onContinue(selectedPath);
-      return;
+    const result = (await response.json()) as ApiResponse<EnhancedConfigResponse>;
+    if (result.success && result.data) {
+      enhancedAuthenticated = result.data.authenticated;
     }
+  } catch (error) {
+    // On error, assume not authenticated for safety
+    console.warn("[ModelPathStep] Error checking enhanced config:", error);
+  }
+});
 
-    // Need to authenticate - show password dialog
-    showPasswordDialog = true;
-  };
-
-  const handlePasswordSuccess = () => {
-    enhancedAuthenticated = true;
-    showPasswordDialog = false;
+const handleContinue = () => {
+  // If privacy-first is selected, proceed directly
+  if (selectedPath === "privacy-first") {
     onContinue(selectedPath);
-  };
+    return;
+  }
+
+  // Enhanced quality selected - check if already authenticated
+  if (enhancedAuthenticated) {
+    onContinue(selectedPath);
+    return;
+  }
+
+  // Need to authenticate - show password dialog
+  showPasswordDialog = true;
+};
+
+const handlePasswordSuccess = () => {
+  enhancedAuthenticated = true;
+  showPasswordDialog = false;
+  onContinue(selectedPath);
+};
 </script>
 
 <Card class="w-full max-w-3xl">
@@ -240,7 +240,9 @@
                 class="h-5 w-5 object-contain opacity-60"
                 title={provider}
                 onerror={(e) => {
-                  e.currentTarget.style.display = "none";
+                  // Svelte types onerror as the non-generic EventHandler because it is
+                  // shared with media events, so currentTarget loses its element type.
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
                 }}
               />
             {/each}
