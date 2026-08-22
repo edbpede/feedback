@@ -34,7 +34,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.10",
     "@iconify-json/carbon": "^1.2.15",
-    "@types/node": "^25.0.1",
+    "@types/node": "^26.0.0",
     "@unocss/preset-icons": "^66.5.10",
     "@unocss/preset-wind3": "^66.5.10",
     "@unocss/reset": "^66.5.10",
