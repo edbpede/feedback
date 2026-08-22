@@ -5,13 +5,13 @@
  * @module components/onboarding
  */
 
-export { AnonymizationStep } from "./AnonymizationStep";
-export { AssignmentStep } from "./AssignmentStep";
-export { GradePreferenceStep } from "./GradePreferenceStep";
-export { ModelSelectionStep } from "./ModelSelectionStep";
-export { OnboardingFlow } from "./OnboardingFlow";
-export { PrivacyWarning } from "./PrivacyWarning";
-export { StepIndicator } from "./StepIndicator";
-export { StudentWorkStep } from "./StudentWorkStep";
-export { SubjectGradeStep } from "./SubjectGradeStep";
-export { WelcomeStep } from "./WelcomeStep";
+export { default as AnonymizationStep } from "./AnonymizationStep.svelte";
+export { default as AssignmentStep } from "./AssignmentStep.svelte";
+export { default as GradePreferenceStep } from "./GradePreferenceStep.svelte";
+export { default as ModelSelectionStep } from "./ModelSelectionStep.svelte";
+export { default as OnboardingFlow } from "./OnboardingFlow.svelte";
+export { default as PrivacyWarning } from "./PrivacyWarning.svelte";
+export { default as StepIndicator } from "./StepIndicator.svelte";
+export { default as StudentWorkStep } from "./StudentWorkStep.svelte";
+export { default as SubjectGradeStep } from "./SubjectGradeStep.svelte";
+export { default as WelcomeStep } from "./WelcomeStep.svelte";
