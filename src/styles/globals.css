@@ -108,10 +108,15 @@
   border-color: oklch(var(--border));
 }
 
-/* Tailwind v4 — and so presetWind4 — dropped `cursor: pointer` from the preflight,
-   where presetWind3 emitted `button,[role=button]{cursor:pointer}`. Nothing else
-   re-adds it, so every button in the app would fall back to the default arrow.
-   Scoped to enabled controls, which the Wind3 rule was not. */
+/* Restores the two cursor rules the Wind3 reset used to provide. The pointer
+   cursor never came from presetWind3 itself — it came from
+   @unocss/reset/tailwind.css (lines 340-351), which pairs
+   `button,[role=button]{cursor:pointer}` with `:disabled{cursor:default}` and was
+   injected by @unocss/astro under `injectReset: true`. @unocss/astro drops that
+   injection entirely once it detects presetWind4, and presetWind4's own reset has
+   no cursor rule at all, so every button in the app falls back to the default
+   arrow. The `:not(:disabled)` scoping folds both original rules into one; the
+   computed cursor matches pre-migration exactly, disabled controls included. */
 button:not(:disabled),
 [role="button"]:not(:disabled) {
   cursor: pointer;

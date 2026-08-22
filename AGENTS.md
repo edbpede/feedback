@@ -119,10 +119,13 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
   Separately, `unocss-preset-shadcn` 1.0.1 still declares its radius scale
   under the `presetWind3` key `borderRadius`, which `presetWind4` ignores, so `uno.config.ts`
   restates that scale under `radius` to keep `rounded-lg/md/xl` tracking `--radius` rather than
-  `presetWind4`'s own defaults. `presetWind4` also drops `cursor: pointer` from the preflight
-  (`presetWind3` emitted `button,[role=button]{cursor:pointer}`), so `src/styles/globals.css`
-  re-adds it for enabled controls — without that rule every button in the app renders with the
-  default arrow cursor. Note also the Tailwind v4 utility renames, all of which change
+  `presetWind4`'s own defaults. Buttons also lose their pointer cursor, and not for the reason it
+  looks like: it never came from `presetWind3`, it came from `@unocss/reset/tailwind.css`
+  (`button,[role=button]{cursor:pointer}` plus `:disabled{cursor:default}`), which
+  `@unocss/astro` injects under `injectReset: true` and then **stops injecting entirely** once
+  it detects `presetWind4`. `presetWind4`'s own reset carries no cursor rule, so
+  `src/styles/globals.css` restates both halves as one `:not(:disabled)` rule. Without it every
+  button in the app renders with the default arrow. Note also the Tailwind v4 utility renames, all of which change
   rendering silently: the old `shadow-sm` is now `shadow-xs`, the old `backdrop-blur-sm` is now
   `backdrop-blur-xs`, and the old `outline-none` is now `outline-hidden` — under `presetWind4`
   `outline-none` means a literal `outline-style: none`, which removes the transparent-outline
