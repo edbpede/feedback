@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { cn } from "@lib/utils";
-  import type { Snippet } from "svelte";
-  import type { HTMLAttributes } from "svelte/elements";
+import { cn } from "@lib/utils";
+import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 
-  interface Props extends HTMLAttributes<HTMLHeadingElement> {
-    children?: Snippet;
-  }
+interface Props extends HTMLAttributes<HTMLHeadingElement> {
+  children?: Snippet;
+}
 
-  let { class: className, children, ...rest }: Props = $props();
+let { class: className, children, ...rest }: Props = $props();
 </script>
 
 <h3 class={cn("text-2xl font-semibold leading-none tracking-tight", className)} {...rest}>

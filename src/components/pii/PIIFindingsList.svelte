@@ -1,29 +1,29 @@
 <script lang="ts">
-  /**
-   * @fileoverview List component for displaying all detected PII findings.
-   * Renders a scrollable list of PIIFindingCard components with optional
-   * keep toggles for selective anonymization.
-   */
+/**
+ * @fileoverview List component for displaying all detected PII findings.
+ * Renders a scrollable list of PIIFindingCard components with optional
+ * keep toggles for selective anonymization.
+ */
 
-  import { t } from "@lib/i18n";
-  import type { PIIFinding } from "@lib/types";
-  import PIIFindingCard from "./PIIFindingCard.svelte";
+import { t } from "@lib/i18n";
+import type { PIIFinding } from "@lib/types";
+import PIIFindingCard from "./PIIFindingCard.svelte";
 
-  /** Props for the PIIFindingsList component */
-  interface PIIFindingsListProps {
-    /** Array of PII findings to display */
-    findings: PIIFinding[];
-    /** Show checkboxes for selective keep mode */
-    showKeepToggles?: boolean;
-    /** Callback when keep toggle changes */
-    onKeepToggle?: (id: string, kept: boolean) => void;
-  }
+/** Props for the PIIFindingsList component */
+interface PIIFindingsListProps {
+  /** Array of PII findings to display */
+  findings: PIIFinding[];
+  /** Show checkboxes for selective keep mode */
+  showKeepToggles?: boolean;
+  /** Callback when keep toggle changes */
+  onKeepToggle?: (id: string, kept: boolean) => void;
+}
 
-  /**
-   * List component for displaying all PII findings.
-   * Shows empty state when no findings exist.
-   */
-  let { findings, showKeepToggles, onKeepToggle }: PIIFindingsListProps = $props();
+/**
+ * List component for displaying all PII findings.
+ * Shows empty state when no findings exist.
+ */
+let { findings, showKeepToggles, onKeepToggle }: PIIFindingsListProps = $props();
 </script>
 
 {#if findings.length > 0}

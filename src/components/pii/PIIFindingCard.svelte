@@ -1,54 +1,54 @@
 <script lang="ts">
-  /**
-   * @fileoverview Card component for displaying a single PII finding.
-   * Shows the detected text, proposed replacement, category, confidence level,
-   * and optionally a toggle to keep the original text.
-   */
+/**
+ * @fileoverview Card component for displaying a single PII finding.
+ * Shows the detected text, proposed replacement, category, confidence level,
+ * and optionally a toggle to keep the original text.
+ */
 
-  import { t } from "@lib/i18n";
-  import type { PIICategory, PIIConfidence, PIIFinding } from "@lib/types";
+import { t } from "@lib/i18n";
+import type { PIICategory, PIIConfidence, PIIFinding } from "@lib/types";
 
-  /** Props for the PIIFindingCard component */
-  interface PIIFindingCardProps {
-    /** The PII finding to display */
-    finding: PIIFinding;
-    /** Show checkbox for selective keep mode */
-    showKeepToggle?: boolean;
-    /** Callback when keep toggle changes */
-    onKeepToggle?: (id: string, kept: boolean) => void;
-  }
+/** Props for the PIIFindingCard component */
+interface PIIFindingCardProps {
+  /** The PII finding to display */
+  finding: PIIFinding;
+  /** Show checkbox for selective keep mode */
+  showKeepToggle?: boolean;
+  /** Callback when keep toggle changes */
+  onKeepToggle?: (id: string, kept: boolean) => void;
+}
 
-  /** Icon mapping for each PII category */
-  const CATEGORY_ICONS: Record<PIICategory, string> = {
-    name: "i-carbon-user",
-    place: "i-carbon-location",
-    institution: "i-carbon-building",
-    contact: "i-carbon-phone",
-    other: "i-carbon-information",
-  };
+/** Icon mapping for each PII category */
+const CATEGORY_ICONS: Record<PIICategory, string> = {
+  name: "i-carbon-user",
+  place: "i-carbon-location",
+  institution: "i-carbon-building",
+  contact: "i-carbon-phone",
+  other: "i-carbon-information",
+};
 
-  /** Color classes for confidence levels */
-  const CONFIDENCE_COLORS: Record<PIIConfidence, { bg: string; text: string; border: string }> = {
-    high: {
-      bg: "bg-red-100 dark:bg-red-900/30",
-      text: "text-red-700 dark:text-red-400",
-      border: "border-red-200 dark:border-red-800",
-    },
-    medium: {
-      bg: "bg-amber-100 dark:bg-amber-900/30",
-      text: "text-amber-700 dark:text-amber-400",
-      border: "border-amber-200 dark:border-amber-800",
-    },
-    low: {
-      bg: "bg-blue-100 dark:bg-blue-900/30",
-      text: "text-blue-700 dark:text-blue-400",
-      border: "border-blue-200 dark:border-blue-800",
-    },
-  };
+/** Color classes for confidence levels */
+const CONFIDENCE_COLORS: Record<PIIConfidence, { bg: string; text: string; border: string }> = {
+  high: {
+    bg: "bg-red-100 dark:bg-red-900/30",
+    text: "text-red-700 dark:text-red-400",
+    border: "border-red-200 dark:border-red-800",
+  },
+  medium: {
+    bg: "bg-amber-100 dark:bg-amber-900/30",
+    text: "text-amber-700 dark:text-amber-400",
+    border: "border-amber-200 dark:border-amber-800",
+  },
+  low: {
+    bg: "bg-blue-100 dark:bg-blue-900/30",
+    text: "text-blue-700 dark:text-blue-400",
+    border: "border-blue-200 dark:border-blue-800",
+  },
+};
 
-  let { finding, showKeepToggle, onKeepToggle }: PIIFindingCardProps = $props();
+let { finding, showKeepToggle, onKeepToggle }: PIIFindingCardProps = $props();
 
-  const colors = $derived(CONFIDENCE_COLORS[finding.confidence]);
+const colors = $derived(CONFIDENCE_COLORS[finding.confidence]);
 </script>
 
 <div

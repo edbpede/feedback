@@ -1,31 +1,31 @@
 <script lang="ts">
-  import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-  } from "@components/ui";
-  import { t } from "@lib/i18n";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@components/ui";
+import { t } from "@lib/i18n";
 
-  const benefits = [
-    {
-      icon: "i-carbon-locked",
-      titleKey: "onboarding.steps.modelSelection.privacy.benefits.encrypted.title",
-      descKey: "onboarding.steps.modelSelection.privacy.benefits.encrypted.description",
-    },
-    {
-      icon: "i-carbon-checkmark-outline",
-      titleKey: "onboarding.steps.modelSelection.privacy.benefits.gdpr.title",
-      descKey: "onboarding.steps.modelSelection.privacy.benefits.gdpr.description",
-    },
-    {
-      icon: "i-carbon-chip",
-      titleKey: "onboarding.steps.modelSelection.privacy.benefits.hardware.title",
-      descKey: "onboarding.steps.modelSelection.privacy.benefits.hardware.description",
-    },
-  ] as const;
+const benefits = [
+  {
+    icon: "i-carbon-locked",
+    titleKey: "onboarding.steps.modelSelection.privacy.benefits.encrypted.title",
+    descKey: "onboarding.steps.modelSelection.privacy.benefits.encrypted.description",
+  },
+  {
+    icon: "i-carbon-checkmark-outline",
+    titleKey: "onboarding.steps.modelSelection.privacy.benefits.gdpr.title",
+    descKey: "onboarding.steps.modelSelection.privacy.benefits.gdpr.description",
+  },
+  {
+    icon: "i-carbon-chip",
+    titleKey: "onboarding.steps.modelSelection.privacy.benefits.hardware.title",
+    descKey: "onboarding.steps.modelSelection.privacy.benefits.hardware.description",
+  },
+] as const;
 </script>
 
 <div class="border-primary/20 bg-primary/5 mb-6 rounded-lg border px-4 py-3">

@@ -1,16 +1,16 @@
 <script lang="ts">
-  import CardExternalLinks from "@components/CardExternalLinks.svelte";
-  import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
-  import Logo from "@components/Logo.svelte";
-  import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
-  import { Button, Card, CardContent } from "@components/ui";
-  import { t } from "@lib/i18n";
+import CardExternalLinks from "@components/CardExternalLinks.svelte";
+import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
+import Logo from "@components/Logo.svelte";
+import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
+import { Button, Card, CardContent } from "@components/ui";
+import { t } from "@lib/i18n";
 
-  interface WelcomeStepProps {
-    onStart: () => void;
-  }
+interface WelcomeStepProps {
+  onStart: () => void;
+}
 
-  let { onStart }: WelcomeStepProps = $props();
+let { onStart }: WelcomeStepProps = $props();
 </script>
 
 <Card class="w-full max-w-lg text-center">

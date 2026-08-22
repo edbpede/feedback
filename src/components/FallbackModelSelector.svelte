@@ -1,24 +1,24 @@
 <script lang="ts">
-  import AIProviderLogo from "@components/AIProviderLogo.svelte";
-  import { getFallbackModels } from "@config/models";
-  import { t } from "@lib/i18n";
+import AIProviderLogo from "@components/AIProviderLogo.svelte";
+import { getFallbackModels } from "@config/models";
+import { t } from "@lib/i18n";
 
-  interface FallbackModelSelectorProps {
-    /** The model ID that failed and should be excluded from options */
-    failedModelId: string;
-    /** User's subject for determining recommended model */
-    subject?: string;
-    /** Callback when user selects a fallback model */
-    onSelectModel: (modelId: string) => void;
-  }
+interface FallbackModelSelectorProps {
+  /** The model ID that failed and should be excluded from options */
+  failedModelId: string;
+  /** User's subject for determining recommended model */
+  subject?: string;
+  /** Callback when user selects a fallback model */
+  onSelectModel: (modelId: string) => void;
+}
 
-  /**
-   * Displays a horizontal row of fallback model options when the primary model fails.
-   * Shows provider logos and highlights the recommended model for the user's subject.
-   */
-  let { failedModelId, subject, onSelectModel }: FallbackModelSelectorProps = $props();
+/**
+ * Displays a horizontal row of fallback model options when the primary model fails.
+ * Shows provider logos and highlights the recommended model for the user's subject.
+ */
+let { failedModelId, subject, onSelectModel }: FallbackModelSelectorProps = $props();
 
-  const fallbackData = $derived(getFallbackModels(failedModelId, subject));
+const fallbackData = $derived(getFallbackModels(failedModelId, subject));
 </script>
 
 <div class="mt-4">

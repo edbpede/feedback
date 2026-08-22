@@ -1,30 +1,30 @@
 <script lang="ts">
-  import { Button, Textarea } from "@components/ui";
-  import { t } from "@lib/i18n";
+import { Button, Textarea } from "@components/ui";
+import { t } from "@lib/i18n";
 
-  interface ChatInputProps {
-    onSend: (message: string) => void;
-    disabled: boolean;
+interface ChatInputProps {
+  onSend: (message: string) => void;
+  disabled: boolean;
+}
+
+let { onSend, disabled }: ChatInputProps = $props();
+
+let message = $state("");
+
+const handleSubmit = (e: Event) => {
+  e.preventDefault();
+  const trimmed = message.trim();
+  if (trimmed && !disabled) {
+    onSend(trimmed);
+    message = "";
   }
+};
 
-  let { onSend, disabled }: ChatInputProps = $props();
-
-  let message = $state("");
-
-  const handleSubmit = (e: Event) => {
-    e.preventDefault();
-    const trimmed = message.trim();
-    if (trimmed && !disabled) {
-      onSend(trimmed);
-      message = "";
-    }
-  };
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-      handleSubmit(e);
-    }
-  };
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+    handleSubmit(e);
+  }
+};
 </script>
 
 <form

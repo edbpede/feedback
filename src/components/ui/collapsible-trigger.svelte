@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { cn } from "@lib/utils";
-  import { Collapsible as CollapsiblePrimitive } from "bits-ui";
-  import type { CollapsibleTriggerProps } from "bits-ui";
+import { cn } from "@lib/utils";
+import { Collapsible as CollapsiblePrimitive } from "bits-ui";
+import type { CollapsibleTriggerProps } from "bits-ui";
 
-  let { class: className, children, ...rest }: CollapsibleTriggerProps = $props();
+let { class: className, children, ...rest }: CollapsibleTriggerProps = $props();
 </script>
 
 <CollapsiblePrimitive.Trigger

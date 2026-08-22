@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { formatDkk, usdToDkk } from "@config/pricing";
+import { formatDkk, usdToDkk } from "@config/pricing";
 
-  interface Props {
-    /** Cost in USD */
-    costUsd: number;
-  }
+interface Props {
+  /** Cost in USD */
+  costUsd: number;
+}
 
-  let { costUsd }: Props = $props();
-  const costDkk = $derived(usdToDkk(costUsd));
+let { costUsd }: Props = $props();
+const costDkk = $derived(usdToDkk(costUsd));
 </script>
 
 <span

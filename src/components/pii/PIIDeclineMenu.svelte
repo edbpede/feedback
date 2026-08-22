@@ -1,50 +1,50 @@
 <script lang="ts">
-  /**
-   * @fileoverview Menu component for selecting why the user disagrees with PII detection.
-   * Part of the PII review flow, allowing users to explain false positives or keep specific items.
-   */
+/**
+ * @fileoverview Menu component for selecting why the user disagrees with PII detection.
+ * Part of the PII review flow, allowing users to explain false positives or keep specific items.
+ */
 
-  import { Button } from "@components/ui";
-  import { t } from "@lib/i18n";
-  import type { PIIDeclineReason } from "@lib/types";
+import { Button } from "@components/ui";
+import { t } from "@lib/i18n";
+import type { PIIDeclineReason } from "@lib/types";
 
-  /** Props for the PIIDeclineMenu component */
-  interface PIIDeclineMenuProps {
-    /** Callback when user selects a decline reason */
-    onSelect: (reason: PIIDeclineReason) => void;
-    /** Callback when user cancels and returns to review */
-    onCancel: () => void;
-  }
+/** Props for the PIIDeclineMenu component */
+interface PIIDeclineMenuProps {
+  /** Callback when user selects a decline reason */
+  onSelect: (reason: PIIDeclineReason) => void;
+  /** Callback when user cancels and returns to review */
+  onCancel: () => void;
+}
 
-  /** Configuration for a decline option in the menu */
-  interface DeclineOption {
-    /** The decline reason type */
-    reason: PIIDeclineReason;
-    /** UnoCSS icon class name */
-    icon: string;
-    /** i18n translation key for the label */
-    labelKey: string;
-  }
+/** Configuration for a decline option in the menu */
+interface DeclineOption {
+  /** The decline reason type */
+  reason: PIIDeclineReason;
+  /** UnoCSS icon class name */
+  icon: string;
+  /** i18n translation key for the label */
+  labelKey: string;
+}
 
-  const DECLINE_OPTIONS: DeclineOption[] = [
-    {
-      reason: "already_removed",
-      icon: "i-carbon-checkmark-outline",
-      labelKey: "pii.decline.alreadyRemoved",
-    },
-    {
-      reason: "false_positive",
-      icon: "i-carbon-warning-alt",
-      labelKey: "pii.decline.falsePositive",
-    },
-    {
-      reason: "selective_keep",
-      icon: "i-carbon-checkbox-checked",
-      labelKey: "pii.decline.selectiveKeep",
-    },
-  ];
+const DECLINE_OPTIONS: DeclineOption[] = [
+  {
+    reason: "already_removed",
+    icon: "i-carbon-checkmark-outline",
+    labelKey: "pii.decline.alreadyRemoved",
+  },
+  {
+    reason: "false_positive",
+    icon: "i-carbon-warning-alt",
+    labelKey: "pii.decline.falsePositive",
+  },
+  {
+    reason: "selective_keep",
+    icon: "i-carbon-checkbox-checked",
+    labelKey: "pii.decline.selectiveKeep",
+  },
+];
 
-  let { onSelect, onCancel }: PIIDeclineMenuProps = $props();
+let { onSelect, onCancel }: PIIDeclineMenuProps = $props();
 </script>
 
 <div class="space-y-4">

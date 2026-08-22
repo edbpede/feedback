@@ -1,47 +1,47 @@
 <script lang="ts">
-  import CardExternalLinks from "@components/CardExternalLinks.svelte";
-  import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
-  import Logo from "@components/Logo.svelte";
-  import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
-  import { Button, Card, CardContent, Input } from "@components/ui";
-  import { t } from "@lib/i18n";
-  import type { ApiResponse } from "@lib/types";
+import CardExternalLinks from "@components/CardExternalLinks.svelte";
+import LanguageSwitcher from "@components/LanguageSwitcher.svelte";
+import Logo from "@components/Logo.svelte";
+import ThemeSwitcher from "@components/ThemeSwitcher.svelte";
+import { Button, Card, CardContent, Input } from "@components/ui";
+import { t } from "@lib/i18n";
+import type { ApiResponse } from "@lib/types";
 
-  interface PasswordGateProps {
-    onSuccess: () => void;
-  }
+interface PasswordGateProps {
+  onSuccess: () => void;
+}
 
-  let { onSuccess }: PasswordGateProps = $props();
+let { onSuccess }: PasswordGateProps = $props();
 
-  let password = $state("");
-  let error = $state("");
-  let isLoading = $state(false);
+let password = $state("");
+let error = $state("");
+let isLoading = $state(false);
 
-  const handleSubmit = async (e: Event) => {
-    e.preventDefault();
-    error = "";
-    isLoading = true;
+const handleSubmit = async (e: Event) => {
+  e.preventDefault();
+  error = "";
+  isLoading = true;
 
-    try {
-      const response = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
+  try {
+    const response = await fetch("/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
 
-      const result = (await response.json()) as ApiResponse<unknown>;
+    const result = (await response.json()) as ApiResponse<unknown>;
 
-      if (result.success) {
-        onSuccess();
-      } else {
-        error = result.error;
-      }
-    } catch {
-      error = t("auth.connectionError");
-    } finally {
-      isLoading = false;
+    if (result.success) {
+      onSuccess();
+    } else {
+      error = result.error;
     }
-  };
+  } catch {
+    error = t("auth.connectionError");
+  } finally {
+    isLoading = false;
+  }
+};
 </script>
 
 <div class="flex min-h-screen items-center justify-center p-4">

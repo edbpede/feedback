@@ -1,106 +1,106 @@
 <script lang="ts">
-  /**
-   * @fileoverview Final onboarding step for AI model selection.
-   * Displays available models filtered by the selected path (TEE or commercial),
-   * with pricing tiers, speed indicators, and subject-based recommendations.
-   */
+/**
+ * @fileoverview Final onboarding step for AI model selection.
+ * Displays available models filtered by the selected path (TEE or commercial),
+ * with pricing tiers, speed indicators, and subject-based recommendations.
+ */
 
-  import AIProviderLogo from "@components/AIProviderLogo.svelte";
-  import { Alert, AlertDescription, Button, Card, CardContent } from "@components/ui";
-  import {
-    AVAILABLE_MODELS,
-    DEFAULT_MODEL_ID,
-    getDefaultModelForPath,
-    getModelsForPath,
-    getRecommendedModelForSubject,
-    type ModelConfig,
-    type SpeedTier,
-  } from "@config/models";
-  import { type TranslationKey, t } from "@lib/i18n";
-  import type { ModelPath } from "@lib/types";
-  import PrivacyInfoBox from "./PrivacyInfoBox.svelte";
-  import StepIndicator from "./StepIndicator.svelte";
+import AIProviderLogo from "@components/AIProviderLogo.svelte";
+import { Alert, AlertDescription, Button, Card, CardContent } from "@components/ui";
+import {
+  AVAILABLE_MODELS,
+  DEFAULT_MODEL_ID,
+  getDefaultModelForPath,
+  getModelsForPath,
+  getRecommendedModelForSubject,
+  type ModelConfig,
+  type SpeedTier,
+} from "@config/models";
+import { type TranslationKey, t } from "@lib/i18n";
+import type { ModelPath } from "@lib/types";
+import PrivacyInfoBox from "./PrivacyInfoBox.svelte";
+import StepIndicator from "./StepIndicator.svelte";
 
-  /** Props for the ModelSelectionStep component */
-  interface ModelSelectionStepProps {
-    /** Currently selected model ID */
-    value: string;
-    /** Callback when user selects a different model */
-    onChange: (model: string) => void;
-    /** Callback when user submits and completes onboarding */
-    onSubmit: () => void;
-    /** Callback to go back to previous step */
-    onBack: () => void;
-    /** Current step number for progress indicator */
-    currentStep: number;
-    /** Total steps for progress indicator */
-    totalSteps: number;
-    /** Subject selected in step 1, used to show recommendation badge */
-    subject?: string;
-    /** Selected model path (privacy-first or enhanced-quality) */
-    modelPath?: ModelPath | null;
+/** Props for the ModelSelectionStep component */
+interface ModelSelectionStepProps {
+  /** Currently selected model ID */
+  value: string;
+  /** Callback when user selects a different model */
+  onChange: (model: string) => void;
+  /** Callback when user submits and completes onboarding */
+  onSubmit: () => void;
+  /** Callback to go back to previous step */
+  onBack: () => void;
+  /** Current step number for progress indicator */
+  currentStep: number;
+  /** Total steps for progress indicator */
+  totalSteps: number;
+  /** Subject selected in step 1, used to show recommendation badge */
+  subject?: string;
+  /** Selected model path (privacy-first or enhanced-quality) */
+  modelPath?: ModelPath | null;
+}
+
+/** Returns CSS classes for pricing tier badge styling */
+function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
+  switch (tier) {
+    case "budget":
+      return "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400";
+    case "standard":
+      return "bg-blue-500/20 text-blue-600 dark:text-blue-400";
+    case "premium":
+      return "bg-purple-500/20 text-purple-600 dark:text-purple-400";
   }
+}
 
-  /** Returns CSS classes for pricing tier badge styling */
-  function getPricingBadgeClass(tier: ModelConfig["pricingTier"]): string {
-    switch (tier) {
-      case "budget":
-        return "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400";
-      case "standard":
-        return "bg-blue-500/20 text-blue-600 dark:text-blue-400";
-      case "premium":
-        return "bg-purple-500/20 text-purple-600 dark:text-purple-400";
-    }
+/** Returns CSS classes for speed tier badge styling */
+function getSpeedBadgeClass(tier: SpeedTier): string {
+  switch (tier) {
+    case "fast":
+      return "bg-amber-500/20 text-amber-600 dark:text-amber-400";
+    case "medium":
+      return "bg-slate-500/20 text-slate-600 dark:text-slate-400";
+    case "very-fast":
+      return "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400";
   }
+}
 
-  /** Returns CSS classes for speed tier badge styling */
-  function getSpeedBadgeClass(tier: SpeedTier): string {
-    switch (tier) {
-      case "fast":
-        return "bg-amber-500/20 text-amber-600 dark:text-amber-400";
-      case "medium":
-        return "bg-slate-500/20 text-slate-600 dark:text-slate-400";
-      case "very-fast":
-        return "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400";
-    }
+/**
+ * Final onboarding step: AI model selection.
+ * Displays model cards filtered by the selected path with pricing,
+ * speed, and subject-based recommendation badges.
+ */
+let {
+  value,
+  onChange,
+  onSubmit,
+  onBack,
+  currentStep,
+  totalSteps,
+  subject,
+  modelPath,
+}: ModelSelectionStepProps = $props();
+
+const recommendedModelId = $derived(subject ? getRecommendedModelForSubject(subject) : null);
+
+// Get models filtered by path, or all models if no path selected
+const displayModels = $derived.by(() => {
+  if (modelPath) {
+    return getModelsForPath(modelPath);
   }
+  return AVAILABLE_MODELS;
+});
 
-  /**
-   * Final onboarding step: AI model selection.
-   * Displays model cards filtered by the selected path with pricing,
-   * speed, and subject-based recommendation badges.
-   */
-  let {
-    value,
-    onChange,
-    onSubmit,
-    onBack,
-    currentStep,
-    totalSteps,
-    subject,
-    modelPath,
-  }: ModelSelectionStepProps = $props();
+// Get the default model ID for the current path
+const defaultModelId = $derived.by(() => {
+  if (modelPath) {
+    return getDefaultModelForPath(modelPath);
+  }
+  return DEFAULT_MODEL_ID;
+});
 
-  const recommendedModelId = $derived(subject ? getRecommendedModelForSubject(subject) : null);
-
-  // Get models filtered by path, or all models if no path selected
-  const displayModels = $derived.by(() => {
-    if (modelPath) {
-      return getModelsForPath(modelPath);
-    }
-    return AVAILABLE_MODELS;
-  });
-
-  // Get the default model ID for the current path
-  const defaultModelId = $derived.by(() => {
-    if (modelPath) {
-      return getDefaultModelForPath(modelPath);
-    }
-    return DEFAULT_MODEL_ID;
-  });
-
-  // Check if using commercial path (needs anonymization warning)
-  const isCommercialPath = $derived(modelPath === "enhanced-quality");
+// Check if using commercial path (needs anonymization warning)
+const isCommercialPath = $derived(modelPath === "enhanced-quality");
 </script>
 
 <Card class="w-full max-w-3xl">
