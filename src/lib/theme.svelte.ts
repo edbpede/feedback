@@ -43,7 +43,13 @@ function applyTheme(theme: Theme): void {
 
 /**
  * Initialize theme from localStorage (call in onMount)
- * This syncs the state with what was already set by the inline script
+ * This syncs the state with what the inline script already applied.
+ *
+ * Re-applying is redundant on the happy path and idempotent, but it is what
+ * makes the theme recoverable: if the inline script never ran — a stale CSP
+ * hash in vercel.json blocks it outright — the stored preference would
+ * otherwise never be applied at all, leaving the wrong theme up for the whole
+ * session instead of for the moment before this island hydrates.
  */
 export function initTheme(): void {
   if (isInitialized) return;
@@ -51,7 +57,7 @@ export function initTheme(): void {
 
   const initial = getInitialTheme();
   currentTheme = initial;
-  // The class is already applied by the inline script to prevent FOUC
+  applyTheme(initial);
 }
 
 /**
