@@ -55,12 +55,10 @@ let { keptItems, onConfirm, onCancel }: PIIWarningDialogProps = $props();
   <!-- Action buttons -->
   <div class="flex flex-col gap-2 pt-4 sm:flex-row sm:justify-end">
     <Button variant="secondary" onclick={onCancel}>
-      <span class="i-carbon-arrow-left mr-1"></span>
-      {t("pii.warning.cancelButton")}
+      <span class="i-carbon-arrow-left mr-1"></span>{t("pii.warning.cancelButton")}
     </Button>
     <Button variant="destructive" onclick={onConfirm}>
-      <span class="i-carbon-checkmark mr-1"></span>
-      {t("pii.warning.confirmButton")}
+      <span class="i-carbon-checkmark mr-1"></span>{t("pii.warning.confirmButton")}
     </Button>
   </div>
 </div>

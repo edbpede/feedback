@@ -150,8 +150,7 @@ const isCommercialPath = $derived(modelPath === "enhanced-quality");
             <div
               class="bg-primary text-primary-foreground absolute -top-2.5 left-3 flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium"
             >
-              <span class="i-carbon-star-filled text-[10px]"></span>
-              {t("onboarding.steps.modelSelection.default")}
+              <span class="i-carbon-star-filled text-[10px]"></span>{t("onboarding.steps.modelSelection.default")}
             </div>
           {/if}
 
@@ -160,8 +159,7 @@ const isCommercialPath = $derived(modelPath === "enhanced-quality");
             <div
               class="bg-muted text-muted-foreground absolute -top-2.5 left-3 flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium"
             >
-              <span class="i-carbon-thumbs-up text-[10px]"></span>
-              {t("onboarding.steps.modelSelection.alsoGoodFor", {
+              <span class="i-carbon-thumbs-up text-[10px]"></span>{t("onboarding.steps.modelSelection.alsoGoodFor", {
                 subject: t(`onboarding.subjects.${subject}` as TranslationKey),
               })}
             </div>
@@ -228,12 +226,10 @@ const isCommercialPath = $derived(modelPath === "enhanced-quality");
     <!-- Navigation -->
     <div class="flex justify-between">
       <Button variant="secondary" onclick={() => onBack()}>
-        <span class="i-carbon-arrow-left mr-1"></span>
-        {t("onboarding.navigation.back")}
+        <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
       </Button>
       <Button onclick={() => onSubmit()}>
-        <span class="i-carbon-send mr-1"></span>
-        {t("onboarding.navigation.submit")}
+        <span class="i-carbon-send mr-1"></span>{t("onboarding.navigation.submit")}
       </Button>
     </div>
   </CardContent>

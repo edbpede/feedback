@@ -207,8 +207,7 @@ function handleRetry() {
             </Alert>
           {/if}
           <Button onclick={handleRetry}>
-            <span class="i-carbon-renew mr-1"></span>
-            {t("pii.error.retryButton")}
+            <span class="i-carbon-renew mr-1"></span>{t("pii.error.retryButton")}
           </Button>
         </div>
       {/if}
@@ -223,16 +222,14 @@ function handleRetry() {
         <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <div class="flex gap-2">
             <Button variant="ghost" onclick={onBack}>
-              <span class="i-carbon-arrow-left mr-1"></span>
-              {t("onboarding.navigation.back")}
+              <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
             </Button>
             <Button variant="secondary" onclick={() => (reviewState = "decline")}>
               {t("pii.review.declineButton")}
             </Button>
           </div>
           <Button onclick={handleAcceptAll}>
-            <span class="i-carbon-checkmark mr-1"></span>
-            {t("pii.review.acceptButton")}
+            <span class="i-carbon-checkmark mr-1"></span>{t("pii.review.acceptButton")}
           </Button>
         </div>
       {/if}
@@ -258,12 +255,10 @@ function handleRetry() {
 
         <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
           <Button variant="secondary" onclick={() => (reviewState = "review")}>
-            <span class="i-carbon-arrow-left mr-1"></span>
-            {t("onboarding.navigation.back")}
+            <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
           </Button>
           <Button onclick={handleRetryWithContext} disabled={!falsePositiveContext.trim()}>
-            {t("pii.falsePositive.retryButton")}
-            <span class="i-carbon-arrow-right ml-1"></span>
+            {t("pii.falsePositive.retryButton")}<span class="i-carbon-arrow-right ml-1"></span>
           </Button>
         </div>
       {/if}
@@ -279,12 +274,10 @@ function handleRetry() {
 
         <div class="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <Button variant="secondary" onclick={() => (reviewState = "review")}>
-            <span class="i-carbon-arrow-left mr-1"></span>
-            {t("onboarding.navigation.back")}
+            <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
           </Button>
           <Button onclick={handleConfirmSelection}>
-            {t("pii.selectiveKeep.confirmButton")}
-            <span class="i-carbon-arrow-right ml-1"></span>
+            {t("pii.selectiveKeep.confirmButton")}<span class="i-carbon-arrow-right ml-1"></span>
           </Button>
         </div>
       {/if}

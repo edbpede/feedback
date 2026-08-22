@@ -39,8 +39,7 @@ let { value, onChange, onNext, onBack, onSkip, currentStep, totalSteps }: Assign
     <!-- Navigation -->
     <div class="flex items-center justify-between">
       <Button variant="secondary" onclick={() => onBack()}>
-        <span class="i-carbon-arrow-left mr-1"></span>
-        {t("onboarding.navigation.back")}
+        <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
       </Button>
 
       <div class="flex items-center gap-2">
@@ -48,8 +47,7 @@ let { value, onChange, onNext, onBack, onSkip, currentStep, totalSteps }: Assign
           {t("onboarding.steps.assignment.skipButton")}
         </Button>
         <Button onclick={() => onNext()} disabled={!value.trim()}>
-          {t("onboarding.navigation.next")}
-          <span class="i-carbon-arrow-right ml-1"></span>
+          {t("onboarding.navigation.next")}<span class="i-carbon-arrow-right ml-1"></span>
         </Button>
       </div>
     </div>

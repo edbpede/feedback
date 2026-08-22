@@ -71,12 +71,10 @@ const benefits = [
         </p>
         <div class="flex flex-col gap-1.5">
           <p class="text-muted-foreground">
-            <span class="i-carbon-flash text-primary mr-1 inline-block align-middle"></span>
-            {t("onboarding.steps.modelSelection.privacy.details.performance")}
+            <span class="i-carbon-flash text-primary mr-1 inline-block align-middle"></span>{t("onboarding.steps.modelSelection.privacy.details.performance")}
           </p>
           <p class="text-muted-foreground">
-            <span class="i-carbon-certificate text-primary mr-1 inline-block align-middle"></span>
-            {t("onboarding.steps.modelSelection.privacy.details.verification")}
+            <span class="i-carbon-certificate text-primary mr-1 inline-block align-middle"></span>{t("onboarding.steps.modelSelection.privacy.details.verification")}
           </p>
         </div>
         <div class="border-border/50 flex flex-wrap items-center gap-x-3 gap-y-1 border-t pt-2">
@@ -89,8 +87,7 @@ const benefits = [
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t("onboarding.steps.modelSelection.privacy.sourcePhala")}
-            <span class="i-carbon-arrow-up-right text-[10px]"></span>
+            {t("onboarding.steps.modelSelection.privacy.sourcePhala")}<span class="i-carbon-arrow-up-right text-[10px]"></span>
           </a>
           <a
             href="https://learn.microsoft.com/en-us/azure/confidential-computing/trusted-execution-environment"
@@ -98,8 +95,7 @@ const benefits = [
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t("onboarding.steps.modelSelection.privacy.sourceAzure")}
-            <span class="i-carbon-arrow-up-right text-[10px]"></span>
+            {t("onboarding.steps.modelSelection.privacy.sourceAzure")}<span class="i-carbon-arrow-up-right text-[10px]"></span>
           </a>
           <a
             href="https://www.nvidia.com/en-us/data-center/solutions/confidential-computing/"
@@ -107,8 +103,7 @@ const benefits = [
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t("onboarding.steps.modelSelection.privacy.sourceNvidia")}
-            <span class="i-carbon-arrow-up-right text-[10px]"></span>
+            {t("onboarding.steps.modelSelection.privacy.sourceNvidia")}<span class="i-carbon-arrow-up-right text-[10px]"></span>
           </a>
           <a
             href="https://www.ai21.com/private-ai/"
@@ -116,8 +111,7 @@ const benefits = [
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t("onboarding.steps.modelSelection.privacy.sourceAI21")}
-            <span class="i-carbon-arrow-up-right text-[10px]"></span>
+            {t("onboarding.steps.modelSelection.privacy.sourceAI21")}<span class="i-carbon-arrow-up-right text-[10px]"></span>
           </a>
         </div>
       </div>
