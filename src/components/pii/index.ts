@@ -7,9 +7,9 @@
  * @module components/pii
  */
 
-export { PIIDeclineMenu } from "./PIIDeclineMenu";
-export { PIIDetectionLoading } from "./PIIDetectionLoading";
-export { PIIFindingCard } from "./PIIFindingCard";
-export { PIIFindingsList } from "./PIIFindingsList";
-export { PIIReviewFlow } from "./PIIReviewFlow";
-export { PIIWarningDialog } from "./PIIWarningDialog";
+export { default as PIIDeclineMenu } from "./PIIDeclineMenu.svelte";
+export { default as PIIDetectionLoading } from "./PIIDetectionLoading.svelte";
+export { default as PIIFindingCard } from "./PIIFindingCard.svelte";
+export { default as PIIFindingsList } from "./PIIFindingsList.svelte";
+export { default as PIIReviewFlow } from "./PIIReviewFlow.svelte";
+export { default as PIIWarningDialog } from "./PIIWarningDialog.svelte";
