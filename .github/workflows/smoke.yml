@@ -2,7 +2,7 @@
 #
 # Deliberately NOT a browser test. It verifies that the app boots and serves
 # real content. It will NOT catch client-side breakage: a server-rendered page
-# returns 200 with a valid <title> even when a solid-js or unocss bump has
+# returns 200 with a valid <title> even when a svelte or unocss bump has
 # broken island hydration — and this app's entire UI is one `client:idle`
 # island, so that gap is wider here than elsewhere. Upgrading to a real browser
 # test is a separate decision, not something to bolt on here.

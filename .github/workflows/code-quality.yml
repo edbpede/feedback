@@ -8,9 +8,13 @@
 # forked pull requests can never reach the write path.
 #
 # The type check is a gate as of the commit that added it: `astro check` reports
-# 0 errors. It previously reported 5 pre-existing errors (App.tsx,
-# ErrorMessageBubble.tsx x2, ModelPathStep.tsx, api.ts) and was deliberately not
-# wired up, since a step that cannot pass is not a gate.
+# 0 errors. It previously reported 5 pre-existing errors (in what were then
+# App.tsx, ErrorMessageBubble.tsx x2, ModelPathStep.tsx and api.ts) and was
+# deliberately not wired up, since a step that cannot pass is not a gate.
+#
+# Note since the Svelte 5 migration: `astro check` covers .astro and .ts only.
+# It does NOT typecheck .svelte files, so the components are outside this gate.
+# `bunx svelte-check --tsconfig ./tsconfig.json` is clean but is not run here.
 #
 # This repository has no prek.toml, so there is no prek step, and no tests, so
 # there is no test step.
