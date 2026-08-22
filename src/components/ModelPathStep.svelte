@@ -264,13 +264,11 @@ const handlePasswordSuccess = () => {
     <div class="flex justify-center gap-4">
       {#if onBack}
         <Button onclick={onBack} variant="outline" size="lg">
-          <span class="i-carbon-arrow-left mr-2"></span>
-          {t("common.back")}
+          <span class="i-carbon-arrow-left mr-2"></span>{t("common.back")}
         </Button>
       {/if}
       <Button onclick={handleContinue} size="lg" class="min-w-[200px]">
-        {t("modelPath.continueButton")}
-        <span class="i-carbon-arrow-right ml-2"></span>
+        {t("modelPath.continueButton")}<span class="i-carbon-arrow-right ml-2"></span>
       </Button>
     </div>
   </CardContent>

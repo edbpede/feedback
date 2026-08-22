@@ -153,8 +153,7 @@ const canProceed = $derived(attachedFile !== null || value.trim().length > 0);
             <span
               class="border-input bg-background hover:bg-accent hover:text-accent-foreground mt-1 inline-flex h-8 items-center justify-center gap-2 rounded-md border px-3 text-sm font-medium transition-colors"
             >
-              <span class="i-carbon-folder"></span>
-              {t("fileUpload.browse")}
+              <span class="i-carbon-folder"></span>{t("fileUpload.browse")}
             </span>
 
             <!-- Hidden file input -->
@@ -163,8 +162,7 @@ const canProceed = $derived(attachedFile !== null || value.trim().length > 0);
             <div class="flex flex-col items-center gap-3 py-4">
               <span class="i-carbon-cloud-upload text-primary animate-pulse text-4xl"></span>
               <span class="text-muted-foreground flex items-center gap-2">
-                <span class="i-carbon-loading animate-spin"></span>
-                {t("fileUpload.processing")}
+                <span class="i-carbon-loading animate-spin"></span>{t("fileUpload.processing")}
               </span>
             </div>
           {/if}
@@ -214,8 +212,7 @@ const canProceed = $derived(attachedFile !== null || value.trim().length > 0);
     <!-- Navigation -->
     <div class="flex items-center justify-between">
       <Button variant="secondary" onclick={() => onBack()}>
-        <span class="i-carbon-arrow-left mr-1"></span>
-        {t("onboarding.navigation.back")}
+        <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
       </Button>
 
       <div class="flex items-center gap-2">
@@ -223,8 +220,7 @@ const canProceed = $derived(attachedFile !== null || value.trim().length > 0);
           {t("onboarding.steps.studentWork.skipButton")}
         </Button>
         <Button onclick={() => onNext()} disabled={!canProceed}>
-          {t("onboarding.navigation.next")}
-          <span class="i-carbon-arrow-right ml-1"></span>
+          {t("onboarding.navigation.next")}<span class="i-carbon-arrow-right ml-1"></span>
         </Button>
       </div>
     </div>

@@ -52,11 +52,9 @@ const errorInfo = $derived(getErrorInfo(category));
               class="gap-2"
             >
               {#if !retryDisabled}
-                <span class="i-carbon-restart"></span>
-                {t("chat.retryButton")}
+                <span class="i-carbon-restart"></span>{t("chat.retryButton")}
               {:else}
-                <span class="i-carbon-time"></span>
-                {t("chat.retryDisabled")}
+                <span class="i-carbon-time"></span>{t("chat.retryDisabled")}
               {/if}
             </Button>
           </div>

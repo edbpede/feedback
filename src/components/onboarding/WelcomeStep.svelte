@@ -29,8 +29,7 @@ let { onStart }: WelcomeStepProps = $props();
     <p class="text-muted-foreground mb-8">{t("onboarding.welcome.description")}</p>
 
     <Button onclick={() => onStart()} size="lg" class="w-full sm:w-auto">
-      <span class="mr-2">🚀</span>
-      {t("onboarding.welcome.startButton")}
+      <span class="mr-2">🚀</span>{t("onboarding.welcome.startButton")}
     </Button>
   </CardContent>
 </Card>

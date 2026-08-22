@@ -55,12 +55,10 @@ let { value, onChange, onNext, onBack, currentStep, totalSteps }: GradePreferenc
     <!-- Navigation -->
     <div class="flex justify-between">
       <Button variant="secondary" onclick={() => onBack()}>
-        <span class="i-carbon-arrow-left mr-1"></span>
-        {t("onboarding.navigation.back")}
+        <span class="i-carbon-arrow-left mr-1"></span>{t("onboarding.navigation.back")}
       </Button>
       <Button onclick={() => onNext()}>
-        {t("onboarding.navigation.next")}
-        <span class="i-carbon-arrow-right ml-1"></span>
+        {t("onboarding.navigation.next")}<span class="i-carbon-arrow-right ml-1"></span>
       </Button>
     </div>
   </CardContent>
