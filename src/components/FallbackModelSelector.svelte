@@ -29,7 +29,7 @@ const fallbackData = $derived(getFallbackModels(failedModelId, subject));
       <button
         type="button"
         onclick={() => onSelectModel(model.id)}
-        class="border-border bg-background hover:border-primary hover:bg-accent/30 focus:ring-ring relative flex flex-shrink-0 items-center gap-2 rounded-lg border px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
+        class="border-border bg-background hover:border-primary hover:bg-accent/30 focus:ring-ring relative flex flex-shrink-0 items-center gap-2 rounded-lg border px-3 py-2 transition-all focus:outline-hidden focus:ring-2 focus:ring-offset-2"
       >
         {#if isRecommended}
           <span

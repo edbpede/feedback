@@ -108,13 +108,25 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
       print(base64.b64encode(hashlib.sha256(s.encode()).digest()).decode())'
   ```
 
-- **UnoCSS is on `presetWind4`, and two of its config keys fail silently.** `theme.font` entries
-  must be single strings — an array emits no `--font-*` variable at all, and `font-mono` then
-  resolves to an undefined var. And `unocss-preset-shadcn` 1.0.1 still declares its radius scale
+- **UnoCSS is on `presetWind4`, and two of its config keys fail silently.** The font theme has
+  two separate traps, with different symptoms and no build error for either. The key is `font`,
+  not the `presetWind3` name `fontFamily`: under the old name the whole block is ignored and
+  `--font-*` is emitted with `presetWind4`'s own default stack, so `font-mono` renders
+  `ui-monospace` instead of JetBrains Mono. Under the right name the values must be single
+  strings: an array is ignored too, but emits no `--font-*` variable at all, so `font-mono`
+  resolves against an undefined var and falls back to whatever is inherited. Three call sites in
+  two components depend on this (`pii/PIIFindingCard.svelte:77,88`, `pii/PIIWarningDialog.svelte:46`).
+  Separately, `unocss-preset-shadcn` 1.0.1 still declares its radius scale
   under the `presetWind3` key `borderRadius`, which `presetWind4` ignores, so `uno.config.ts`
-  restates that scale under `radius` to keep `rounded-lg/md/xl` tracking `--radius`. Neither
-  failure produces a build error. Note also that Tailwind v4 renamed the shadow and blur scales:
-  the old `shadow-sm` is now `shadow-xs` and the old `backdrop-blur-sm` is now `backdrop-blur-xs`.
+  restates that scale under `radius` to keep `rounded-lg/md/xl` tracking `--radius` rather than
+  `presetWind4`'s own defaults. `presetWind4` also drops `cursor: pointer` from the preflight
+  (`presetWind3` emitted `button,[role=button]{cursor:pointer}`), so `src/styles/globals.css`
+  re-adds it for enabled controls — without that rule every button in the app renders with the
+  default arrow cursor. Note also the Tailwind v4 utility renames, all of which change
+  rendering silently: the old `shadow-sm` is now `shadow-xs`, the old `backdrop-blur-sm` is now
+  `backdrop-blur-xs`, and the old `outline-none` is now `outline-hidden` — under `presetWind4`
+  `outline-none` means a literal `outline-style: none`, which removes the transparent-outline
+  focus indicator that is the only one visible in forced-colors mode.
 - **`public/pdf.worker.min.mjs` is vendored and hand-synced.** pdf.js compares `apiVersion`
   against the worker's hardcoded version and throws synchronously on mismatch, breaking every
   PDF upload. No build step regenerates it — after any `pdfjs-dist` bump, run

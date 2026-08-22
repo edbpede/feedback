@@ -108,6 +108,15 @@
   border-color: oklch(var(--border));
 }
 
+/* Tailwind v4 — and so presetWind4 — dropped `cursor: pointer` from the preflight,
+   where presetWind3 emitted `button,[role=button]{cursor:pointer}`. Nothing else
+   re-adds it, so every button in the app would fall back to the default arrow.
+   Scoped to enabled controls, which the Wind3 rule was not. */
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
 body {
   background-color: oklch(var(--background));
   color: oklch(var(--foreground));

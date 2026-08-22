@@ -48,7 +48,7 @@ const links: ExternalLink[] = [
       href={link.href}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
-      class="focus-visible:ring-ring rounded opacity-40 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+      class="focus-visible:ring-ring rounded opacity-40 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-1"
       aria-label={link.alt}
     >
       <img

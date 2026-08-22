@@ -458,7 +458,7 @@ const handleClearConversation = () => {
              each icon link comes from its aria-label. -->
         <a
           href="/"
-          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
+          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-hidden focus-visible:ring-2"
           aria-label="EDB Pede - Homepage"
         >
           <img src="/icons/edbpede.svg" alt="" class="h-5 w-5" aria-hidden="true" />
@@ -467,7 +467,7 @@ const handleClearConversation = () => {
           href="https://github.com/edbpede/feedback"
           target="_blank"
           rel="noopener noreferrer"
-          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
+          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-hidden focus-visible:ring-2"
           aria-label="GitHub Repository"
         >
           <img src="/icons/github.svg" alt="" class="h-5 w-5" aria-hidden="true" />
@@ -476,7 +476,7 @@ const handleClearConversation = () => {
           href="https://kutt.it/Hrtu2H"
           target="_blank"
           rel="noopener noreferrer"
-          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
+          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-hidden focus-visible:ring-2"
           aria-label="Support/Donate"
         >
           <img src="/icons/donate.svg" alt="" class="h-5 w-5" aria-hidden="true" />
@@ -485,7 +485,7 @@ const handleClearConversation = () => {
           href="https://www.gnu.org/licenses/agpl-3.0.en.html"
           target="_blank"
           rel="noopener noreferrer"
-          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
+          class="focus-visible:ring-ring rounded opacity-50 transition-opacity duration-200 hover:opacity-100 focus-visible:outline-hidden focus-visible:ring-2"
           aria-label="AGPL-3.0 License"
         >
           <img src="/icons/agpl.svg" alt="" class="h-5 w-auto" aria-hidden="true" />

@@ -249,7 +249,7 @@ function handleRetry() {
             oninput={(e) => (falsePositiveContext = e.currentTarget.value)}
             placeholder={t("pii.falsePositive.placeholder")}
             aria-label={t("pii.falsePositive.title")}
-            class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring min-h-[120px] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring min-h-[120px] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2"
           ></textarea>
         </div>
 

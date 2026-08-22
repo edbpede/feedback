@@ -23,10 +23,11 @@ export default defineConfig({
     }),
   ],
   theme: {
-    // presetWind4 renamed this key from `fontFamily`, and it only emits the
-    // --font-* variables its utilities resolve against when the value is a
-    // single string. An array here yields no variable at all, so `font-mono`
-    // would silently resolve to var(--font-mono) with nothing behind it.
+    // Two silent traps here, neither of which errors. The key is `font`:
+    // presetWind4 ignores the presetWind3 name `fontFamily` and emits --font-*
+    // from its own defaults instead, so `font-mono` would render ui-monospace.
+    // And the values must be single strings — an array emits no --font-*
+    // variable at all, so `font-mono` resolves var(--font-mono) against nothing.
     font: {
       sans: '"Plus Jakarta Sans Variable", system-ui, sans-serif',
       mono: '"JetBrains Mono", Consolas, monospace',
