@@ -3,7 +3,7 @@
 This file provides guidance to AI coding agents when working with code in this
 repository.
 
-Danish AI feedback chatbot for grades 7–9. Astro SSR + one SolidJS island + UnoCSS, on Vercel.
+Danish AI feedback chatbot for grades 7–9. Astro SSR + one Svelte 5 island + UnoCSS, on Vercel.
 Package manager is Bun, pinned to `bun@1.3.14` via `packageManager` in `package.json`.
 
 ## Commands
@@ -35,7 +35,7 @@ the hash and secret.
 
 - **One page, one island.** `src/pages/index.astro` is the only page route and renders
   `<App client:idle />`. The whole UI — password gate, onboarding, PII review, chat — is inside
-  that single island (`src/components/App.tsx`). Everything else in `src/pages` is `/api/**`.
+  that single island (`src/components/App.svelte`). Everything else in `src/pages` is `/api/**`.
 - **`localStorage` is the only persistence.** `src/lib/storage.ts` owns every `feedback-bot-*`
   key. No database, no server-side session store.
 - **Auth is HMAC-signed cookies, no middleware.** `src/lib/auth.ts` signs `payload:timestamp`
@@ -78,7 +78,7 @@ the hash and secret.
    subjects silently fall back to the default prompt via `getSystemPrompt`.
 3. Add the key to `SUBJECT_PROMPT_MAP` in `src/config/subjectPrompts.ts`.
 4. To surface it in the UI, add it to `SUBJECTS` in
-   `src/components/onboarding/SubjectGradeStep.tsx` plus `onboarding.subjects.<key>` in both
+   `src/components/onboarding/SubjectGradeStep.svelte` plus `onboarding.subjects.<key>` in both
    locale files. `SUBJECTS` currently lists 8 of the 14 registered keys.
 
 **Add a user-facing string:** `en.json` first, then `da.json`. A key only in `da.json` will not
@@ -110,8 +110,15 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 - **`scripts/devserver/run.sh clean` deletes `.env`** along with `node_modules`, `dist`, and
   `.astro` — it is in `BUILD_ARTIFACTS`. Back the file up first, or clean by hand.
 - **CI cannot catch client-side breakage.** The smoke test asserts only that `/` serves a
-  `<title>`; the island never hydrates in CI. After a `solid-js`, `@kobalte/core`, or `unocss`
+  `<title>`; the island never hydrates in CI. After a `svelte`, `bits-ui`, or `unocss`
   bump, exercise the UI in `bun run dev` by hand.
+- **`astro check` does not typecheck `.svelte` files.** It covers `.astro` and `.ts` only, so
+  the components are outside the type gate. Verified by injecting a deliberate type error into
+  a component and watching `bun run check` still report 0 errors. Run
+  `bunx svelte-check --tsconfig ./tsconfig.json` to typecheck the UI; it is clean today but is
+  not wired into CI.
+- **Biome does not lint `.svelte` markup.** It formats and lints the `<script>` block only, so
+  rules like `noNonNullAssertion` no longer see assertions that live in the template.
 
 ## Conventions
 
@@ -121,11 +128,16 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 - Biome owns formatting (100 cols, 2 spaces, double quotes, `es5` trailing commas, LF).
   `noUnusedImports` and `noUnusedVariables` are deliberately **off**.
 - Compose classes with `cn()` from `src/lib/utils.ts`, not template strings.
-- Dark mode is `data-kb-theme` on `<html>` (Kobalte convention, wired via `darkSelector` in
-  `uno.config.ts`); colors come from `oklch(var(--token))`, defined in `src/styles/globals.css`.
+- Dark mode is `data-kb-theme` on `<html>`. The name is historical and project-owned — no
+  library ever read it, and the `darkSelector` option in `uno.config.ts` is inert because
+  `presetShadcn` is configured with `color: false`. The rule that actually applies the dark
+  palette is hand-written in `src/styles/globals.css`; the attribute is written by
+  `src/lib/theme.svelte.ts` and the anti-FOUC inline script in `src/pages/index.astro`.
+  Colors come from `oklch(var(--token))`, defined in `src/styles/globals.css`.
 - `tailwind.config.js` is an empty stub for shadcn CLI compatibility — real config is
-  `uno.config.ts`. shadcn-solid primitives live in `src/components/ui/`; re-export new ones from
-  `ui/index.ts`.
+  `uno.config.ts`. The shadcn-style primitives in `src/components/ui/` are one component per
+  `.svelte` file, built on `bits-ui`; re-export new ones from `ui/index.ts`. Prop types and
+  `cva` variants live in sibling `.ts` files, because a `.svelte` file cannot export a type.
 - Heavy client deps get a dynamic `await import()` plus a `manualChunks` entry in
   `astro.config.ts` (see `src/lib/fileParser.ts`).
 - API routes hand errors back as `ApiResponse<T>` with a populated `ErrorDetails`
@@ -134,9 +146,9 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 ## Reference
 
 - `.agents/rules/astro-typescript-solidjs-unocss.md` — general TypeScript/Astro/SolidJS/UnoCSS
-  best practices (`type: agent_requested`), not repository law. Read before writing new Solid
-  components or Astro/UnoCSS boilerplate; where it conflicts with this file or actual code, the
-  code wins.
+  best practices (`type: agent_requested`), not repository law. **Its SolidJS half is now
+  out of date — this repo is Svelte 5** and the file is being replaced separately. Read it only
+  for the Astro/UnoCSS material; where it conflicts with this file or actual code, the code wins.
 - `.github/workflows/code-quality.yml` — read before changing lint/type/build gating; its header
   comments explain the Renovate-only `biome-migrate` write path.
 - `.github/workflows/smoke.yml` — read before changing dev-server startup or the `/` route.
