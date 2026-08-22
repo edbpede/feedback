@@ -90,13 +90,22 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 - **`bun run preview` does not work.** The Vercel adapter rejects `astro preview` outright, so
   `bun run preview` and `scripts/devserver/run.sh preview` both fail. Verify locally with
   `bun run dev`; `bun run build` is the only production-bundle signal.
-- **`vercel.json` pins inline-script SHA-256 hashes in the CSP.** The first hash
-  (`sha256-oQLA8DdURsdSxQ3L…`) is the FOUC-prevention script in `src/pages/index.astro`. Editing
-  that script — whitespace included — breaks all JS in production until the hash is recomputed
-  and updated in `vercel.json`. It is the base64 SHA-256 of the exact script body:
+- **`vercel.json` pins inline-script SHA-256 hashes in the CSP, and only one of the three is
+  yours.** The page serves three inline scripts: the FOUC-prevention script in
+  `src/pages/index.astro`, and two that Astro generates — the `client:idle` directive shim and
+  the `astro-island` custom-element bootstrap. All three need a `'sha256-…'` entry in
+  `script-src`. Editing the FOUC script — whitespace included — changes its hash; **so does
+  bumping `astro`**, which silently rewrites the generated pair. A missing hash blocks that
+  script in production, and a missing bootstrap hash means the island never hydrates while the
+  server-rendered shell still looks fine. Nothing in CI catches it: the smoke test only asserts
+  that `/` serves a `<title>`. Recompute all three from a real build rather than from source —
+  build, serve `.vercel/output` (or deploy a preview), and hash every inline script in the
+  response:
 
   ```bash
-  python3 -c 'import re,hashlib,base64;s=open("src/pages/index.astro").read();b=re.search(r"<script is:inline>(.*?)</script>",s,re.S).group(1);print(base64.b64encode(hashlib.sha256(b.encode()).digest()).decode())'
+  curl -s <deployment>/ | python3 -c 'import sys,re,hashlib,base64
+  for s in re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", sys.stdin.read(), re.S):
+      print(base64.b64encode(hashlib.sha256(s.encode()).digest()).decode())'
   ```
 
 - **UnoCSS is on `presetWind4`, and two of its config keys fail silently.** `theme.font` entries
