@@ -91,7 +91,7 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
   `bun run preview` and `scripts/devserver/run.sh preview` both fail. Verify locally with
   `bun run dev`; `bun run build` is the only production-bundle signal.
 - **`vercel.json` pins inline-script SHA-256 hashes in the CSP.** The first hash
-  (`sha256-tWgYCKflfnAc/…`) is the FOUC-prevention script in `src/pages/index.astro`. Editing
+  (`sha256-oQLA8DdURsdSxQ3L…`) is the FOUC-prevention script in `src/pages/index.astro`. Editing
   that script — whitespace included — breaks all JS in production until the hash is recomputed
   and updated in `vercel.json`. It is the base64 SHA-256 of the exact script body:
 
@@ -135,11 +135,13 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
 - Biome owns formatting (100 cols, 2 spaces, double quotes, `es5` trailing commas, LF).
   `noUnusedImports` and `noUnusedVariables` are deliberately **off**.
 - Compose classes with `cn()` from `src/lib/utils.ts`, not template strings.
-- Dark mode is `data-kb-theme` on `<html>`. The name is historical and project-owned — no
-  library ever read it, and the `darkSelector` option in `uno.config.ts` is inert because
-  `presetShadcn` is configured with `color: false`. The rule that actually applies the dark
-  palette is hand-written in `src/styles/globals.css`; the attribute is written by
-  `src/lib/theme.svelte.ts` and the anti-FOUC inline script in `src/pages/index.astro`.
+- Dark mode is the `.dark` class on `<html>` — the shadcn/UnoCSS convention, and the selector
+  presetWind4 compiles the `dark:` variant against, so the two cannot drift apart. The rule that
+  actually applies the dark palette is hand-written in `src/styles/globals.css`; the class is
+  written by `src/lib/theme.svelte.ts` and by the anti-FOUC inline script in
+  `src/pages/index.astro`, and `<html>` ships with it already set so the default dark theme
+  paints on the first frame. The `darkSelector` option in `uno.config.ts` emits nothing because
+  `presetShadcn` is configured with `color: false`, but is kept equal to the real selector.
   Colors come from `oklch(var(--token))`, defined in `src/styles/globals.css`.
 - `tailwind.config.js` is an empty stub for shadcn CLI compatibility — real config is
   `uno.config.ts`. The shadcn-style primitives in `src/components/ui/` are one component per

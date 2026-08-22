@@ -56,7 +56,7 @@
 }
 
 /* Northern Lights Theme - Dark Mode */
-[data-kb-theme="dark"] {
+.dark {
   --background: 0.2303 0.0125 264.2926;
   --foreground: 0.9219 0 0;
 

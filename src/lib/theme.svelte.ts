@@ -30,14 +30,15 @@ let currentTheme = $state<Theme>(DEFAULT_THEME);
 let isInitialized = false;
 
 /**
- * Apply theme attribute to document element
- * Uses the project's data-kb-theme attribute, which is read by the hand-written
- * dark palette rule in src/styles/globals.css and by the anti-FOUC inline script
- * in src/pages/index.astro
+ * Apply the theme to the document element
+ * Uses the `.dark` class, the shadcn/UnoCSS convention: it is what the
+ * hand-written dark palette rule in src/styles/globals.css selects on, what the
+ * `dark:` variant compiles against, and what the anti-FOUC inline script in
+ * src/pages/index.astro sets before this island hydrates
  */
-function applyThemeAttribute(theme: Theme): void {
+function applyTheme(theme: Theme): void {
   if (typeof document === "undefined") return;
-  document.documentElement.setAttribute("data-kb-theme", theme);
+  document.documentElement.classList.toggle("dark", theme === "dark");
 }
 
 /**
@@ -50,7 +51,7 @@ export function initTheme(): void {
 
   const initial = getInitialTheme();
   currentTheme = initial;
-  // Theme attribute is already applied by inline script to prevent FOUC
+  // The class is already applied by the inline script to prevent FOUC
 }
 
 /**
@@ -58,7 +59,7 @@ export function initTheme(): void {
  */
 export function setTheme(theme: Theme): void {
   currentTheme = theme;
-  applyThemeAttribute(theme);
+  applyTheme(theme);
 
   if (typeof localStorage !== "undefined") {
     localStorage.setItem(STORAGE_KEY, theme);

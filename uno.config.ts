@@ -9,10 +9,10 @@ export default defineConfig({
     presetShadcn({
       color: false, // Using custom northern-lights theme
       // Inert: presetShadcn only reads darkSelector when `color` is set, so this
-      // emits nothing. The dark palette is the hand-written [data-kb-theme="dark"]
-      // rule in src/styles/globals.css. Kept so the two stay in sync if `color` is
-      // ever enabled.
-      darkSelector: '[data-kb-theme="dark"]',
+      // emits nothing. The dark palette is the hand-written .dark rule in
+      // src/styles/globals.css. Kept so the two stay in sync if `color` is ever
+      // enabled.
+      darkSelector: ".dark",
     }),
     presetIcons({
       scale: 1.2,
