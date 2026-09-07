@@ -16,7 +16,11 @@ export function signToken(payload: string, secret: string): string {
  * Verify a signed token using timing-safe comparison.
  * Validates both signature integrity and token expiration.
  */
-export function verifyToken(token: string, secret: string): boolean {
+export function verifyToken(
+  token: string,
+  secret: string,
+  purpose: "authenticated" | "enhanced-authenticated" = "authenticated"
+): boolean {
   const parts = token.split(".");
   if (parts.length !== 2) return false;
   const [payload, signature] = parts;
@@ -34,10 +38,11 @@ export function verifyToken(token: string, secret: string): boolean {
   }
 
   // Validate payload structure and expiration
-  const colonIndex = payload.indexOf(":");
-  if (colonIndex === -1) return false;
-  const timestamp = parseInt(payload.slice(colonIndex + 1), 10);
-  if (Number.isNaN(timestamp)) return false;
+  const [tokenPurpose, timestampText, extra] = payload.split(":");
+  if (tokenPurpose !== purpose || extra !== undefined || !/^\d+$/.test(timestampText ?? ""))
+    return false;
+  const timestamp = Number(timestampText);
+  if (!Number.isSafeInteger(timestamp)) return false;
   const tokenAge = Date.now() - timestamp;
   return tokenAge >= 0 && tokenAge <= MAX_TOKEN_AGE;
 }

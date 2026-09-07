@@ -27,7 +27,8 @@ export const GET: APIRoute = async ({ cookies }) => {
   // - If password hash is set, check for valid session
   const enhancedSessionCookie = cookies.get("enhanced-session")?.value;
   const authenticated = configured
-    ? enhancedSessionCookie !== undefined && verifyToken(enhancedSessionCookie, SESSION_SECRET)
+    ? enhancedSessionCookie !== undefined &&
+      verifyToken(enhancedSessionCookie, SESSION_SECRET, "enhanced-authenticated")
     : true;
 
   const response: ApiResponse<EnhancedConfigResponse> = {
