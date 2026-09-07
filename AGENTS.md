@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents when working with code in this
 repository.
 
 Danish AI feedback chatbot for grades 7–9. Astro SSR + one Svelte 5 island + UnoCSS, on Vercel.
-Package manager is Bun, pinned to `bun@1.3.14` via `packageManager` in `package.json`.
+Package manager is Bun, pinned to `bun@1.4.2` via `packageManager` in `package.json`.
 
 ## Commands
 
@@ -15,16 +15,15 @@ Run from the repository root.
 | `bun install` | Install deps (CI uses `bun install --frozen-lockfile`) |
 | `bun run dev` | Astro dev server — the only way to run the app locally |
 | `bun run build` | Production build; the only compile signal for the Vercel bundle |
-| `bun run check` | `astro check` — type gate, must report 0 errors |
+| `bun run check` | `astro check` + `svelte-check` — both must report 0 errors |
 | `bun run lint` / `lint:fix` | `biome check .` / `biome check --write .` |
 | `bunx biome ci .` | Exactly what CI gates on; non-writing |
 
-**There is no test suite and no test runner in this repository.** Do not go looking for one, and
-do not report "tests pass". Full local validation is:
-
-```bash
-bunx biome ci . && bun run check && bun run build
-```
+CI now includes six Bun auth/privacy/data fixtures and three production Playwright
+scenarios. Run `bun install --frozen-lockfile`, `bash scripts/ci/check.sh`, and
+`bun run test:e2e` (install Chromium first). See `CI.md` for required settings,
+fixture isolation, build reuse and coverage limits. `scripts/ci/env.sh` contains
+public test values only and must never load production credentials.
 
 `dev`, `build`, and both CI workflows refuse to start without `PASSWORD_HASH`, `SESSION_SECRET`,
 and `NANO_GPT_API_KEY`, because `astro.config.ts` sets `validateSecrets: true`. Copy
@@ -39,7 +38,7 @@ the hash and secret.
 - **`localStorage` is the only persistence.** `src/lib/storage.ts` owns every `feedback-bot-*`
   key. No database, no server-side session store.
 - **Auth is HMAC-signed cookies, no middleware.** `src/lib/auth.ts` signs `payload:timestamp`
-  with `SESSION_SECRET`, verifies with `timingSafeEqual` and a 7-day age check. Two independent
+  with `SESSION_SECRET`, verifies with `timingSafeEqual` and a 7-day age check. Two purpose-bound
   cookies: `session` (main gate) and `enhanced-session` (commercial-model gate). Every route
   re-verifies for itself.
 - **The two model paths never cross.** `ModelPath` is `"privacy-first"` (TEE models, no
@@ -97,8 +96,8 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
   `script-src`. Editing the FOUC script — whitespace included — changes its hash; **so does
   bumping `astro`**, which silently rewrites the generated pair. A missing hash blocks that
   script in production, and a missing bootstrap hash means the island never hydrates while the
-  server-rendered shell still looks fine. Nothing in CI catches it: the smoke test only asserts
-  that `/` serves a `<title>`. Recompute all three from a real build rather than from source —
+  server-rendered shell still looks fine. CI checks the hashes and hydrates the built island in Chromium. Recompute hashes
+  from a real build when the test reports a mismatch —
   build, serve `.vercel/output` (or deploy a preview), and hash every inline script in the
   response:
 
@@ -140,14 +139,9 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
   and both CI workflows until a value is supplied.
 - **`scripts/devserver/run.sh clean` deletes `.env`** along with `node_modules`, `dist`, and
   `.astro` — it is in `BUILD_ARTIFACTS`. Back the file up first, or clean by hand.
-- **CI cannot catch client-side breakage.** The smoke test asserts only that `/` serves a
-  `<title>`; the island never hydrates in CI. After a `svelte`, `bits-ui`, or `unocss`
-  bump, exercise the UI in `bun run dev` by hand.
-- **`astro check` does not typecheck `.svelte` files.** It covers `.astro` and `.ts` only, so
-  the components are outside the type gate. Verified by injecting a deliberate type error into
-  a component and watching `bun run check` still report 0 errors. Run
-  `bunx svelte-check --tsconfig ./tsconfig.json` to typecheck the UI; it is clean today but is
-  not wired into CI.
+- **CI tests production hydration and login, with explicit limits.** `CI.md` lists
+  untested full chat, document, provider and Vercel edge behavior. `bun run check`
+  now includes `svelte-check`, so island types are included in the required gate.
 - **Biome does not lint `.svelte` markup.** It formats and lints the `<script>` block only, so
   rules like `noNonNullAssertion` no longer see assertions that live in the template.
 
@@ -182,8 +176,7 @@ type-check; a key missing from `da.json` renders the raw dot-path at runtime, be
   best practices (`type: agent_requested`), not repository law. **Its SolidJS half is now
   out of date — this repo is Svelte 5** and the file is being replaced separately. Read it only
   for the Astro/UnoCSS material; where it conflicts with this file or actual code, the code wins.
-- `.github/workflows/code-quality.yml` — read before changing lint/type/build gating; its header
-  comments explain the Renovate-only `biome-migrate` write path.
+- `.github/workflows/code-quality.yml` — read before changing lint/type/build gating; it is read-only; `biome-repair.yml` delegates the isolated Renovate repair path.
 - `.github/workflows/smoke.yml` — read before changing dev-server startup or the `/` route.
 - `.env.example` — read alongside the `env.schema` block in `astro.config.ts` when adding or
   changing an environment variable.
