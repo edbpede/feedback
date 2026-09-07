@@ -32,7 +32,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.10",
+    "@biomejs/biome": "2.5.12",
     "@iconify-json/carbon": "^1.2.25",
     "@types/node": "^26.2.0",
     "@unocss/astro": "^66.8.1",
